@@ -1,0 +1,43 @@
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.main,
+.square {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.main {
+  min-height: 100vh;
+}
+
+.square {
+  width: 100vmin;
+  height: 100vmin;
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(20, 1fr);
+}
+.square div {
+  background-color: black;
+  border-radius: 15%;
+  transition: opacity 500ms;
+}
+
+.square div::before {
+  content: "";
+  padding-bottom: 100%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+.none {
+  opacity: 0;
+}
