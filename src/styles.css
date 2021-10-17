@@ -26,9 +26,8 @@ body {
   grid-template-columns: repeat(20, 1fr);
 }
 .square div {
-  background-color: black;
   border-radius: 15%;
-  transition: opacity 500ms;
+  transition: opacity 1000ms, color 1000ms linear;
 }
 
 .square div::before {
