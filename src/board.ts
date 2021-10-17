@@ -26,19 +26,19 @@ export class Board {
   }
 
   public update(newCellState: number[][]) {
-    if (newCellState.length !== this.size ** 2) {
+    const flatCellState = newCellState.flat();
+    if (flatCellState.length !== this.size ** 2) {
       throw new Error("newCellState must be the same size as Board.");
     }
 
-    newCellState
-      .flat()
-      .map((n, idx) => (n !== this.cellState[idx] ? idx : undefined))
-      .forEach((idx) => {
-        if (idx === undefined) {
+    flatCellState
+      .map((n, idx) => (n !== this.cellState[idx] ? n : undefined))
+      .forEach((n, idx) => {
+        if (n === undefined) {
           return;
         }
 
-        const newColor = this.colorMap.get(newCellState[idx]);
+        const newColor = this.colorMap.get(n);
         if (newColor === undefined) {
           throw new Error("Tried to set state to a color not provided in colorMap.");
         } else if (newColor === null) {
@@ -49,6 +49,6 @@ export class Board {
         }
       });
 
-    this.cellState = newCellState;
+    this.cellState = flatCellState;
   }
 }
