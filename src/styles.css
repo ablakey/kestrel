@@ -5,38 +5,20 @@ body {
   margin: 0px;
   overflow: hidden;
   touch-action: none;
-}
-
-.main,
-.square {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: row;
+  font-family: "ShareTechMono";
 }
 
-.main {
-  min-height: 100vh;
+#left {
+  width: calc(100vw - 300px);
 }
 
-.square {
-  width: 100vmin;
-  height: 100vmin;
-  display: grid;
-  gap: 1px;
-  grid-template-columns: repeat(20, 1fr);
-}
-.square div {
-  border-radius: 15%;
-  transition: opacity 1000ms, color 1000ms linear;
+#right {
+  width: 300;
 }
 
-.square div::before {
-  content: "";
-  padding-bottom: 100%;
-  display: inline-block;
-  vertical-align: top;
-}
-
-.none {
-  opacity: 0;
+@font-face {
+  font-family: "ShareTechMono";
+  src: url("./assets/ShareTechMono-Regular.ttf") format("truetype");
 }
