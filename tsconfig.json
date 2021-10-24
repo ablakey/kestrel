@@ -3,6 +3,8 @@
     "noImplicitAny": true,
     "strict": true,
     "esModuleInterop": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "resolveJsonModule": true,
+    "moduleResolution": "node",
   }
 }
