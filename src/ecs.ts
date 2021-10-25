@@ -30,7 +30,8 @@ export function makeEcs<T extends { type: string }>() {
     return entities[id];
   }
 
-  function query(): Entity[] {
+  function query(componentTypes: T["type"][]): Entity[] {
+    console.log(componentTypes);
     // TODO: given a list of types, find entities that include ALL of the types.
   }
 

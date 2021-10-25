@@ -19,3 +19,7 @@ ecs.createEntity([
     height: 200,
   },
 ]);
+
+// TODO: implement query so that these walk all entities and return the ones that have the corresponding properties.
+const entities = ecs.query(["Position"]);
+const entities2 = ecs.query(["Position", "Rect"]);
