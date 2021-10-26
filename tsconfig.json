@@ -6,5 +6,6 @@
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "moduleResolution": "node",
+    "strictPropertyInitialization": false
   }
 }

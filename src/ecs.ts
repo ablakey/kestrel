@@ -1,9 +1,18 @@
-export function makeEcs<T extends { type: string }>() {
-  type Entity = {
-    id: number;
-    components: T[];
-  };
+import { Component } from "./components";
 
+type ComponentDict = { [K in Component["type"]]?: Component has K};
+
+export type Entity = {
+  id: number;
+  components: ComponentDict;
+};
+
+export type System = {
+  componentTypes: Component["type"][];
+  update: (delta: number, entities: Entity[]) => void;
+};
+
+export function makeEcs<C extends Component>() {
   let entityIdCounter = 0;
 
   /**
@@ -17,7 +26,7 @@ export function makeEcs<T extends { type: string }>() {
    */
   const entities: (Entity | undefined)[] = [];
 
-  function createEntity(components: T[]) {
+  function createEntity(components: ComponentDict) {
     entities[entityIdCounter] = {
       id: entityIdCounter,
       components,
@@ -30,14 +39,33 @@ export function makeEcs<T extends { type: string }>() {
     return entities[id];
   }
 
-  function query(componentTypes: T["type"][]): Entity[] {
+  function query(componentTypes: C["type"][]): Entity[] {
     console.log(componentTypes);
-    // TODO: given a list of types, find entities that include ALL of the types.
+    return entities.filter((e): e is Entity => e !== undefined); // TODO: actually query by
   }
 
   function deleteEntity(id: number) {
     entities[id] = undefined;
   }
 
-  return { createEntity, getEntity, query, deleteEntity };
+  const systems: System[] = [];
+
+  function registerSystem(system: System) {
+    systems.push(system);
+  }
+
+  function update(delta: number) {
+    console.log(1);
+    systems.forEach(({ componentTypes, update }) => {
+      update(delta, query(componentTypes));
+    });
+    requestAnimationFrame(update);
+  }
+
+  function start() {
+    // TODO: run once systems.
+    requestAnimationFrame(update);
+  }
+
+  return { createEntity, getEntity, query, deleteEntity, registerSystem, start };
 }
