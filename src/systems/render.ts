@@ -1,15 +1,12 @@
 import { Position } from "../components";
-import { System } from "../ecs";
+import { Entity, System } from "../ecs";
 
 export const renderSystem: System = {
   componentTypes: ["Position"],
-  update: function (delta, entities) {
-    entities[0].components.Position;
+  init: () => {
+    console.log("foo");
+  },
+  update: function (entities: Entity<Position>[]) {
+    // console.log(entities.map((e) => Object.keys(e.components)).flat());
   },
 };
-
-export class RenderSys {
-  componentTypes: ["Position"];
-
-  public update(delta: number, entities: Entity<Position & Rect>) {}
-}

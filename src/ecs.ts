@@ -1,71 +1,69 @@
+import { difference } from "lodash";
 import { Component } from "./components";
-
-type ComponentDict = { [K in Component["type"]]?: Component has K};
-
-export type Entity = {
-  id: number;
-  components: ComponentDict;
-};
 
 export type System = {
   componentTypes: Component["type"][];
-  update: (delta: number, entities: Entity[]) => void;
+  init: VoidFunction;
+  update: (entities: Entity[], delta: number, ecs: ECS) => void;
 };
 
-export function makeEcs<C extends Component>() {
-  let entityIdCounter = 0;
+type ComponentDict<T extends { type: string } = Component> = {
+  [key in T["type"]]?: Extract<T, { type: key }>;
+};
 
-  /**
-   * An array of entities, keyed by id.
-   * It makes lookup O(1) like an object, but we get the array behaviour.
-   * However, when deleting entities, we end up with `undefined` rather than an empty position, so we have to filter
-   * `undefined` anyway.  It also makes it a bit cleaner to walk and search by property, since we don't have to
-   * turn the object into an array first.
-   *
-   * None of this is really performance focused yet.
-   */
-  const entities: (Entity | undefined)[] = [];
+export type Entity<T extends { type: string } = Component> = {
+  id: number;
+  components: ComponentDict<T>;
+};
 
-  function createEntity(components: ComponentDict) {
-    entities[entityIdCounter] = {
-      id: entityIdCounter,
+export class ECS {
+  private entityIdCounter = 0;
+  private entities: Map<number, Entity> = new Map();
+  private systems: System[] = [];
+
+  createEntity(components: ComponentDict) {
+    this.entities.set(this.entityIdCounter, {
+      id: this.entityIdCounter,
       components,
-    };
-
-    entityIdCounter++;
-  }
-
-  function getEntity(id: number) {
-    return entities[id];
-  }
-
-  function query(componentTypes: C["type"][]): Entity[] {
-    console.log(componentTypes);
-    return entities.filter((e): e is Entity => e !== undefined); // TODO: actually query by
-  }
-
-  function deleteEntity(id: number) {
-    entities[id] = undefined;
-  }
-
-  const systems: System[] = [];
-
-  function registerSystem(system: System) {
-    systems.push(system);
-  }
-
-  function update(delta: number) {
-    console.log(1);
-    systems.forEach(({ componentTypes, update }) => {
-      update(delta, query(componentTypes));
     });
-    requestAnimationFrame(update);
+
+    this.entityIdCounter++;
   }
 
-  function start() {
-    // TODO: run once systems.
-    requestAnimationFrame(update);
+  getEntity(id: number) {
+    return this.entities.get(id);
   }
 
-  return { createEntity, getEntity, query, deleteEntity, registerSystem, start };
+  query(componentTypes: Component["type"][]): Entity[] {
+    const matches: Entity[] = [];
+    this.entities.forEach((e) => {
+      // TODO: this is probably where optimization will be needed when entity count gets large.
+      if (difference(componentTypes, Object.keys(e.components)).length === 0) {
+        matches.push(e);
+      }
+    });
+    return matches;
+  }
+
+  deleteEntity(id: number) {
+    this.entities.delete(id);
+  }
+
+  registerSystem(system: System) {
+    this.systems.push(system);
+  }
+
+  start() {
+    this.systems.forEach(({ init }) => {
+      init();
+    });
+    requestAnimationFrame(this.update.bind(this));
+  }
+
+  private update(delta: number) {
+    this.systems.forEach(({ componentTypes, update }) => {
+      update(this.query(componentTypes), delta, this);
+    });
+    requestAnimationFrame(this.update.bind(this));
+  }
 }
