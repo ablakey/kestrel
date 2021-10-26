@@ -2,6 +2,7 @@ export type Position = {
   type: "Position";
   x: number;
   y: number;
+  yaw: number;
 };
 
 export type Rect = {
@@ -10,8 +11,4 @@ export type Rect = {
   height: number;
 };
 
-export type Foo = {
-  type: "Foo";
-};
-
-export type Component = Position | Rect | Foo;
+export type Component = Position | Rect;
