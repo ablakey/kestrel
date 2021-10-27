@@ -1,11 +1,12 @@
 import { difference } from "lodash";
 import { Component } from "./components";
 
-export type System = {
-  componentTypes: Component["type"][];
-  init: VoidFunction;
-  update: (entities: Entity[], delta: number, ecs: ECS) => void;
-};
+export abstract class System<T extends { type: string } = Component> {
+  componentTypes: T["type"][];
+
+  abstract init(): void;
+  abstract update(entities: Entity<T>[], delta: number, ecs: ECS): void;
+}
 
 type ComponentDict<T extends { type: string } = Component> = {
   [key in T["type"]]: Extract<T, { type: key }>;
@@ -66,8 +67,8 @@ export class ECS {
   }
 
   private update(delta: number) {
-    this.systems.forEach(({ componentTypes, update }) => {
-      update(this.query(componentTypes) as Entity[], delta, this);
+    this.systems.forEach((sys) => {
+      sys.update(this.query(sys.componentTypes) as Entity[], delta, this);
     });
     requestAnimationFrame(this.update.bind(this));
   }

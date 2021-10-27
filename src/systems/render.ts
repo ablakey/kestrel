@@ -3,44 +3,52 @@ import { Entity, System } from "../ecs";
 import * as PIXI from "pixi.js";
 import ship from "../assets/pixel_ship_blue.png";
 
-// TODO: Stages should be classes.
+export class RenderSys extends System<Position> {
+  renderedItems: Record<string, PIXI.Sprite> = {};
+  componentTypes: ["Position"];
+  app: PIXI.Application;
 
-// inside init.
-const left = document.querySelector<HTMLElement>("#left")!;
-const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: left });
-left.appendChild(app.view);
+  constructor() {
+    super();
+    const left = document.querySelector<HTMLElement>("#left")!;
+    const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: left });
+    left.appendChild(app.view);
 
-app.stage.x = app.renderer.width / 2;
-app.stage.y = app.renderer.height / 2;
-// Zoom in.
-// app.stage.scale.x = 2;
-// app.stage.scale.y = 2;
+    app.stage.x = app.renderer.width / 2;
+    app.stage.y = app.renderer.height / 2;
+    // Zoom?
+    // app.stage.scale.x = 2;
+    // app.stage.scale.y = 2;
+    this.app = app;
+  }
 
-const renderedItems: Record<string, PIXI.Sprite> = {};
+  getOrCreate(entity: Entity<Position>): PIXI.Sprite {
+    if (this.renderedItems[entity.id]) {
+      return this.renderedItems[entity.id];
+    } else {
+      const newItem = PIXI.Sprite.from(ship); // In the future, from entity.
+      newItem.anchor.set(0.5);
+      this.app.stage.addChild(newItem);
+      this.renderedItems[entity.id] = newItem;
+      return newItem;
+    }
+  }
 
-export const renderSystem: System = {
-  componentTypes: ["Position"],
-  init: () => {
-    console.log("foo");
-  },
-  update: function (entities: Entity<Position>[]) {
+  init() {
+    console.log("init");
+  }
+
+  update(entities: Entity<Position>[]) {
     entities.forEach((e) => {
-      // Create?
-      if (renderedItems[e.id] === undefined) {
-        renderedItems[e.id] = PIXI.Sprite.from(ship);
-        app.stage.addChild(renderedItems[e.id]);
-        renderedItems[e.id].anchor.set(0.5);
-      }
+      const item = this.getOrCreate(e);
 
-      // Update?
-      renderedItems[e.id].x = e.components.Position.x;
-      renderedItems[e.id].y = e.components.Position.y;
-      renderedItems[e.id].rotation = e.components.Position.yaw;
+      // Update rendered item position.
+      item.x = e.components.Position.x;
+      item.y = e.components.Position.y;
+      item.rotation = e.components.Position.yaw;
 
+      // TODO: temporary.
       e.components.Position.yaw += 0.1;
-      // Delete?
-
-      // TODO
     });
-  },
-};
+  }
+}
