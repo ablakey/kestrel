@@ -13,8 +13,8 @@ export const renderSystem = (): System<Position> => {
   app.stage.y = app.renderer.height / 2;
 
   // Zoom?
-  // app.stage.scale.x = 2;
-  // app.stage.scale.y = 2;
+  app.stage.scale.x = 0.5;
+  app.stage.scale.y = 0.5;
 
   function getOrCreate<T extends Component>(entity: Entity<T>): PIXI.Sprite {
     if (renderedItems[entity.id]) {
@@ -36,9 +36,6 @@ export const renderSystem = (): System<Position> => {
       item.x = e.components.Position.x;
       item.y = e.components.Position.y;
       item.rotation = e.components.Position.yaw;
-
-      // TODO: temporary.
-      e.components.Position.yaw += 0.1;
     });
   }
 

@@ -1,7 +1,9 @@
 import { difference } from "lodash";
 import { Component } from "./components";
+import { Tag } from "./enum";
 
 export interface System<K extends Component> {
+  tags?: Tag[];
   componentTypes: Extract<Component, { type: K["type"] }>["type"][];
   update(entities: Entity<K>[], delta: number, ecs: ECS): void;
 }
@@ -10,13 +12,13 @@ type ComponentDict<T extends Component = Component> = {
   [key in T["type"]]: Extract<T, { type: key }>;
 };
 
-export type Entity<T extends Component = Component> = {
+export type Entity<T extends Component | void = Component> = {
   id: number;
-  components: ComponentDict<T>;
+  components: T extends Component ? ComponentDict<T> : void;
+  tags: Tag[];
 };
 
-type PartialEntity = {
-  id: number;
+type PartialEntity = Omit<Entity, "components"> & {
   components: Partial<ComponentDict>;
 };
 
@@ -25,10 +27,11 @@ export class ECS {
   private entities: Map<number, PartialEntity> = new Map();
   private systems: System<any>[] = []; // We don't actually care what the components are here.
 
-  createEntity(components: Partial<ComponentDict>) {
+  createEntity(components: Partial<ComponentDict>, tags: Tag[]) {
     this.entities.set(this.entityIdCounter, {
       id: this.entityIdCounter,
       components,
+      tags,
     });
 
     this.entityIdCounter++;
@@ -38,14 +41,23 @@ export class ECS {
     return this.entities.get(id);
   }
 
-  query(componentTypes: Component["type"][]): PartialEntity[] {
-    const matches: PartialEntity[] = [];
-    this.entities.forEach((e) => {
-      // TODO: this is probably where optimization will be needed when entity count gets large.
-      if (difference(componentTypes, Object.keys(e.components)).length === 0) {
-        matches.push(e);
-      }
-    });
+  /**
+   * componentTypes cannot be optional. There's nothing a system can do if it cannot act on any components.
+   * Tags are optional and when populated, every tag must be found on an entity to return the query.
+   */
+  query(componentTypes: Component["type"][], tags?: Tag[]): PartialEntity[] {
+    let matches: PartialEntity[] = Array.from(this.entities.values());
+
+    // Query by type.
+    matches = matches.filter(
+      (m) => difference(componentTypes, Object.keys(m.components)).length === 0
+    );
+
+    // Further query by tag.
+    if (tags !== undefined) {
+      matches = matches.filter((m) => difference(tags, m.tags).length === 0);
+    }
+
     return matches;
   }
 
@@ -63,7 +75,7 @@ export class ECS {
 
   private update(delta: number) {
     this.systems.forEach((sys) => {
-      sys.update(this.query(sys.componentTypes), delta, this);
+      sys.update(this.query(sys.componentTypes, sys.tags), delta, this);
     });
     requestAnimationFrame(this.update.bind(this));
   }
