@@ -1,46 +1,36 @@
-import { Position } from "../components";
-import { Entity, System } from "../ecs";
 import * as PIXI from "pixi.js";
 import ship from "../assets/pixel_ship_blue.png";
+import { Component, Position } from "../components";
+import { Entity, System } from "../ecs";
 
-export class RenderSys extends System<Position> {
-  renderedItems: Record<string, PIXI.Sprite> = {};
-  componentTypes: ["Position"];
-  app: PIXI.Application;
+export const renderSystem = (): System<Position> => {
+  const renderedItems: Record<string, PIXI.Sprite> = {};
+  const left = document.querySelector<HTMLElement>("#left")!;
+  const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: left });
+  left.appendChild(app.view);
 
-  constructor() {
-    super();
-    const left = document.querySelector<HTMLElement>("#left")!;
-    const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: left });
-    left.appendChild(app.view);
+  app.stage.x = app.renderer.width / 2;
+  app.stage.y = app.renderer.height / 2;
 
-    app.stage.x = app.renderer.width / 2;
-    app.stage.y = app.renderer.height / 2;
-    // Zoom?
-    // app.stage.scale.x = 2;
-    // app.stage.scale.y = 2;
-    this.app = app;
-  }
+  // Zoom?
+  // app.stage.scale.x = 2;
+  // app.stage.scale.y = 2;
 
-  getOrCreate(entity: Entity<Position>): PIXI.Sprite {
-    if (this.renderedItems[entity.id]) {
-      return this.renderedItems[entity.id];
+  function getOrCreate<T extends Component>(entity: Entity<T>): PIXI.Sprite {
+    if (renderedItems[entity.id]) {
+      return renderedItems[entity.id];
     } else {
       const newItem = PIXI.Sprite.from(ship); // In the future, from entity.
       newItem.anchor.set(0.5);
-      this.app.stage.addChild(newItem);
-      this.renderedItems[entity.id] = newItem;
+      app.stage.addChild(newItem);
+      renderedItems[entity.id] = newItem;
       return newItem;
     }
   }
 
-  init() {
-    console.log("init");
-  }
-
-  update(entities: Entity<Position>[]) {
+  function update(entities: Entity<Position>[]) {
     entities.forEach((e) => {
-      const item = this.getOrCreate(e);
+      const item = getOrCreate(e);
 
       // Update rendered item position.
       item.x = e.components.Position.x;
@@ -51,4 +41,6 @@ export class RenderSys extends System<Position> {
       e.components.Position.yaw += 0.1;
     });
   }
-}
+
+  return { update, componentTypes: ["Position"] };
+};

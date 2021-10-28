@@ -11,4 +11,12 @@ export type Rect = {
   height: number;
 };
 
-export type Component = Position | Rect;
+export type UserInput = {
+  type: "UserInput";
+  w: boolean;
+  a: boolean;
+  s: boolean;
+  d: boolean;
+};
+
+export type Component = Position | Rect | UserInput;

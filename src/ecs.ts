@@ -1,18 +1,16 @@
 import { difference } from "lodash";
 import { Component } from "./components";
 
-export abstract class System<T extends { type: string } = Component> {
-  componentTypes: T["type"][];
-
-  abstract init(): void;
-  abstract update(entities: Entity<T>[], delta: number, ecs: ECS): void;
+export interface System<K extends Component> {
+  componentTypes: Extract<Component, { type: K["type"] }>["type"][];
+  update(entities: Entity<K>[], delta: number, ecs: ECS): void;
 }
 
-type ComponentDict<T extends { type: string } = Component> = {
+type ComponentDict<T extends Component = Component> = {
   [key in T["type"]]: Extract<T, { type: key }>;
 };
 
-export type Entity<T extends { type: string } = Component> = {
+export type Entity<T extends Component = Component> = {
   id: number;
   components: ComponentDict<T>;
 };
@@ -25,7 +23,7 @@ type PartialEntity = {
 export class ECS {
   private entityIdCounter = 0;
   private entities: Map<number, PartialEntity> = new Map();
-  private systems: System[] = [];
+  private systems: System<any>[] = []; // We don't actually care what the components are here.
 
   createEntity(components: Partial<ComponentDict>) {
     this.entities.set(this.entityIdCounter, {
@@ -55,20 +53,17 @@ export class ECS {
     this.entities.delete(id);
   }
 
-  registerSystem(system: System) {
+  registerSystem<T extends Component>(system: System<T>) {
     this.systems.push(system);
   }
 
   start() {
-    this.systems.forEach(({ init }) => {
-      init();
-    });
     requestAnimationFrame(this.update.bind(this));
   }
 
   private update(delta: number) {
     this.systems.forEach((sys) => {
-      sys.update(this.query(sys.componentTypes) as Entity[], delta, this);
+      sys.update(this.query(sys.componentTypes), delta, this);
     });
     requestAnimationFrame(this.update.bind(this));
   }
