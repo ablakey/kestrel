@@ -1,7 +1,10 @@
 import * as PIXI from "pixi.js";
-import ship from "../assets/pixel_ship_blue.png";
+import playerShip from "../assets/pixel_ship_blue.png";
+import enemyShip from "../assets/pixel_ship_red.png";
+
 import { Component, Position } from "../components";
 import { Entity, System } from "../ecs";
+import { Tag } from "../enum";
 
 export const renderSystem = (): System<Position> => {
   const renderedItems: Record<string, PIXI.Sprite> = {};
@@ -20,7 +23,7 @@ export const renderSystem = (): System<Position> => {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
-      const newItem = PIXI.Sprite.from(ship); // In the future, from entity.
+      const newItem = PIXI.Sprite.from(entity.tags.includes(Tag.Player) ? playerShip : enemyShip); // In the future, from entity.
       newItem.anchor.set(0.5);
       app.stage.addChild(newItem);
       renderedItems[entity.id] = newItem;
@@ -32,10 +35,10 @@ export const renderSystem = (): System<Position> => {
     entities.forEach((e) => {
       const item = getOrCreate(e);
 
-      // Update rendered item position.
+      // Update rendered item position. Convert coordinate system.
       item.x = e.components.Position.x;
-      item.y = e.components.Position.y;
-      item.rotation = e.components.Position.yaw;
+      item.y = -e.components.Position.y;
+      item.rotation = 0 - e.components.Position.yaw + Math.PI / 2;
     });
   }
 

@@ -12,9 +12,9 @@ type ComponentDict<T extends Component = Component> = {
   [key in T["type"]]: Extract<T, { type: key }>;
 };
 
-export type Entity<T extends Component | void = Component> = {
+export type Entity<T extends Component = Component> = {
   id: number;
-  components: T extends Component ? ComponentDict<T> : void;
+  components: ComponentDict<T>;
   tags: Tag[];
 };
 
@@ -27,11 +27,11 @@ export class ECS {
   private entities: Map<number, PartialEntity> = new Map();
   private systems: System<any>[] = []; // We don't actually care what the components are here.
 
-  createEntity(components: Partial<ComponentDict>, tags: Tag[]) {
+  createEntity(components: Partial<ComponentDict>, tags?: Tag[]) {
     this.entities.set(this.entityIdCounter, {
       id: this.entityIdCounter,
       components,
-      tags,
+      tags: tags ?? [],
     });
 
     this.entityIdCounter++;

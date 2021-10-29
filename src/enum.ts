@@ -1,5 +1,6 @@
 export enum Tag {
   Player,
+  Enemy,
 }
 
 export enum Direction {
