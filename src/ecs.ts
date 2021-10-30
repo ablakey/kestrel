@@ -5,15 +5,15 @@ import { factoryCreators } from "./factories";
 
 export interface System<K extends Component> {
   tags?: Tag[];
-  componentTypes: Extract<Component, { type: K["type"] }>["type"][];
-  update(entities: Entity<K>[], delta: number): void;
+  componentKinds: Extract<Component, { kind: K["kind"] }>["kind"][];
+  update(entity: Entity<K>, delta: number): void;
 }
 
 type FactoryCreators = typeof factoryCreators;
 type FactoryInstances = { [key in keyof FactoryCreators]: InstanceType<FactoryCreators[key]> };
 
 type ComponentDict<T extends Component = Component> = {
-  [key in T["type"]]: Extract<T, { type: key }>;
+  [key in Uncapitalize<T["kind"]>]: Extract<T, { kind: Capitalize<key> }>;
 };
 
 export type Entity<T extends Component = Component> = {
@@ -31,6 +31,7 @@ export class ECS {
   private entities: Map<number, PartialEntity> = new Map();
   public systems: System<any>[];
   public factories: FactoryInstances;
+  public elapsed = 0;
 
   constructor(systems: ((ecs: ECS) => System<any>)[], factoryCreators: FactoryCreators) {
     this.factories = Object.fromEntries(
@@ -54,15 +55,19 @@ export class ECS {
   }
 
   /**
-   * componentTypes cannot be optional. There's nothing a system can do if it cannot act on any components.
+   * componentKinds cannot be optional. There's nothing a system can do if it cannot act on any components.
    * Tags are optional and when populated, every tag must be found on an entity to return the query.
    */
-  query(componentTypes: Component["type"][], tags?: Tag[]): PartialEntity[] {
+  query(componentKinds: Component["kind"][], tags?: Tag[]): PartialEntity[] {
     let matches: PartialEntity[] = Array.from(this.entities.values());
 
     // Query by type.
     matches = matches.filter(
-      (m) => difference(componentTypes, Object.keys(m.components)).length === 0
+      (m) =>
+        difference(
+          componentKinds,
+          Object.values(m.components).map((c) => c.kind)
+        ).length === 0
     );
 
     // Further query by tag.
@@ -81,9 +86,18 @@ export class ECS {
     requestAnimationFrame(this.update.bind(this));
   }
 
-  private update(delta: number) {
+  /**
+   * For each system, query all relevant entities based on components and tags,
+   * call update on the system for each entity, independently.
+   * If a system has no entities to act on, it is not run.
+   */
+  private update(timestamp: number) {
+    const delta = timestamp - this.elapsed;
+    this.elapsed = timestamp;
+
     this.systems.forEach((sys) => {
-      sys.update(this.query(sys.componentTypes, sys.tags), delta);
+      const entities = this.query(sys.componentKinds, sys.tags);
+      entities.forEach((e) => sys.update(e, delta));
     });
     requestAnimationFrame(this.update.bind(this));
   }

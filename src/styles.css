@@ -11,7 +11,8 @@ body {
 }
 
 #left {
-  width: calc(100vw - 300px);
+  width: 100%;
+  /* width: calc(100vw - 300px); */
 }
 
 #right {

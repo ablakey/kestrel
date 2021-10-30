@@ -2,9 +2,10 @@ import { ECS } from "./ecs";
 import { Tag } from "./enum";
 import { ShipFactory } from "./factories/ShipFactory";
 import { InputSystem } from "./systems/InputSystem";
+import { MovementSystem } from "./systems/movementSystem";
 import { RenderSystem } from "./systems/RenderSystem";
 
-const ecs = new ECS([RenderSystem, InputSystem], {
+const ecs = new ECS([InputSystem, MovementSystem, RenderSystem], {
   ShipFactory,
 });
 
