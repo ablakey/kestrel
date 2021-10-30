@@ -1,8 +1,8 @@
 import { Engine } from "../components";
-import { Entity, System } from "../ecs";
+import { ECS, Entity, System } from "../ecs";
 import { Direction, Tag, Thrust } from "../enum";
 
-export const inputSystem = (): System<Engine> => {
+export const InputSystem = (ecs: ECS): System<Engine> => {
   const keyState: Record<string, boolean | undefined> = {};
 
   document.addEventListener("keydown", (e) => (keyState[e.key] = true));

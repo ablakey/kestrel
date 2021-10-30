@@ -1,12 +1,11 @@
 import * as PIXI from "pixi.js";
 import playerShip from "../assets/pixel_ship_blue.png";
 import enemyShip from "../assets/pixel_ship_red.png";
-
-import { Component, Position } from "../components";
-import { Entity, System } from "../ecs";
+import { Body, Component } from "../components";
+import { ECS, Entity, System } from "../ecs";
 import { Tag } from "../enum";
 
-export const renderSystem = (): System<Position> => {
+export const RenderSystem = (ecs: ECS): System<Body> => {
   const renderedItems: Record<string, PIXI.Sprite> = {};
   const left = document.querySelector<HTMLElement>("#left")!;
   const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: left });
@@ -16,14 +15,16 @@ export const renderSystem = (): System<Position> => {
   app.stage.y = app.renderer.height / 2;
 
   // Zoom?
-  app.stage.scale.x = 0.5;
-  app.stage.scale.y = 0.5;
+  // app.stage.scale.x = 0.5;
+  // app.stage.scale.y = 0.5;
 
-  function getOrCreate<T extends Component>(entity: Entity<T>): PIXI.Sprite {
+  function getOrCreateSprite<T extends Component>(entity: Entity<T>): PIXI.Sprite {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
+      // TODO: learn about using spritesheets instead.
       const newItem = PIXI.Sprite.from(entity.tags.includes(Tag.Player) ? playerShip : enemyShip); // In the future, from entity.
+      newItem.roundPixels = true;
       newItem.anchor.set(0.5);
       app.stage.addChild(newItem);
       renderedItems[entity.id] = newItem;
@@ -31,16 +32,16 @@ export const renderSystem = (): System<Position> => {
     }
   }
 
-  function update(entities: Entity<Position>[]) {
+  function update(entities: Entity<Body>[], delta: number) {
     entities.forEach((e) => {
-      const item = getOrCreate(e);
+      const item = getOrCreateSprite(e);
 
       // Update rendered item position. Convert coordinate system.
-      item.x = e.components.Position.x;
-      item.y = -e.components.Position.y;
-      item.rotation = 0 - e.components.Position.yaw + Math.PI / 2;
+      item.x = e.components.Body.pos.x;
+      item.y = -e.components.Body.pos.y;
+      item.rotation = 0 - e.components.Body.yaw + Math.PI / 2;
     });
   }
 
-  return { update, componentTypes: ["Position"] };
+  return { update, componentTypes: ["Body"] };
 };

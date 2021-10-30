@@ -1,12 +1,16 @@
 import { difference } from "lodash";
 import { Component } from "./components";
 import { Tag } from "./enum";
+import { factoryCreators } from "./factories";
 
 export interface System<K extends Component> {
   tags?: Tag[];
   componentTypes: Extract<Component, { type: K["type"] }>["type"][];
-  update(entities: Entity<K>[], delta: number, ecs: ECS): void;
+  update(entities: Entity<K>[], delta: number): void;
 }
+
+type FactoryCreators = typeof factoryCreators;
+type FactoryInstances = { [key in keyof FactoryCreators]: InstanceType<FactoryCreators[key]> };
 
 type ComponentDict<T extends Component = Component> = {
   [key in T["type"]]: Extract<T, { type: key }>;
@@ -25,9 +29,17 @@ type PartialEntity = Omit<Entity, "components"> & {
 export class ECS {
   private entityIdCounter = 0;
   private entities: Map<number, PartialEntity> = new Map();
-  private systems: System<any>[] = []; // We don't actually care what the components are here.
+  public systems: System<any>[];
+  public factories: FactoryInstances;
 
-  createEntity(components: Partial<ComponentDict>, tags?: Tag[]) {
+  constructor(systems: ((ecs: ECS) => System<any>)[], factoryCreators: FactoryCreators) {
+    this.factories = Object.fromEntries(
+      Object.entries(factoryCreators).map(([name, Factory]) => [name, new Factory(this)])
+    ) as FactoryInstances;
+    this.systems = systems.map((s) => s(this));
+  }
+
+  addEntity(components: Partial<ComponentDict>, tags?: Tag[]) {
     this.entities.set(this.entityIdCounter, {
       id: this.entityIdCounter,
       components,
@@ -65,17 +77,13 @@ export class ECS {
     this.entities.delete(id);
   }
 
-  registerSystem<T extends Component>(system: System<T>) {
-    this.systems.push(system);
-  }
-
   start() {
     requestAnimationFrame(this.update.bind(this));
   }
 
   private update(delta: number) {
     this.systems.forEach((sys) => {
-      sys.update(this.query(sys.componentTypes, sys.tags), delta, this);
+      sys.update(this.query(sys.componentTypes, sys.tags), delta);
     });
     requestAnimationFrame(this.update.bind(this));
   }

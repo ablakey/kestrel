@@ -1,12 +1,11 @@
 import { Direction, Thrust } from "./enum";
 import Victor from "victor";
 
-export type Position = {
-  type: "Position";
-  x: number;
-  y: number;
+export type Body = {
+  type: "Body";
+  pos: Victor;
   yaw: number;
-  vec: Victor;
+  vel: Victor;
 };
 
 export type Engine = {
@@ -15,4 +14,4 @@ export type Engine = {
   thrust: Thrust;
 };
 
-export type Component = Position | Engine;
+export type Component = Body | Engine;
