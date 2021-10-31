@@ -5,10 +5,11 @@ import { ShipFactory } from "./factories/ShipFactory";
 import { InputSystem } from "./systems/InputSystem";
 import { MovementSystem } from "./systems/movementSystem";
 import { RenderSystem } from "./systems/RenderSystem";
+import { WeaponSystem } from "./systems/WeaponSystem";
 import { Overlay } from "./ui/Overlay";
 import { Right } from "./ui/right/Right";
 
-const ecs = new ECS([InputSystem, MovementSystem, RenderSystem], {
+const ecs = new ECS([InputSystem, MovementSystem, WeaponSystem, RenderSystem], {
   ShipFactory,
 });
 
@@ -46,7 +47,6 @@ ecs.start();
 ReactDOM.render(<UiElement />, document.getElementById("ui"));
 setInterval(() => {
   ReactDOM.render(<UiElement />, document.getElementById("ui"));
-  console.log("re");
 }, 1000);
 
 function UiElement() {

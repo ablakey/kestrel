@@ -14,4 +14,10 @@ export type Engine = {
   thrust: Thrust;
 };
 
-export type Component = Body | Engine;
+export type Weapons = {
+  kind: "Weapons";
+  fireLaser: boolean;
+  laserCharge: number;
+};
+
+export type Component = Body | Engine | Weapons;

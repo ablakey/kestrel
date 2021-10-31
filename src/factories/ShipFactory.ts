@@ -17,6 +17,11 @@ export class ShipFactory extends BaseFactory {
           yaw: 0,
           vel: new Victor(0, 0),
         },
+        weapons: {
+          kind: "Weapons",
+          laserCharge: 100,
+          fireLaser: false,
+        },
       },
       opts.tags
     );

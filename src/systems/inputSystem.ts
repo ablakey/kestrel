@@ -1,24 +1,29 @@
-import { Engine } from "../components";
+import { Engine, Weapons } from "../components";
 import { Entity, System } from "../ecs";
 import { Direction, Tag, Thrust } from "../enum";
 
-export const InputSystem = (): System<Engine> => {
+export const InputSystem = (): System<Engine | Weapons> => {
   const keyState: Record<string, boolean | undefined> = {};
 
-  document.addEventListener("keydown", (e) => (keyState[e.key] = true));
-  document.addEventListener("keyup", (e) => (keyState[e.key] = false));
+  document.addEventListener("keydown", (e) => (keyState[e.code] = true));
+  document.addEventListener("keyup", (e) => (keyState[e.code] = false));
 
-  function update(entity: Entity<Engine>) {
-    if (keyState["a"]) {
+  function update(entity: Entity<Engine | Weapons>) {
+    // Rotate?
+    if (keyState["KeyA"]) {
       entity.components.engine.direction = Direction.Left;
-    } else if (keyState["d"]) {
+    } else if (keyState["KeyD"]) {
       entity.components.engine.direction = Direction.Right;
     } else {
       entity.components.engine.direction = Direction.None;
     }
 
-    entity.components.engine.thrust = keyState["w"] ? Thrust.Forward : Thrust.None;
+    // Thruster?
+    entity.components.engine.thrust = keyState["KeyW"] ? Thrust.Forward : Thrust.None;
+
+    // Weapons?
+    entity.components.weapons.fireLaser = keyState["Space"] ?? false;
   }
 
-  return { tags: [Tag.Player], componentKinds: ["Engine"], update };
+  return { tags: [Tag.Player], componentKinds: ["Engine", "Weapons"], update };
 };
