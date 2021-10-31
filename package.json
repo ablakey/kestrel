@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "parcel --no-hmr",
+    "start": "parcel --no-hmr ./src/index.html",
     "build": "parcel build"
   },
   "source": "src/index.html",

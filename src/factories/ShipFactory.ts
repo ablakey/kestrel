@@ -8,14 +8,14 @@ export class ShipFactory extends BaseFactory {
       {
         engine: {
           kind: "Engine",
-          direction: Direction.None,
+          direction: Direction.Right,
           thrust: Thrust.None,
         },
         body: {
           kind: "Body",
           pos: new Victor(opts.x ?? 0, opts.y ?? 0),
           yaw: 0,
-          vel: new Victor(0, 0), // TODO  units/second.
+          vel: new Victor(0, 0),
         },
       },
       opts.tags
