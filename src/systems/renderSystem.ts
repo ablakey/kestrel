@@ -7,9 +7,9 @@ import { Tag } from "../enum";
 
 export const RenderSystem = (): System<Body> => {
   const renderedItems: Record<string, PIXI.Sprite> = {};
-  const left = document.querySelector<HTMLElement>("#left")!;
-  const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: left });
-  left.appendChild(app.view);
+  const viewport = document.querySelector<HTMLElement>("#viewport")!;
+  const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: viewport });
+  viewport.appendChild(app.view);
 
   app.stage.x = app.renderer.width / 2;
   app.stage.y = app.renderer.height / 2;

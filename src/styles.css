@@ -5,14 +5,36 @@ body {
   margin: 0px;
   overflow: hidden;
   touch-action: none;
-  display: flex;
-  flex-direction: row;
   font-family: "ShareTechMono";
+  color: white;
 }
 
-#left {
-  width: 100%;
-  /* width: calc(100vw - 300px); */
+#container {
+  position: relative;
+}
+
+/* position fixed because if I make it absolute, margins don't cover bottom or right. */
+#ui-overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  margin: 4vmax;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+#ui-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 24pt;
+}
+
+#viewport {
+  height: 100%;
 }
 
 #right {

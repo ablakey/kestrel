@@ -28,7 +28,7 @@ type PartialEntity = Omit<Entity, "components"> & {
 
 export class ECS {
   private entityIdCounter = 0;
-  private entities: Map<number, PartialEntity> = new Map();
+  public entities: Map<number, PartialEntity> = new Map();
   public systems: System<any>[];
   public factories: FactoryInstances;
   public elapsed = 0;
@@ -48,10 +48,6 @@ export class ECS {
     });
 
     this.entityIdCounter++;
-  }
-
-  getEntity(id: number) {
-    return this.entities.get(id);
   }
 
   /**
