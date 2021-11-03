@@ -1,7 +1,8 @@
 import ReactDOM from "react-dom";
+import Victor from "victor";
 import { ECS } from "./ecs";
 import { Tag } from "./enum";
-import { ShipFactory } from "./factories/ShipFactory";
+import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
 import { MovementSystem } from "./systems/movementSystem";
 import { RenderSystem } from "./systems/RenderSystem";
@@ -9,17 +10,14 @@ import { WeaponSystem } from "./systems/WeaponSystem";
 import { Overlay } from "./ui/Overlay";
 import { Right } from "./ui/right/Right";
 
-const ecs = new ECS([InputSystem, MovementSystem, WeaponSystem, RenderSystem], {
-  ShipFactory,
-});
+const ecs = new ECS([InputSystem, EngineSystem, MovementSystem, WeaponSystem, RenderSystem]);
 
 ecs.factories.ShipFactory.create({
   tags: [Tag.Player],
 });
 
 ecs.factories.ShipFactory.create({
-  x: 250,
-  y: 100,
+  pos: new Victor(250, 100),
   tags: [Tag.Enemy],
 });
 
@@ -57,3 +55,11 @@ function UiElement() {
     </>
   );
 }
+
+declare global {
+  interface Window {
+    ecs: any;
+  }
+}
+
+window.ecs = ecs;

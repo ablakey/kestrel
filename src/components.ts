@@ -1,6 +1,8 @@
 import { Direction, Thrust } from "./enum";
 import Victor from "victor";
 
+// export type Sprite   <- need to start associating sprites with entities.
+
 export type Body = {
   kind: "Body";
   pos: Victor;
@@ -14,10 +16,15 @@ export type Engine = {
   thrust: Thrust;
 };
 
-export type Weapons = {
-  kind: "Weapons";
-  fireLaser: boolean;
-  laserCharge: number;
+export type Armament = {
+  kind: "Armament";
+  primaryFire: boolean;
+  primaryCooldownUntil: number;
 };
 
-export type Component = Body | Engine | Weapons;
+export type Bullet = {
+  kind: "Bullet";
+  lifespan: number;
+};
+
+export type Component = Body | Engine | Armament | Bullet;

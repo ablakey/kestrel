@@ -1,14 +1,14 @@
-import { Engine, Weapons } from "../components";
+import { Engine, Armament } from "../components";
 import { Entity, System } from "../ecs";
 import { Direction, Tag, Thrust } from "../enum";
 
-export const InputSystem = (): System<Engine | Weapons> => {
+export const InputSystem = (): System<Engine | Armament> => {
   const keyState: Record<string, boolean | undefined> = {};
 
   document.addEventListener("keydown", (e) => (keyState[e.code] = true));
   document.addEventListener("keyup", (e) => (keyState[e.code] = false));
 
-  function update(entity: Entity<Engine | Weapons>) {
+  function update(entity: Entity<Engine | Armament>) {
     // Rotate?
     if (keyState["KeyA"]) {
       entity.components.engine.direction = Direction.Left;
@@ -21,9 +21,9 @@ export const InputSystem = (): System<Engine | Weapons> => {
     // Thruster?
     entity.components.engine.thrust = keyState["KeyW"] ? Thrust.Forward : Thrust.None;
 
-    // Weapons?
-    entity.components.weapons.fireLaser = keyState["Space"] ?? false;
+    // Armament?
+    entity.components.armament.primaryFire = keyState["Space"] ?? false;
   }
 
-  return { tags: [Tag.Player], componentKinds: ["Engine", "Weapons"], update };
+  return { tags: [Tag.Player], componentKinds: ["Engine", "Armament"], update };
 };

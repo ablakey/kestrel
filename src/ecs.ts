@@ -18,6 +18,7 @@ type ComponentDict<T extends Component = Component> = {
 
 export type Entity<T extends Component = Component> = {
   id: number;
+  spawnTime: number;
   components: ComponentDict<T>;
   tags: Tag[];
 };
@@ -33,7 +34,7 @@ export class ECS {
   public factories: FactoryInstances;
   public elapsed = 0;
 
-  constructor(systems: ((ecs: ECS) => System<any>)[], factoryCreators: FactoryCreators) {
+  constructor(systems: ((ecs: ECS) => System<any>)[]) {
     this.factories = Object.fromEntries(
       Object.entries(factoryCreators).map(([name, Factory]) => [name, new Factory(this)])
     ) as FactoryInstances;
@@ -43,6 +44,7 @@ export class ECS {
   addEntity(components: Partial<ComponentDict>, tags?: Tag[]) {
     this.entities.set(this.entityIdCounter, {
       id: this.entityIdCounter,
+      spawnTime: this.elapsed,
       components,
       tags: tags ?? [],
     });
