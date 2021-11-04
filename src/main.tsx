@@ -1,3 +1,4 @@
+import { times } from "lodash";
 import ReactDOM from "react-dom";
 import Victor from "victor";
 import { ECS } from "./ecs";
@@ -16,9 +17,11 @@ ecs.factories.ShipFactory.create({
   tags: [Tag.Player],
 });
 
-ecs.factories.ShipFactory.create({
-  pos: new Victor(250, 100),
-  tags: [Tag.Enemy],
+times(1, () => {
+  ecs.factories.ShipFactory.create({
+    pos: new Victor(Math.random() * 3000 - 1500, Math.random() * 2000 - 1000),
+    tags: [Tag.Enemy],
+  });
 });
 
 ecs.start();
