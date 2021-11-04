@@ -4,7 +4,7 @@ import { ECS } from "./ecs";
 import { Tag } from "./enum";
 import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
-import { MovementSystem } from "./systems/movementSystem";
+import { MovementSystem } from "./systems/MovementSystem";
 import { RenderSystem } from "./systems/RenderSystem";
 import { WeaponSystem } from "./systems/WeaponSystem";
 import { Overlay } from "./ui/Overlay";
