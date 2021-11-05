@@ -3,23 +3,17 @@ import ReactDOM from "react-dom";
 import Victor from "victor";
 import { ECS } from "./ecs";
 import { Tag } from "./enum";
-import { EngineSystem } from "./systems/EngineSystem";
-import { InputSystem } from "./systems/InputSystem";
-import { MovementSystem } from "./systems/MovementSystem";
-import { RenderSystem } from "./systems/RenderSystem";
-import { WeaponSystem } from "./systems/WeaponSystem";
-import { Overlay } from "./ui/Overlay";
-import { Right } from "./ui/right/Right";
+import { UiRoot } from "./ui/UiRoot";
 
-const ecs = new ECS([InputSystem, EngineSystem, MovementSystem, WeaponSystem, RenderSystem]);
+const ecs = new ECS();
 
 ecs.factories.ShipFactory.create({
   tags: [Tag.Player],
 });
 
-times(1, () => {
+times(3, () => {
   ecs.factories.ShipFactory.create({
-    pos: new Victor(Math.random() * 3000 - 1500, Math.random() * 2000 - 1000),
+    pos: new Victor(Math.random() * 1000 - 500, Math.random() * 1000 - 500),
     tags: [Tag.Enemy],
   });
 });
@@ -27,38 +21,18 @@ times(1, () => {
 ecs.start();
 
 /**
- * One idea for UI is that when the game is ticking, emit an event for every tick.
- * UI can listen to these events and update component tree on tick (or maybe every other tick).
- *
- * But when the game is paused, there are no ticks. So the UI will only respond to the things it does
- * as well as user interaction.
- *
- * When paused, a user could click a menu button, UI state is managed by the UI (useState).
- * User can then cause effects that modify ECS Components, or more UI state.
- *
- * Simple first ideas:
- *  - Pause screen
- *    - recharge shields
- *    - pick different weapon
- *
- *  - Status screen
- *  - Acts on tick callback
- *  - just shows health, speed, etc.
+ * UI.
  */
-ReactDOM.render(<UiElement />, document.getElementById("ui"));
-setInterval(() => {
-  ReactDOM.render(<UiElement />, document.getElementById("ui"));
-}, 1000);
-
-function UiElement() {
-  return (
-    <>
-      <Overlay />
-      <Right />
-    </>
-  );
+function render() {
+  ReactDOM.render(<UiRoot ecs={ecs} />, document.getElementById("ui"));
 }
 
+render();
+setInterval(render, 100);
+
+/**
+ * For debugging.
+ */
 declare global {
   interface Window {
     ecs: any;

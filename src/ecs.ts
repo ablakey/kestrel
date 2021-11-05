@@ -2,6 +2,7 @@ import { difference } from "lodash";
 import { Component } from "./components";
 import { Tag } from "./enum";
 import { factoryCreators } from "./factories";
+import { systems } from "./systems";
 
 export interface System<K extends Component> {
   tags?: Tag[];
@@ -28,13 +29,13 @@ type PartialEntity = Omit<Entity, "components"> & {
 };
 
 export class ECS {
-  private entityIdCounter = 0;
+  private nextId = 0;
+  private systems: System<any>[];
   public entities: Map<number, PartialEntity> = new Map();
-  public systems: System<any>[];
   public factories: FactoryInstances;
   public elapsed = 0;
 
-  constructor(systems: ((ecs: ECS) => System<any>)[]) {
+  constructor() {
     this.factories = Object.fromEntries(
       Object.entries(factoryCreators).map(([name, Factory]) => [name, new Factory(this)])
     ) as FactoryInstances;
@@ -42,22 +43,20 @@ export class ECS {
   }
 
   addEntity(components: Partial<ComponentDict>, tags?: Tag[]) {
-    this.entities.set(this.entityIdCounter, {
-      id: this.entityIdCounter,
+    this.entities.set(this.nextId, {
+      id: this.nextId++,
       spawnTime: this.elapsed,
       components,
       tags: tags ?? [],
     });
-
-    this.entityIdCounter++;
   }
 
   /**
    * componentKinds cannot be optional. There's nothing a system can do if it cannot act on any components.
    * Tags are optional and when populated, every tag must be found on an entity to return the query.
    */
-  query(componentKinds: Component["kind"][], tags?: Tag[]): PartialEntity[] {
-    let matches: PartialEntity[] = Array.from(this.entities.values());
+  query<K extends Component["kind"]>(componentKinds: K[], tags?: Tag[]) {
+    let matches = Array.from(this.entities.values());
 
     // Query by type.
     matches = matches.filter(
@@ -73,7 +72,7 @@ export class ECS {
       matches = matches.filter((m) => difference(tags, m.tags).length === 0);
     }
 
-    return matches;
+    return matches as Entity<Extract<Component, { kind: K }>>[];
   }
 
   deleteEntity(id: number) {

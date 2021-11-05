@@ -1,9 +1,10 @@
+import { ECS } from "../../ecs";
 import { Info } from "./Info";
 import { Minimap } from "./Minimap";
 import { Stats } from "./Stats";
 import { Target } from "./Target";
 
-export function Right() {
+export function Right(props: { ecs: ECS }) {
   return (
     <div
       style={{
@@ -17,7 +18,7 @@ export function Right() {
       }}
     >
       <Minimap />
-      <Stats />
+      <Stats ecs={props.ecs} />
       <Target />
       <Info />
     </div>

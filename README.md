@@ -1,6 +1,10 @@
 # Snakefood
 
 
+## Why is ECS so tightly bound to the game?
+It's not a library and I didn't want to add extra verbosity in many places by making it generic.
+There's many better ECS libraries anyway.
+
 ## Systems are closures?
 
 I fought with this for a while. I don't think I have the best solution here, but it works well enough, even if the ergonomics are weird:
