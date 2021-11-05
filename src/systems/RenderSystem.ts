@@ -35,7 +35,17 @@ export const RenderSystem = (): System<Body> => {
   function update(entity: Entity<Body>) {
     const item = getOrCreateSprite(entity);
 
-    // Update rendered item position. Convert coordinate system.
+    /**
+     * Destroy entity?
+     */
+    if (entity.destroyed) {
+      renderedItems[entity.id].destroy();
+      return;
+    }
+
+    /**
+     * Update rendered entity position. Convert coordinate system.
+     */
     item.x = entity.components.body.pos.x;
     item.y = -entity.components.body.pos.y;
     item.rotation = 0 - entity.components.body.yaw + Math.PI / 2;

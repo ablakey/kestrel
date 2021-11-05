@@ -14,7 +14,7 @@ export class BulletFactory extends BaseFactory {
       },
       bullet: {
         kind: "Bullet",
-        lifespan: 10,
+        lifespan: 500,
       },
     });
   }

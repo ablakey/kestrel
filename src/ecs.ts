@@ -21,6 +21,7 @@ export type Entity<T extends Component = Component> = {
   id: number;
   spawnTime: number;
   components: ComponentDict<T>;
+  destroyed: boolean;
   tags: Tag[];
 };
 
@@ -42,11 +43,12 @@ export class ECS {
     this.systems = systems.map((s) => s(this));
   }
 
-  addEntity(components: Partial<ComponentDict>, tags?: Tag[]) {
+  public addEntity(components: Partial<ComponentDict>, tags?: Tag[]) {
     this.entities.set(this.nextId, {
       id: this.nextId++,
       spawnTime: this.elapsed,
       components,
+      destroyed: false,
       tags: tags ?? [],
     });
   }
@@ -55,7 +57,7 @@ export class ECS {
    * componentKinds cannot be optional. There's nothing a system can do if it cannot act on any components.
    * Tags are optional and when populated, every tag must be found on an entity to return the query.
    */
-  query<K extends Component["kind"]>(componentKinds: K[], tags?: Tag[]) {
+  public query<K extends Component["kind"]>(componentKinds: K[], tags?: Tag[]) {
     let matches = Array.from(this.entities.values());
 
     // Query by type.
@@ -75,18 +77,17 @@ export class ECS {
     return matches as Entity<Extract<Component, { kind: K }>>[];
   }
 
-  deleteEntity(id: number) {
-    this.entities.delete(id);
-  }
-
-  start() {
+  public start() {
     requestAnimationFrame(this.update.bind(this));
   }
 
   /**
    * For each system, query all relevant entities based on components and tags,
    * call update on the system for each entity, independently.
+   *
    * If a system has no entities to act on, it is not run.
+   *
+   * Destroy all entities with the `destroy` flag set.
    */
   private update(timestamp: number) {
     const delta = timestamp - this.elapsed;
@@ -96,6 +97,13 @@ export class ECS {
       const entities = this.query(sys.componentKinds, sys.tags);
       entities.forEach((e) => sys.update(e, delta));
     });
+
+    this.entities.forEach((e) => {
+      if (e.destroyed) {
+        this.entities.delete(e.id);
+      }
+    });
+
     requestAnimationFrame(this.update.bind(this));
   }
 }
