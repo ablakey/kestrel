@@ -22,7 +22,6 @@ export const RenderSystem = (): System<Body> => {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
-      // TODO: learn about using spritesheets instead.
       const newItem = PIXI.Sprite.from(entity.tags.includes(Tag.Player) ? playerShip : enemyShip); // In the future, from entity.
       newItem.roundPixels = true;
       newItem.anchor.set(0.5);

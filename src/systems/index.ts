@@ -3,6 +3,7 @@ import { EngineSystem } from "./EngineSystem";
 import { InputSystem } from "./InputSystem";
 import { MovementSystem } from "./MovementSystem";
 import { RenderSystem } from "./RenderSystem";
+import { StatsSystem } from "./StatsSystem";
 import { WeaponSystem } from "./WeaponSystem";
 
 // Order matters.
@@ -12,5 +13,6 @@ export const systems = [
   MovementSystem,
   WeaponSystem,
   BulletSystem,
+  StatsSystem,
   RenderSystem,
 ];

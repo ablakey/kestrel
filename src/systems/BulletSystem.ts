@@ -1,8 +1,9 @@
-import { Bullet } from "../components";
+import { Body, Bullet } from "../components";
 import { ECS, Entity, System } from "../ecs";
+import { Tag } from "../enum";
 
-export const BulletSystem = (ecs: ECS): System<Bullet> => {
-  function update(entity: Entity<Bullet>) {
+export const BulletSystem = (ecs: ECS): System<Bullet | Body> => {
+  function update(entity: Entity<Bullet | Body>) {
     /**
      * Remove old bullets.
      */
@@ -13,8 +14,14 @@ export const BulletSystem = (ecs: ECS): System<Bullet> => {
     /**
      * Detect collisions.
      */
-    // TODO
+    ecs.query(["Body", "Stats"], [Tag.Enemy]).forEach((e) => {
+      const distance = entity.components.body.pos.distance(e.components.body.pos);
+      if (distance < 50) {
+        entity.destroyed = true;
+        e.components.stats.damageEffects.push({ damage: 10 });
+      }
+    });
   }
 
-  return { update, componentKinds: ["Bullet"] };
+  return { update, componentKinds: ["Bullet", "Body"] };
 };

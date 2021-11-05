@@ -22,6 +22,11 @@ export class ShipFactory extends BaseFactory {
           primaryCooldownUntil: 0,
           primaryFire: false,
         },
+        stats: {
+          kind: "Stats",
+          health: 100,
+          damageEffects: [],
+        },
       },
       opts.tags
     );

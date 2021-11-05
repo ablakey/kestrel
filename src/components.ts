@@ -1,5 +1,6 @@
 import { Direction, Thrust } from "./enum";
 import Victor from "victor";
+import { DamageEffect } from "./types";
 
 // export type Sprite   <- need to start associating sprites with entities.
 
@@ -27,4 +28,10 @@ export type Bullet = {
   lifespan: number;
 };
 
-export type Component = Body | Engine | Armament | Bullet;
+export type Stats = {
+  kind: "Stats";
+  health: number;
+  damageEffects: DamageEffect[];
+};
+
+export type Component = Body | Engine | Armament | Bullet | Stats;
