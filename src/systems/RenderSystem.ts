@@ -18,6 +18,10 @@ export const RenderSystem = (): System<Body> => {
   app.stage.scale.x = 0.5;
   app.stage.scale.y = 0.5;
 
+  const container = new PIXI.Container();
+  container.position.set(app.renderer.screen.width / 2, app.renderer.screen.height / 2);
+  app.stage.addChild(container);
+
   function getOrCreateSprite<T extends Component>(entity: Entity<T>): PIXI.Sprite {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
@@ -25,7 +29,7 @@ export const RenderSystem = (): System<Body> => {
       const newItem = PIXI.Sprite.from(entity.tags.includes(Tag.Player) ? playerShip : enemyShip); // In the future, from entity.
       newItem.roundPixels = true;
       newItem.anchor.set(0.5);
-      app.stage.addChild(newItem);
+      container.addChild(newItem);
       renderedItems[entity.id] = newItem;
       return newItem;
     }
@@ -35,9 +39,17 @@ export const RenderSystem = (): System<Body> => {
     const item = getOrCreateSprite(entity);
 
     /**
-     * Destroy entity?
+     * Follow player.
      */
+    if (entity.tags.includes(Tag.Player)) {
+      container.x = entity.components.body.pos.x;
+      container.y = entity.components.body.pos.y;
+    }
+
     if (entity.destroyed) {
+      /**
+       * Destroy entity?
+       */
       renderedItems[entity.id].destroy();
       return;
     }
