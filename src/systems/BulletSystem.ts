@@ -1,9 +1,8 @@
-import { Body, Bullet } from "../components";
 import { ECS, Entity, System } from "../ecs";
 import { Tag } from "../enum";
 
-export const BulletSystem = (ecs: ECS): System<Bullet | Body> => {
-  function update(entity: Entity<Bullet | Body>) {
+export const BulletSystem = (ecs: ECS): System => {
+  function update(entity: Entity<"Bullet" | "Body">) {
     /**
      * Remove old bullets.
      */

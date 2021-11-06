@@ -3,9 +3,24 @@ import ReactDOM from "react-dom";
 import Victor from "victor";
 import { ECS } from "./ecs";
 import { Tag } from "./enum";
+import { BulletSystem } from "./systems/BulletSystem";
+import { EngineSystem } from "./systems/EngineSystem";
+import { InputSystem } from "./systems/InputSystem";
+import { MovementSystem } from "./systems/MovementSystem";
+import { RenderSystem } from "./systems/RenderSystem";
+import { StatsSystem } from "./systems/StatsSystem";
+import { WeaponSystem } from "./systems/WeaponSystem";
 import { UiRoot } from "./ui/UiRoot";
 
-const ecs = new ECS();
+const ecs = new ECS([
+  InputSystem,
+  EngineSystem,
+  MovementSystem,
+  WeaponSystem,
+  BulletSystem,
+  StatsSystem,
+  RenderSystem,
+]);
 
 ecs.factories.ShipFactory.create({
   tags: [Tag.Player],

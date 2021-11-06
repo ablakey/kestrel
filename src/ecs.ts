@@ -2,22 +2,23 @@ import { difference } from "lodash";
 import { Component } from "./components";
 import { Tag } from "./enum";
 import { factoryCreators } from "./factories";
-import { systems } from "./systems";
 
-export interface System<K extends Component> {
+export type Kind = Component["kind"];
+
+export interface System {
   tags?: Tag[];
-  componentKinds: Extract<Component, { kind: K["kind"] }>["kind"][];
-  update(entity: Entity<K>, delta: number): void;
+  componentKinds: Kind[];
+  update(entity: Entity<Kind>, delta: number): void;
 }
 
 type FactoryCreators = typeof factoryCreators;
 type FactoryInstances = { [key in keyof FactoryCreators]: InstanceType<FactoryCreators[key]> };
 
-type ComponentDict<T extends Component = Component> = {
-  [key in Uncapitalize<T["kind"]>]: Extract<T, { kind: Capitalize<key> }>;
+type ComponentDict<T extends Kind> = {
+  [key in Uncapitalize<T>]: Extract<Component, { kind: Capitalize<key> }>;
 };
 
-export type Entity<T extends Component = Component> = {
+export type Entity<T extends Kind> = {
   id: number;
   spawnTime: number;
   components: ComponentDict<T>;
@@ -25,25 +26,25 @@ export type Entity<T extends Component = Component> = {
   tags: Tag[];
 };
 
-type PartialEntity = Omit<Entity, "components"> & {
-  components: Partial<ComponentDict>;
+type PartialEntity = Omit<Entity<Kind>, "components"> & {
+  components: Partial<ComponentDict<Kind>>;
 };
 
 export class ECS {
   private nextId = 0;
-  private systems: System<any>[];
+  private systems: System[];
   public entities: Map<number, PartialEntity> = new Map();
   public factories: FactoryInstances;
   public elapsed = 0;
 
-  constructor() {
+  constructor(systems: ((ecs: ECS) => System)[]) {
     this.factories = Object.fromEntries(
       Object.entries(factoryCreators).map(([name, Factory]) => [name, new Factory(this)])
     ) as FactoryInstances;
     this.systems = systems.map((s) => s(this));
   }
 
-  public addEntity(components: Partial<ComponentDict>, tags?: Tag[]) {
+  public addEntity(components: Partial<ComponentDict<Kind>>, tags?: Tag[]) {
     this.entities.set(this.nextId, {
       id: this.nextId++,
       spawnTime: this.elapsed,
@@ -57,7 +58,7 @@ export class ECS {
    * componentKinds cannot be optional. There's nothing a system can do if it cannot act on any components.
    * Tags are optional and when populated, every tag must be found on an entity to return the query.
    */
-  public query<K extends Component["kind"]>(componentKinds: K[], tags?: Tag[]) {
+  public query<K extends Kind>(componentKinds: K[], tags?: Tag[]) {
     let matches = Array.from(this.entities.values());
 
     // Query by type.
@@ -74,7 +75,7 @@ export class ECS {
       matches = matches.filter((m) => difference(tags, m.tags).length === 0);
     }
 
-    return matches as Entity<Extract<Component, { kind: K }>>[];
+    return matches as Entity<K>[];
   }
 
   public start() {

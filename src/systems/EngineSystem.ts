@@ -1,15 +1,14 @@
 import Victor from "victor";
-import { Engine, Body } from "../components";
 import { Entity, System } from "../ecs";
 import { Direction, Tag, Thrust } from "../enum";
 
-export const EngineSystem = (): System<Engine | Body> => {
+export const EngineSystem = (): System => {
   const keyState: Record<string, boolean | undefined> = {};
 
   document.addEventListener("keydown", (e) => (keyState[e.key] = true));
   document.addEventListener("keyup", (e) => (keyState[e.key] = false));
 
-  function update(entity: Entity<Engine | Body>) {
+  function update(entity: Entity<"Engine" | "Body">) {
     const { body, engine } = entity.components;
 
     // Update

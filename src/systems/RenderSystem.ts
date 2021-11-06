@@ -1,11 +1,10 @@
 import * as PIXI from "pixi.js";
 import playerShip from "../assets/pixel_ship_blue.png";
 import enemyShip from "../assets/pixel_ship_red.png";
-import { Body, Component } from "../components";
-import { Entity, System } from "../ecs";
+import { Entity, Kind, System } from "../ecs";
 import { Tag } from "../enum";
 
-export const RenderSystem = (): System<Body> => {
+export const RenderSystem = (): System => {
   const renderedItems: Record<string, PIXI.Sprite> = {};
   const viewport = document.querySelector<HTMLElement>("#viewport")!;
   const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: viewport });
@@ -22,7 +21,7 @@ export const RenderSystem = (): System<Body> => {
   container.position.set(app.renderer.screen.width / 2, app.renderer.screen.height / 2);
   app.stage.addChild(container);
 
-  function getOrCreateSprite<T extends Component>(entity: Entity<T>): PIXI.Sprite {
+  function getOrCreateSprite<T extends Kind>(entity: Entity<T>): PIXI.Sprite {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
@@ -35,7 +34,7 @@ export const RenderSystem = (): System<Body> => {
     }
   }
 
-  function update(entity: Entity<Body>) {
+  function update(entity: Entity<"Body">) {
     const item = getOrCreateSprite(entity);
 
     /**

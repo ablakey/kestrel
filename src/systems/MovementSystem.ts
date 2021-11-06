@@ -1,8 +1,7 @@
-import { Body } from "../components";
 import { Entity, System } from "../ecs";
 
-export const MovementSystem = (): System<Body> => {
-  function update(entity: Entity<Body>, delta: number) {
+export const MovementSystem = (): System => {
+  function update(entity: Entity<"Body">, delta: number) {
     const { body } = entity.components;
 
     // Add the body's velocity vector to its position, multiplied by how much of a second has passed.
