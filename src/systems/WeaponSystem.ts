@@ -9,7 +9,7 @@ export const WeaponSystem = (ecs: ECS): System => {
     if (armament.primaryFire && armament.primaryCooldownUntil <= ecs.elapsed) {
       armament.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
 
-      ecs.factories.BulletFactory.create(body.pos.clone(), body.yaw);
+      ecs.factories.BulletFactory.create({ origin: entity.components.body, bulletType: armament. });
     }
   }
   return { update, componentKinds: ["Armament", "Body"] };

@@ -26,6 +26,8 @@ export type Armament = {
 export type Bullet = {
   kind: "Bullet";
   lifespan: number;
+  speed: number;
+  damage: number;
 };
 
 export type Stats = {
@@ -34,4 +36,9 @@ export type Stats = {
   damageEffects: DamageEffect[];
 };
 
-export type Component = Body | Engine | Armament | Bullet | Stats;
+export type Sprite = {
+  kind: "Sprite";
+  texture: string;
+};
+
+export type Component = Body | Engine | Armament | Bullet | Stats | Sprite;

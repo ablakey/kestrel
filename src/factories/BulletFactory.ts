@@ -24,7 +24,13 @@ export class BulletFactory extends BaseFactory {
       },
       bullet: {
         kind: "Bullet",
+        speed: opts.bulletType.speed,
         lifespan: opts.bulletType.lifespan,
+        damage: opts.bulletType.damage,
+      },
+      sprite: {
+        kind: "Sprite",
+        texture: opts.bulletType.texture,
       },
     });
   }

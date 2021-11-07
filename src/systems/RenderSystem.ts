@@ -1,10 +1,8 @@
 import * as PIXI from "pixi.js";
-import playerShip from "../assets/pixel_ship_blue.png";
-import enemyShip from "../assets/pixel_ship_red.png";
-import { Entity, Kind, System } from "../ecs";
-import { Tag } from "../enum";
 import bg from "../assets/spr_stars01.png";
 import bg2 from "../assets/spr_stars02.png";
+import { Entity, System } from "../ecs";
+import { Tag } from "../enum";
 
 const PARALLAX_MAGNIUDE = 0.5;
 
@@ -65,11 +63,12 @@ export const RenderSystem = (): System => {
   container.position.set(app.renderer.screen.width / 2, app.renderer.screen.height / 2);
   app.stage.addChild(container);
 
-  function getOrCreateSprite<T extends Kind>(entity: Entity<T>): PIXI.Sprite {
+  function getOrCreateSprite(entity: Entity<"Body" | "Sprite">): PIXI.Sprite {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
-      const newItem = PIXI.Sprite.from(entity.tags.includes(Tag.Player) ? playerShip : enemyShip); // In the future, from entity.
+      console.log(entity.components);
+      const newItem = PIXI.Sprite.from(entity.components.sprite.texture);
       newItem.anchor.set(0.5);
       container.addChild(newItem);
       renderedItems[entity.id] = newItem;
@@ -77,7 +76,7 @@ export const RenderSystem = (): System => {
     }
   }
 
-  function update(entity: Entity<"Body">) {
+  function update(entity: Entity<"Body" | "Sprite">) {
     const item = getOrCreateSprite(entity);
 
     /**
@@ -111,5 +110,5 @@ export const RenderSystem = (): System => {
     item.rotation = 0 - entity.components.body.yaw + Math.PI / 2;
   }
 
-  return { update, componentKinds: ["Body"] };
+  return { update, componentKinds: ["Body", "Sprite"] };
 };
