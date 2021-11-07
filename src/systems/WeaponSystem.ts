@@ -3,14 +3,18 @@ import { ECS, Entity, System } from "../ecs";
 const PRIMARY_WEAPON_DELAY_MS = 100;
 
 export const WeaponSystem = (ecs: ECS): System => {
-  function update(entity: Entity<"Armament" | "Body">) {
-    const { armament, body } = entity.components;
+  function update(entity: Entity<"Combat" | "Body">) {
+    const { combat } = entity.components;
 
-    if (armament.primaryFire && armament.primaryCooldownUntil <= ecs.elapsed) {
-      armament.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
+    if (combat.primaryFire && combat.primaryCooldownUntil <= ecs.elapsed) {
+      combat.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
 
-      ecs.factories.BulletFactory.create({ origin: entity.components.body, bulletType: armament. });
+      // TODO: get weapon name from the component.
+      ecs.factories.BulletFactory.create({
+        origin: entity.components.body,
+        weaponName: "LaserCannon",
+      });
     }
   }
-  return { update, componentKinds: ["Armament", "Body"] };
+  return { update, componentKinds: ["Combat", "Body"] };
 };

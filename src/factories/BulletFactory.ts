@@ -1,11 +1,12 @@
 import Victor from "victor";
 import { Body } from "../components";
-import { Weapon } from "../structures/Weapons";
-import { ValueOf } from "../types";
+import { WeaponName, Weapons } from "../Items";
 import { BaseFactory } from "./BaseFactory";
 
 export class BulletFactory extends BaseFactory {
-  create(opts: { origin: Body; weaponType: Weapon }) {
+  create(opts: { origin: Body; weaponName: WeaponName }) {
+    const weaponType = Weapons[opts.weaponName];
+
     return this.ecs.addEntity({
       body: {
         kind: "Body",
@@ -15,11 +16,15 @@ export class BulletFactory extends BaseFactory {
       },
       damage: {
         kind: "Damage",
-        damage: opts.weaponType.damage,
+        damage: 10,
       },
       sprite: {
         kind: "Sprite",
-        texture: opts.weaponType.bulletTexture,
+        texture: weaponType.bulletTexture,
+      },
+      shortLived: {
+        kind: "ShortLived",
+        lifespan: 500,
       },
     });
   }

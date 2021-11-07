@@ -36,12 +36,10 @@ export class ShipFactory extends BaseFactory {
           yaw: opts.yaw,
           vel: new Victor(0, 0),
         },
-        armament: {
-          kind: "Armament",
+        combat: {
+          kind: "Combat",
           primaryCooldownUntil: 0,
           primaryFire: false,
-          currentWeapon: "LaserCannon",
-          weapons: {},
           // Ships need to contain an array of primaryWeapons and one currentPrimaryWeapon.
           // The weapon will define the speed, rate, and other properties about firing a bullet.
           // But the bullet itself will define what it looks like, its damage, etc.
