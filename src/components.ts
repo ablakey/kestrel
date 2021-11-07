@@ -1,6 +1,8 @@
-import { Direction, Thrust } from "./enum";
 import Victor from "victor";
-import { DamageEffect } from "./types";
+import { Direction, Thrust } from "./enum";
+import { WeaponFactory } from "./factories/WeaponFactory";
+import { DamageEffect } from "./structures/Effects";
+import { Weapon, WeaponName } from "./structures/Weapons";
 
 // export type Sprite   <- need to start associating sprites with entities.
 
@@ -21,13 +23,18 @@ export type Armament = {
   kind: "Armament";
   primaryFire: boolean;
   primaryCooldownUntil: number;
+  primaryWeapons: Record<WeaponName, Weapon>;
+  currentWeapon: WeaponName | null;
 };
 
-export type Bullet = {
-  kind: "Bullet";
-  lifespan: number;
-  speed: number;
-  damage: number;
+/**
+ * A weapon will create entities with a damage component.
+ */
+export type Damage = {
+  kind: "Damage";
+  amount: number;
+  // damage type
+  //
 };
 
 export type Stats = {
