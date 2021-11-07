@@ -1,9 +1,28 @@
 import Victor from "victor";
+import blueShip from "../assets/pixel_ship_blue.png";
+import redShip from "../assets/pixel_ship_red.png";
 import { Direction, Tag, Thrust } from "../enum";
+import { ValueOf } from "../types";
 import { BaseFactory } from "./BaseFactory";
 
 export class ShipFactory extends BaseFactory {
-  create(opts: { pos?: Victor; yaw?: number; tags?: Tag[] }) {
+  public static readonly ShipTypes = {
+    Blue: {
+      health: 100,
+      texture: blueShip,
+    },
+    Red: {
+      health: 100,
+      texture: redShip,
+    },
+  };
+
+  create(opts: {
+    pos: Victor;
+    yaw: number;
+    shipType: ValueOf<typeof ShipFactory.ShipTypes>;
+    tags?: Tag[];
+  }) {
     return this.ecs.addEntity(
       {
         engine: {
@@ -13,8 +32,8 @@ export class ShipFactory extends BaseFactory {
         },
         body: {
           kind: "Body",
-          pos: new Victor(opts.pos?.x ?? 0, opts.pos?.y ?? 0),
-          yaw: opts.yaw ?? 0,
+          pos: opts.pos.clone(),
+          yaw: opts.yaw,
           vel: new Victor(0, 0),
         },
         armament: {

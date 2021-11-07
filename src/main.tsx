@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import Victor from "victor";
 import { ECS } from "./ecs";
 import { Tag } from "./enum";
+import { ShipFactory } from "./factories/ShipFactory";
 import { BulletSystem } from "./systems/BulletSystem";
 import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
@@ -23,12 +24,17 @@ const ecs = new ECS([
 ]);
 
 ecs.factories.ShipFactory.create({
+  pos: new Victor(0, 0),
+  yaw: 0,
+  shipType: ShipFactory.ShipTypes.Blue,
   tags: [Tag.Player],
 });
 
 times(3, () => {
   ecs.factories.ShipFactory.create({
     pos: new Victor(Math.random() * 1000 - 500, Math.random() * 1000 - 500),
+    yaw: 0,
+    shipType: ShipFactory.ShipTypes.Red,
     tags: [Tag.Enemy],
   });
 });

@@ -1,20 +1,30 @@
 import Victor from "victor";
 import { BaseFactory } from "./BaseFactory";
-
-// TODO: Need a library of bullets and populate most of the paramers based on picking one of them.
+import laser from "../assets/pixel_laser_green.png";
+import { Body } from "../components";
+import { ValueOf } from "../types";
 
 export class BulletFactory extends BaseFactory {
-  create(pos: Victor, yaw: number) {
+  public static readonly BulletTypes = {
+    Laser: {
+      damage: 10,
+      texture: laser,
+      speed: 100,
+      lifespan: 500,
+    },
+  };
+
+  create(opts: { origin: Body; bulletType: ValueOf<typeof BulletFactory.BulletTypes> }) {
     return this.ecs.addEntity({
       body: {
         kind: "Body",
-        pos: pos ?? new Victor(0, 0),
-        yaw: yaw,
-        vel: new Victor(1, 0).multiplyScalar(2000).rotate(yaw),
+        pos: opts.origin.pos,
+        yaw: opts.origin.yaw,
+        vel: new Victor(1, 0).multiplyScalar(2000).rotate(opts.origin.yaw),
       },
       bullet: {
         kind: "Bullet",
-        lifespan: 500,
+        lifespan: opts.bulletType.lifespan,
       },
     });
   }
