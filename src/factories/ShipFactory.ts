@@ -1,28 +1,12 @@
 import Victor from "victor";
-import blueShip from "../assets/pixel_ship_blue.png";
-import redShip from "../assets/pixel_ship_red.png";
 import { Direction, Tag, Thrust } from "../enum";
-import { ValueOf } from "../types";
+import { ShipName, Ships } from "../Items/Ships";
 import { BaseFactory } from "./BaseFactory";
 
 export class ShipFactory extends BaseFactory {
-  public static readonly ShipTypes = {
-    Blue: {
-      health: 100,
-      texture: blueShip,
-    },
-    Red: {
-      health: 100,
-      texture: redShip,
-    },
-  };
+  create(opts: { pos: Victor; yaw: number; shipName: ShipName; tags?: Tag[] }) {
+    const shipType = Ships[opts.shipName];
 
-  create(opts: {
-    pos: Victor;
-    yaw: number;
-    shipType: ValueOf<typeof ShipFactory.ShipTypes>;
-    tags?: Tag[];
-  }) {
     return this.ecs.addEntity(
       {
         engine: {
@@ -36,8 +20,8 @@ export class ShipFactory extends BaseFactory {
           yaw: opts.yaw,
           vel: new Victor(0, 0),
         },
-        combat: {
-          kind: "Combat",
+        offensive: {
+          kind: "Offensive",
           primaryCooldownUntil: 0,
           primaryFire: false,
           // Ships need to contain an array of primaryWeapons and one currentPrimaryWeapon.
@@ -46,15 +30,15 @@ export class ShipFactory extends BaseFactory {
         },
         stats: {
           kind: "Stats",
-          health: opts.shipType.health,
+          health: shipType.health,
           damageEffects: [],
         },
         sprite: {
           kind: "Sprite",
-          texture: opts.shipType.texture,
+          texture: shipType.texture,
         },
       },
-      opts.tags
+      { tags: opts.tags }
     );
   }
 }

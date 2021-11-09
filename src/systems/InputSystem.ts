@@ -7,7 +7,7 @@ export const InputSystem = (): System => {
   document.addEventListener("keydown", (e) => (keyState[e.code] = true));
   document.addEventListener("keyup", (e) => (keyState[e.code] = false));
 
-  function update(entity: Entity<"Engine" | "Combat">) {
+  function update(entity: Entity<"Engine" | "Offensive">) {
     // Rotate?
     if (keyState["KeyA"]) {
       entity.components.engine.direction = Direction.Left;
@@ -21,8 +21,8 @@ export const InputSystem = (): System => {
     entity.components.engine.thrust = keyState["KeyW"] ? Thrust.Forward : Thrust.None;
 
     // Armament?
-    entity.components.combat.primaryFire = keyState["Space"] ?? false;
+    entity.components.offensive.primaryFire = keyState["Space"] ?? false;
   }
 
-  return { tags: [Tag.Player], componentKinds: ["Engine", "Combat"], update };
+  return { tags: [Tag.Player], componentKinds: ["Engine", "Offensive"], update };
 };

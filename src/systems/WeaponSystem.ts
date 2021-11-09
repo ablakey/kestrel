@@ -1,20 +1,33 @@
+import Victor from "victor";
 import { ECS, Entity, System } from "../ecs";
 
 const PRIMARY_WEAPON_DELAY_MS = 100;
 
 export const WeaponSystem = (ecs: ECS): System => {
-  function update(entity: Entity<"Combat" | "Body">) {
-    const { combat } = entity.components;
+  function update(entity: Entity<"Offensive" | "Body">) {
+    const { offensive } = entity.components;
 
-    if (combat.primaryFire && combat.primaryCooldownUntil <= ecs.elapsed) {
-      combat.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
+    if (offensive.primaryFire && offensive.primaryCooldownUntil <= ecs.elapsed) {
+      offensive.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
 
-      // TODO: get weapon name from the component.
+      /**
+       * Offset the bullet's position by an amount in front of the weapon origin based on the
+       * origin's radius.
+       */
+
+      // const offset = entity.components.
+
+      const bulletPos = entity.components.body.pos
+        .clone()
+        .add(new Victor(200, 0).rotate(entity.components.body.yaw));
+
       ecs.factories.BulletFactory.create({
-        origin: entity.components.body,
+        x: bulletPos.x,
+        y: bulletPos.y,
+        yaw: entity.components.body.yaw,
         weaponName: "LaserCannon",
       });
     }
   }
-  return { update, componentKinds: ["Combat", "Body"] };
+  return { update, componentKinds: ["Offensive", "Body"] };
 };

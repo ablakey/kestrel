@@ -2,14 +2,7 @@ import { ECS, Entity, System } from "../ecs";
 import { Tag } from "../enum";
 
 export const BulletSystem = (ecs: ECS): System => {
-  function update(entity: Entity<"Damage" | "Body" | "ShortLived">) {
-    /**
-     * Remove old bullets.
-     */
-    if (ecs.elapsed > entity.spawnTime + entity.components.shortLived.lifespan) {
-      entity.destroyed = true;
-    }
-
+  function update(entity: Entity<"Damage" | "Body">) {
     /**
      * Detect collisions.
      */
@@ -22,5 +15,5 @@ export const BulletSystem = (ecs: ECS): System => {
     });
   }
 
-  return { update, componentKinds: ["Damage", "Body", "ShortLived"] };
+  return { update, componentKinds: ["Damage", "Body"] };
 };

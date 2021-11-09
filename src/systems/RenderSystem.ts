@@ -67,7 +67,6 @@ export const RenderSystem = (): System => {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
-      console.log(entity.components);
       const newItem = PIXI.Sprite.from(entity.components.sprite.texture);
       newItem.anchor.set(0.5);
       container.addChild(newItem);

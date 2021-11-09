@@ -17,23 +17,26 @@ export type Engine = {
   thrust: Thrust;
 };
 
-export type Combat = {
-  kind: "Combat";
+/**
+ * An entity with Offensive is able to fire weapons.
+ */
+export type Offensive = {
+  kind: "Offensive";
   primaryFire: boolean;
   primaryCooldownUntil: number;
   // currentSecondaryWeapon
 };
 
+/**
+ * An entity with Damage will do a type of damage to something it hits.
+ * This is likely just bullets: missiles, rockets, bombs, beams, etc.  But it could be longer
+ * lived things like asteroids, mines, maybe ships.
+ */
 export type Damage = {
   kind: "Damage";
   damage: number;
   // damage type
   //
-};
-
-export type ShortLived = {
-  kind: "ShortLived";
-  lifespan: number;
 };
 
 export type Stats = {
@@ -47,4 +50,4 @@ export type Sprite = {
   texture: string;
 };
 
-export type Component = Body | Engine | Combat | Stats | Sprite | Damage | ShortLived;
+export type Component = Body | Engine | Offensive | Stats | Sprite | Damage;

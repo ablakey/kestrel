@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import Victor from "victor";
 import { ECS } from "./ecs";
 import { Tag } from "./enum";
-import { ShipFactory } from "./factories/ShipFactory";
 import { BulletSystem } from "./systems/BulletSystem";
 import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
@@ -26,16 +25,25 @@ const ecs = new ECS([
 ecs.factories.ShipFactory.create({
   pos: new Victor(0, 0),
   yaw: 0,
-  shipType: ShipFactory.ShipTypes.Blue,
+  shipName: "Blue",
   tags: [Tag.Player],
 });
 
-times(3, () => {
+const TEST_RANGE = 1000;
+
+times(1, () => {
   ecs.factories.ShipFactory.create({
-    pos: new Victor(Math.random() * 1000 - 500, Math.random() * 1000 - 500),
+    pos: new Victor(
+      Math.random() * TEST_RANGE - TEST_RANGE / 2,
+      Math.random() * TEST_RANGE - TEST_RANGE / 2
+    ),
     yaw: 0,
-    shipType: ShipFactory.ShipTypes.Red,
+    shipName: "Red",
     tags: [Tag.Enemy],
+  });
+
+  ecs.query(["Offensive"], [Tag.Enemy]).forEach((e) => {
+    e.components.offensive.primaryFire = true;
   });
 });
 

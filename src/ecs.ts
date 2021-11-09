@@ -20,8 +20,9 @@ type ComponentDict<T extends Kind> = {
 
 export type Entity<T extends Kind> = {
   id: number;
-  spawnTime: number;
-  components: ComponentDict<T>;
+  spawned: number;
+  components: ComponentDict<T> & Partial<ComponentDict<Kind>>;
+  lifespan?: number;
   destroyed: boolean;
   tags: Tag[];
 };
@@ -44,13 +45,20 @@ export class ECS {
     this.systems = systems.map((s) => s(this));
   }
 
-  public addEntity(components: Partial<ComponentDict<Kind>>, tags?: Tag[]) {
+  public addEntity(
+    components: Partial<ComponentDict<Kind>>,
+    options?: {
+      tags?: Tag[];
+      lifespan?: number;
+    }
+  ) {
     this.entities.set(this.nextId, {
       id: this.nextId++,
-      spawnTime: this.elapsed,
+      spawned: this.elapsed,
       components,
+      lifespan: options?.lifespan,
       destroyed: false,
-      tags: tags ?? [],
+      tags: options?.tags ?? [],
     });
   }
 
@@ -87,18 +95,29 @@ export class ECS {
    * call update on the system for each entity, independently.
    *
    * If a system has no entities to act on, it is not run.
-   *
-   * Destroy all entities with the `destroy` flag set.
    */
   private update(timestamp: number) {
     const delta = timestamp - this.elapsed;
     this.elapsed = timestamp;
+
+    /**
+     * Flag entities for deletion.
+     * This gives systems one more chance to act on them, cleaning up.
+     */
+    this.entities.forEach((e) => {
+      if (e.lifespan !== undefined && this.elapsed > e.spawned + e.lifespan) {
+        e.destroyed = true;
+      }
+    });
 
     this.systems.forEach((sys) => {
       const entities = this.query(sys.componentKinds, sys.tags);
       entities.forEach((e) => sys.update(e, delta));
     });
 
+    /**
+     * Delete destroyed entities.
+     */
     this.entities.forEach((e) => {
       if (e.destroyed) {
         this.entities.delete(e.id);
