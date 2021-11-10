@@ -9,14 +9,14 @@ import { InputSystem } from "./systems/InputSystem";
 import { MovementSystem } from "./systems/MovementSystem";
 import { RenderSystem } from "./systems/RenderSystem";
 import { StatsSystem } from "./systems/StatsSystem";
-import { WeaponSystem } from "./systems/WeaponSystem";
+import { CombatSystem } from "./systems/CombatSystem";
 import { UiRoot } from "./ui/UiRoot";
 
 const ecs = new ECS([
   InputSystem,
   EngineSystem,
   MovementSystem,
-  WeaponSystem,
+  CombatSystem,
   BulletSystem,
   StatsSystem,
   RenderSystem,
@@ -29,9 +29,9 @@ ecs.factories.ShipFactory.create({
   tags: [Tag.Player],
 });
 
-const TEST_RANGE = 1000;
-
-times(1, () => {
+const TEST_RANGE = 3000;
+const TEST_COUNT = 4;
+times(TEST_COUNT, () => {
   ecs.factories.ShipFactory.create({
     pos: new Victor(
       Math.random() * TEST_RANGE - TEST_RANGE / 2,

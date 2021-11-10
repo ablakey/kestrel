@@ -15,6 +15,29 @@ I fought with this for a while. I don't think I have the best solution here, but
   - particularly if I had class members that needed initialization on create
 
 
-### Notes
+## Ship AI
 
--
+Probably going to keep this very simple for now.
+
+- ShipCommandAI
+  - Decides what the goal of the ship is.
+  - hostile? Who?
+  - landing?
+  - fleeing?
+
+- ShipTargetAI
+  - Decide what the target is
+    - if Hostile, calculate which target to focus on
+      - Could be complicated one day. For now, closest target.
+  - Is this just part of ShipCommandAI?
+
+- ShipMovementAI
+  - Decide the goal position and orientation.
+  - Decide how to get there.
+    - calculate direction
+    - begin thrusting
+    - Calculate how much decel needed, therefore when to begin slowing.
+
+- Ship WeaponsAI
+  - Decide what weapon to fire.
+  - Decide when to fire it.

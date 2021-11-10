@@ -24,6 +24,7 @@ export type Offensive = {
   kind: "Offensive";
   primaryFire: boolean;
   primaryCooldownUntil: number;
+  bulletOffset: number;
   // currentSecondaryWeapon
 };
 
