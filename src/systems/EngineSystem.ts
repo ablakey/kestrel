@@ -29,5 +29,5 @@ export const EngineSystem = (): System => {
     }
   }
 
-  return { componentKinds: ["Engine", "Body"], update };
+  return { componentKinds: ["Engine", "Body"], update, tags: [] };
 };

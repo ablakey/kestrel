@@ -30,7 +30,7 @@ ecs.factories.ShipFactory.create({
 });
 
 const TEST_RANGE = 3000;
-const TEST_COUNT = 4;
+const TEST_COUNT = 400;
 times(TEST_COUNT, () => {
   ecs.factories.ShipFactory.create({
     pos: new Victor(

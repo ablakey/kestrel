@@ -9,5 +9,5 @@ export const MovementSystem = (): System => {
     body.pos.add(body.vel.clone().multiplyScalar(delta / 1000));
   }
 
-  return { componentKinds: ["Body"], update };
+  return { componentKinds: ["Body"], update, tags: [] };
 };

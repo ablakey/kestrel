@@ -109,5 +109,5 @@ export const RenderSystem = (): System => {
     item.rotation = 0 - entity.components.body.yaw + Math.PI / 2;
   }
 
-  return { update, componentKinds: ["Body", "Sprite"] };
+  return { update, componentKinds: ["Body", "Sprite"], tags: [] };
 };

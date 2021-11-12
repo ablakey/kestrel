@@ -2,6 +2,10 @@ import { ECS, Entity, System } from "../ecs";
 import { Tag } from "../enum";
 
 export const BulletSystem = (ecs: ECS): System => {
+  // function onTick(delta: number) {
+  //   ecs.query(["Body", "Stats"], [Tag.Enemy]).forEach((e) => {});
+  // }
+
   function update(entity: Entity<"Damage" | "Body">) {
     /**
      * Detect collisions.
@@ -10,10 +14,10 @@ export const BulletSystem = (ecs: ECS): System => {
       const distance = entity.components.body.pos.distance(e.components.body.pos);
       if (distance < 50) {
         entity.destroyed = true;
-        e.components.stats.damageEffects.push({ damage: 10 });
+        e.components.stats.damageEffects.push({ damage: entity.components.damage.damage });
       }
     });
   }
 
-  return { update, componentKinds: ["Damage", "Body"] };
+  return { update, componentKinds: ["Damage", "Body"], tags: [] };
 };

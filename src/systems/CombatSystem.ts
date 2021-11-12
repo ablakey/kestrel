@@ -24,5 +24,5 @@ export const CombatSystem = (ecs: ECS): System => {
       });
     }
   }
-  return { update, componentKinds: ["Offensive", "Body"] };
+  return { update, componentKinds: ["Offensive", "Body"], tags: [] };
 };
