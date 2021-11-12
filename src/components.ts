@@ -40,10 +40,17 @@ export type Damage = {
   //
 };
 
-export type Stats = {
-  kind: "Stats";
-  health: number;
-  damageEffects: DamageEffect[];
+export type Kinematics = {
+  kind: "Kinematics";
+  maxSpeed: number;
+  accel: number;
+  turnRate: number;
+};
+
+export type Health = {
+  kind: "Health";
+  hp: number;
+  effects: DamageEffect[];
 };
 
 export type Sprite = {
@@ -55,4 +62,4 @@ export type Player = {
   kind: "Player";
 };
 
-export type Component = Body | Engine | Offensive | Stats | Sprite | Damage | Player;
+export type Component = Body | Engine | Offensive | Health | Sprite | Damage | Player | Kinematics;

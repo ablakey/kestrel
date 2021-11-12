@@ -14,6 +14,8 @@ I fought with this for a while. I don't think I have the best solution here, but
 - didn't want to have to explicitly define the constructor and call super every time
   - particularly if I had class members that needed initialization on create
 
+## onTick
+An optional function for each system that is called once per simulation tick.
 
 ## Tags
 I tried to remove tags once thinking it wasn't that useful. Ran into the issue that I need tags to sub-query things.
@@ -26,6 +28,21 @@ Do tags need to be a collection or just a single tag?
 
 Looks like a lot of Unity people don't use tags. Maybe I just get rid of them. How often will I look up player vs. look up the PlayerControlled vs. AI components?
 
+
+## Random Thoughts
+- Some bullets track. Do they need a target? What about properties about how they move?
+  - Do I just add additional AI components to bullets?
+  - If done right, I could add the MovementAI to a bullet, which would understand how to move and seek target.
+    - needs to know things about its turning capabilities.
+      - Do I make a component for anything that can turn?
+
+If I have a component that describes Kinematics (max speed, turn radius, acceleration, etc.) I could:
+ - use it for ships and bullets.
+ - could one day have intelligent bullets that don't just turn, but can use the AI capabilities.
+
+Do I need the bullets to be AI aware?
+- BulletSystem for now can just use Kinematics component to know how to turn and how fast to go.
+- AISystem can use Kinematics more intelligently.
 
 ## Ship AI
 

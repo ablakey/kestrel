@@ -28,10 +28,10 @@ export class ShipFactory extends BaseFactory {
         // The weapon will define the speed, rate, and other properties about firing a bullet.
         // But the bullet itself will define what it looks like, its damage, etc.
       },
-      stats: {
-        kind: "Stats",
-        health: shipType.health,
-        damageEffects: [],
+      health: {
+        kind: "Health",
+        hp: shipType.hp,
+        effects: [],
       },
       sprite: {
         kind: "Sprite",

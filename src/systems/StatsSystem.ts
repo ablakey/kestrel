@@ -1,24 +1,24 @@
 import { ECS, Entity, System } from "../ecs";
 
 export const StatsSystem = (ecs: ECS): System => {
-  function update(entity: Entity<"Stats">) {
-    const { stats } = entity.components;
+  function update(entity: Entity<"Health">) {
+    const { health } = entity.components;
 
     /**
      * Apply damage.
      */
-    while (stats.damageEffects.length) {
-      const effect = stats.damageEffects.pop()!;
-      stats.health -= effect.damage;
+    while (health.effects.length) {
+      const effect = health.effects.pop()!;
+      health.hp -= effect.damage;
     }
 
     /**
      * Is ship destroyed?
      */
-    if (stats.health <= 0) {
+    if (health.hp <= 0) {
       entity.destroyed = true;
     }
   }
 
-  return { update, componentKinds: ["Stats"] };
+  return { update, componentKinds: ["Health"] };
 };

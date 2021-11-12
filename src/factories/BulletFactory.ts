@@ -16,7 +16,7 @@ export class BulletFactory extends BaseFactory {
         },
         damage: {
           kind: "Damage",
-          damage: 10,
+          damage: weaponType.damage,
         },
         sprite: {
           kind: "Sprite",
