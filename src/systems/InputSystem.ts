@@ -10,18 +10,18 @@ export const InputSystem = (): System => {
   function update(entity: Entity<"Engine" | "Offensive" | "Player">) {
     // Rotate?
     if (keyState["KeyA"]) {
-      entity.components.engine.direction = Direction.Left;
+      entity.components.Engine.direction = Direction.Left;
     } else if (keyState["KeyD"]) {
-      entity.components.engine.direction = Direction.Right;
+      entity.components.Engine.direction = Direction.Right;
     } else {
-      entity.components.engine.direction = Direction.None;
+      entity.components.Engine.direction = Direction.None;
     }
 
     // Thruster?
-    entity.components.engine.thrust = keyState["KeyW"] ? Thrust.Forward : Thrust.None;
+    entity.components.Engine.thrust = keyState["KeyW"] ? Thrust.Forward : Thrust.None;
 
     // Armament?
-    entity.components.offensive.primaryFire = keyState["Space"] ?? false;
+    entity.components.Offensive.primaryFire = keyState["Space"] ?? false;
   }
 
   return { componentKinds: ["Engine", "Offensive", "Player"], update };

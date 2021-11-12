@@ -6,10 +6,10 @@ import { Entity, System } from "../ecs";
 export const MovementSystem = (): System => {
   function update(entity: Entity<"Body">, delta: number) {
     const deltaSeconds = delta / 1000;
-    const { body } = entity.components;
+    const { Body } = entity.components;
 
-    body.position.add(body.velocity.clone().multiplyScalar(deltaSeconds));
-    body.yaw.rotate(body.angularVelocity * deltaSeconds);
+    Body.position.add(Body.velocity.clone().multiplyScalar(deltaSeconds));
+    Body.yaw.rotate(Body.angularVelocity * deltaSeconds);
   }
 
   return { componentKinds: ["Body"], update };

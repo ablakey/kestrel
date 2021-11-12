@@ -16,19 +16,19 @@ type FactoryCreators = typeof factoryCreators;
 type FactoryInstances = { [key in keyof FactoryCreators]: InstanceType<FactoryCreators[key]> };
 
 type ComponentDict<T extends Kind> = {
-  [key in Uncapitalize<T>]: Extract<Component, { kind: Capitalize<key> }>;
+  [key in T]: Extract<Component, { kind: key }>;
 };
 
 export type Entity<T extends Kind> = {
   id: number;
   spawned: number;
-  components: ComponentDict<T> & Partial<ComponentDict<Kind>>;
+  components: Readonly<ComponentDict<T> & Partial<ComponentDict<Kind>>>;
   lifespan?: number;
   destroyed: boolean;
 };
 
 type PartialEntity = Omit<Entity<Kind>, "components"> & {
-  components: Partial<ComponentDict<Kind>>;
+  components: Readonly<Partial<ComponentDict<Kind>>>;
 };
 
 export class ECS {
@@ -60,7 +60,7 @@ export class ECS {
     options?: {
       lifespan?: number;
     }
-  ) {
+  ): PartialEntity {
     this.queryCache = {};
 
     const entity = {
@@ -104,7 +104,9 @@ export class ECS {
   }
 
   private isMatch(entity: PartialEntity, componentKinds: Kind[]): boolean {
-    const kinds = Object.values(entity.components).map((c) => c.kind);
+    const kinds = Object.values(entity.components)
+      .filter((c) => c !== undefined)
+      .map((c) => c.kind);
     for (const c of componentKinds) {
       if (!kinds.includes(c)) {
         return false;

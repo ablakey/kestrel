@@ -1,7 +1,7 @@
 import Victor from "victor";
 import { DamageEffect } from "./Effects";
-import { Direction, Thrust } from "./enum";
-import { Weapon, WeaponName } from "./Items/Weapons";
+import { Direction, MovementBehaviour, ShipBehaviour, Thrust } from "./enum";
+import { WeaponName } from "./Items/Weapons";
 
 // export type Sprite   <- need to start associating sprites with entities.
 
@@ -75,6 +75,12 @@ export type Navigation = {
   goal: Victor | null;
 };
 
+export type AI = {
+  kind: "AI";
+  behaviour: ShipBehaviour;
+  movementBehaviour: MovementBehaviour;
+};
+
 export type Component =
   | Body
   | Engine
@@ -85,4 +91,5 @@ export type Component =
   | Player
   | Kinematics
   | Navigation
-  | Inventory;
+  | Inventory
+  | AI;

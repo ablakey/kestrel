@@ -66,7 +66,7 @@ export const RenderSystem = (): System => {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
-      const newItem = PIXI.Sprite.from(entity.components.sprite.texture);
+      const newItem = PIXI.Sprite.from(entity.components.Sprite.texture);
       newItem.anchor.set(0.5);
       container.addChild(newItem);
       renderedItems[entity.id] = newItem;
@@ -75,21 +75,22 @@ export const RenderSystem = (): System => {
   }
 
   function update(entity: Entity<"Body" | "Sprite">) {
+    const { Player, Body } = entity.components;
     const item = getOrCreateSprite(entity);
 
     /**
      * Follow player.
      * Parallax scroll backgrounf.
      */
-    if (entity.components.player) {
-      container.x = -entity.components.body.position.x;
-      container.y = entity.components.body.position.y;
+    if (Player) {
+      container.x = -Body.position.x;
+      container.y = Body.position.y;
 
-      tilingSprite.tilePosition.x = -(entity.components.body.position.x * PARALLAX_MAGNIUDE * 0.75);
-      tilingSprite.tilePosition.y = entity.components.body.position.y * PARALLAX_MAGNIUDE * 0.75;
+      tilingSprite.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE * 0.75);
+      tilingSprite.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE * 0.75;
 
-      tilingSprite2.tilePosition.x = -(entity.components.body.position.x * PARALLAX_MAGNIUDE);
-      tilingSprite2.tilePosition.y = entity.components.body.position.y * PARALLAX_MAGNIUDE;
+      tilingSprite2.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE);
+      tilingSprite2.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE;
     }
 
     if (entity.destroyed) {
@@ -103,9 +104,9 @@ export const RenderSystem = (): System => {
     /**
      * Update rendered entity position. Convert coordinate system.
      */
-    item.x = entity.components.body.position.x;
-    item.y = -entity.components.body.position.y;
-    item.rotation = 0 - entity.components.body.yaw.angle() + Math.PI / 2;
+    item.x = Body.position.x;
+    item.y = -Body.position.y;
+    item.rotation = 0 - Body.yaw.angle() + Math.PI / 2;
   }
 
   return { update, componentKinds: ["Body", "Sprite"] };

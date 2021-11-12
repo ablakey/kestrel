@@ -1,7 +1,9 @@
 import { times } from "lodash";
 import ReactDOM from "react-dom";
 import { ECS } from "./ecs";
+import { ShipBehaviour } from "./enum";
 import { AICombatSystem } from "./systems/AICombatSystem";
+import { AIMovementSystem } from "./systems/AIMovementSystem";
 import { BulletSystem } from "./systems/BulletSystem";
 import { CombatSystem } from "./systems/CombatSystem";
 import { EngineSystem } from "./systems/EngineSystem";
@@ -13,6 +15,7 @@ import { UiRoot } from "./ui/UiRoot";
 
 const ecs = new ECS([
   InputSystem,
+  AIMovementSystem,
   AICombatSystem,
   EngineSystem,
   MovementSystem,
@@ -22,14 +25,13 @@ const ecs = new ECS([
   RenderSystem,
 ]);
 
-const playerShip = ecs.factories.ShipFactory.create({
+ecs.factories.ShipFactory.create({
   x: 0,
   y: 0,
   yaw: 0,
   shipName: "Blue",
+  behaviour: ShipBehaviour.Player,
 });
-
-playerShip.components.player = { kind: "Player" };
 
 const TEST_RANGE = 1000;
 const TEST_COUNT = 1;
@@ -39,9 +41,10 @@ times(TEST_COUNT, () => {
     y: Math.random() * TEST_RANGE - TEST_RANGE / 2,
     yaw: 0,
     shipName: "Red",
+    behaviour: ShipBehaviour.Aggressive,
   });
 
-  ship.components.offensive!.target = 0;
+  ship.components.Offensive!.target = 0;
 });
 
 ecs.start();

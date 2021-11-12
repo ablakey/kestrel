@@ -4,6 +4,7 @@
   "description": "",
   "scripts": {
     "start": "parcel --no-hmr ./src/index.html",
+    "validate": "tsc --noEmit",
     "build": "parcel build"
   },
   "source": "src/index.html",

@@ -5,23 +5,19 @@ const PRIMARY_WEAPON_DELAY_MS = 100;
 
 export const CombatSystem = (ecs: ECS): System => {
   function update(entity: Entity<"Offensive" | "Body">) {
-    const { offensive } = entity.components;
+    const { Offensive, Body } = entity.components;
 
-    if (offensive.primaryFire && offensive.primaryCooldownUntil <= ecs.elapsed) {
-      offensive.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
+    if (Offensive.primaryFire && Offensive.primaryCooldownUntil <= ecs.elapsed) {
+      Offensive.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
 
-      const bulletPos = entity.components.body.position
+      const bulletPos = Body.position
         .clone()
-        .add(
-          new Victor(entity.components.offensive.bulletOffset, 0).rotate(
-            entity.components.body.yaw.angle()
-          )
-        );
+        .add(new Victor(entity.components.Offensive.bulletOffset, 0).rotate(Body.yaw.angle()));
 
       ecs.factories.BulletFactory.create({
         x: bulletPos.x,
         y: bulletPos.y,
-        yaw: entity.components.body.yaw.angle(),
+        yaw: Body.yaw.angle(),
         weaponName: "LaserCannon",
       });
     }

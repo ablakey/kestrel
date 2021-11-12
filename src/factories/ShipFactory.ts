@@ -1,30 +1,36 @@
 import Victor from "victor";
-import { Direction, Thrust } from "../enum";
+import { ShipBehaviour, Direction, Thrust, MovementBehaviour } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
 import { BaseFactory } from "./BaseFactory";
 
 export class ShipFactory extends BaseFactory {
-  create(opts: { x: number; y: number; yaw: number; shipName: ShipName }) {
+  create(opts: {
+    x: number;
+    y: number;
+    yaw: number;
+    shipName: ShipName;
+    behaviour: ShipBehaviour;
+  }) {
     const shipType = Ships[opts.shipName];
 
     return this.ecs.addEntity({
-      engine: {
+      Engine: {
         kind: "Engine",
-        direction: Direction.Right,
+        direction: Direction.None,
         thrust: Thrust.None,
       },
-      body: {
+      Body: {
         kind: "Body",
         position: new Victor(opts.x, opts.y),
         yaw: new Victor(1, 0).rotate(opts.yaw),
         velocity: new Victor(0, 0),
         angularVelocity: 0,
       },
-      inventory: {
+      Inventory: {
         kind: "Inventory",
         weapons: [{ name: "LaserCannon" }], // TODO.
       },
-      offensive: {
+      Offensive: {
         kind: "Offensive",
         primaryCooldownUntil: 0,
         primaryFire: false,
@@ -34,21 +40,26 @@ export class ShipFactory extends BaseFactory {
         // The weapon will define the speed, rate, and other properties about firing a bullet.
         // But the bullet itself will define what it looks like, its damage, etc.
       },
-      health: {
+      Health: {
         kind: "Health",
         hp: shipType.hp,
         effects: [],
       },
-      kinematics: {
+      Kinematics: {
         kind: "Kinematics",
         maxSpeed: 500,
         acceleration: 100,
         turnRate: 2,
       },
-      sprite: {
+      Sprite: {
         kind: "Sprite",
         texture: shipType.texture,
       },
+      Player: opts.behaviour === ShipBehaviour.Player ? { kind: "Player" } : undefined,
+      AI:
+        opts.behaviour === ShipBehaviour.Aggressive
+          ? { kind: "AI", behaviour: opts.behaviour, movementBehaviour: MovementBehaviour.PointAt }
+          : undefined,
     });
   }
 }

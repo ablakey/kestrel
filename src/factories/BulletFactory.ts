@@ -8,18 +8,18 @@ export class BulletFactory extends BaseFactory {
 
     this.ecs.addEntity(
       {
-        body: {
+        Body: {
           kind: "Body",
           position: new Victor(opts.x, opts.y),
           yaw: new Victor(1, 0).rotate(opts.yaw),
           velocity: new Victor(1, 0).multiplyScalar(2000).rotate(opts.yaw),
           angularVelocity: 0,
         },
-        damage: {
+        Damage: {
           kind: "Damage",
           damage: weaponType.damage,
         },
-        sprite: {
+        Sprite: {
           kind: "Sprite",
           texture: weaponType.bulletTexture,
         },
