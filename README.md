@@ -15,6 +15,18 @@ I fought with this for a while. I don't think I have the best solution here, but
   - particularly if I had class members that needed initialization on create
 
 
+## Tags
+I tried to remove tags once thinking it wasn't that useful. Ran into the issue that I need tags to sub-query things.
+For example, without tags, I cannot find the player ship, or exclude the player ship.  Even if I had a "Player" component,
+it would still be impossible to exclude the player ship.
+
+Though I guess I could find them all and then exclude player, but that's kind of silly.
+
+Do tags need to be a collection or just a single tag?
+
+Looks like a lot of Unity people don't use tags. Maybe I just get rid of them. How often will I look up player vs. look up the PlayerControlled vs. AI components?
+
+
 ## Ship AI
 
 Probably going to keep this very simple for now.
