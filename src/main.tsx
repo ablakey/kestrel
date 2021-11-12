@@ -22,7 +22,8 @@ const ecs = new ECS([
 ]);
 
 const playerShip = ecs.factories.ShipFactory.create({
-  pos: new Victor(0, 0),
+  x: 0,
+  y: 0,
   yaw: 0,
   shipName: "Blue",
 });
@@ -33,10 +34,8 @@ const TEST_RANGE = 3000;
 const TEST_COUNT = 400;
 times(TEST_COUNT, () => {
   ecs.factories.ShipFactory.create({
-    pos: new Victor(
-      Math.random() * TEST_RANGE - TEST_RANGE / 2,
-      Math.random() * TEST_RANGE - TEST_RANGE / 2
-    ),
+    x: Math.random() * TEST_RANGE - TEST_RANGE / 2,
+    y: Math.random() * TEST_RANGE - TEST_RANGE / 2,
     yaw: 0,
     shipName: "Red",
   });

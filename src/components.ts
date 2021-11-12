@@ -6,9 +6,10 @@ import { Direction, Thrust } from "./enum";
 
 export type Body = {
   kind: "Body";
-  pos: Victor;
+  position: Victor;
+  velocity: Victor;
   yaw: number;
-  vel: Victor;
+  angularVelocity: number; // radians per second
 };
 
 export type Engine = {
@@ -43,7 +44,7 @@ export type Damage = {
 export type Kinematics = {
   kind: "Kinematics";
   maxSpeed: number;
-  accel: number;
+  acceleration: number;
   turnRate: number;
 };
 

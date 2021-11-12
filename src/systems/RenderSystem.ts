@@ -82,14 +82,14 @@ export const RenderSystem = (): System => {
      * Parallax scroll backgrounf.
      */
     if (entity.components.player) {
-      container.x = -entity.components.body.pos.x;
-      container.y = entity.components.body.pos.y;
+      container.x = -entity.components.body.position.x;
+      container.y = entity.components.body.position.y;
 
-      tilingSprite.tilePosition.x = -(entity.components.body.pos.x * PARALLAX_MAGNIUDE * 0.75);
-      tilingSprite.tilePosition.y = entity.components.body.pos.y * PARALLAX_MAGNIUDE * 0.75;
+      tilingSprite.tilePosition.x = -(entity.components.body.position.x * PARALLAX_MAGNIUDE * 0.75);
+      tilingSprite.tilePosition.y = entity.components.body.position.y * PARALLAX_MAGNIUDE * 0.75;
 
-      tilingSprite2.tilePosition.x = -(entity.components.body.pos.x * PARALLAX_MAGNIUDE);
-      tilingSprite2.tilePosition.y = entity.components.body.pos.y * PARALLAX_MAGNIUDE;
+      tilingSprite2.tilePosition.x = -(entity.components.body.position.x * PARALLAX_MAGNIUDE);
+      tilingSprite2.tilePosition.y = entity.components.body.position.y * PARALLAX_MAGNIUDE;
     }
 
     if (entity.destroyed) {
@@ -103,8 +103,8 @@ export const RenderSystem = (): System => {
     /**
      * Update rendered entity position. Convert coordinate system.
      */
-    item.x = entity.components.body.pos.x;
-    item.y = -entity.components.body.pos.y;
+    item.x = entity.components.body.position.x;
+    item.y = -entity.components.body.position.y;
     item.rotation = 0 - entity.components.body.yaw + Math.PI / 2;
   }
 

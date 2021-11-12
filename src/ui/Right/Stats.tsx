@@ -6,7 +6,7 @@ export function Stats(props: { ecs: ECS }) {
   return (
     <Panel>
       <div>{`${props.ecs.entities.size} entites`}</div>
-      <div>{`${player?.components.body.vel.magnitude().toFixed(0)} m/s`}</div>
+      <div>{`${player?.components.body.velocity.magnitude().toFixed(0)} m/s`}</div>
     </Panel>
   );
 }

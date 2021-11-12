@@ -4,7 +4,7 @@ import { ShipName, Ships } from "../Items/Ships";
 import { BaseFactory } from "./BaseFactory";
 
 export class ShipFactory extends BaseFactory {
-  create(opts: { pos: Victor; yaw: number; shipName: ShipName }) {
+  create(opts: { x: number; y: number; yaw: number; shipName: ShipName }) {
     const shipType = Ships[opts.shipName];
 
     return this.ecs.addEntity({
@@ -15,9 +15,10 @@ export class ShipFactory extends BaseFactory {
       },
       body: {
         kind: "Body",
-        pos: opts.pos.clone(),
+        position: new Victor(opts.x, opts.y),
         yaw: opts.yaw,
-        vel: new Victor(0, 0),
+        velocity: new Victor(0, 0),
+        angularVelocity: 0,
       },
       offensive: {
         kind: "Offensive",
@@ -32,6 +33,12 @@ export class ShipFactory extends BaseFactory {
         kind: "Health",
         hp: shipType.hp,
         effects: [],
+      },
+      kinematics: {
+        kind: "Kinematics",
+        maxSpeed: 500,
+        acceleration: 100,
+        turnRate: 2,
       },
       sprite: {
         kind: "Sprite",

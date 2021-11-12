@@ -10,7 +10,7 @@ export const CombatSystem = (ecs: ECS): System => {
     if (offensive.primaryFire && offensive.primaryCooldownUntil <= ecs.elapsed) {
       offensive.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
 
-      const bulletPos = entity.components.body.pos
+      const bulletPos = entity.components.body.position
         .clone()
         .add(
           new Victor(entity.components.offensive.bulletOffset, 0).rotate(entity.components.body.yaw)

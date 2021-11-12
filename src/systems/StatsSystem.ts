@@ -1,6 +1,6 @@
-import { ECS, Entity, System } from "../ecs";
+import { Entity, System } from "../ecs";
 
-export const StatsSystem = (ecs: ECS): System => {
+export const StatsSystem = (): System => {
   function update(entity: Entity<"Health">) {
     const { health } = entity.components;
 

@@ -10,9 +10,10 @@ export class BulletFactory extends BaseFactory {
       {
         body: {
           kind: "Body",
-          pos: new Victor(opts.x, opts.y),
+          position: new Victor(opts.x, opts.y),
           yaw: opts.yaw,
-          vel: new Victor(1, 0).multiplyScalar(2000).rotate(opts.yaw),
+          velocity: new Victor(1, 0).multiplyScalar(2000).rotate(opts.yaw),
+          angularVelocity: 0,
         },
         damage: {
           kind: "Damage",

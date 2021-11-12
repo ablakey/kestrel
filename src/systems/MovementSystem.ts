@@ -1,12 +1,15 @@
 import { Entity, System } from "../ecs";
 
+/**
+ * Updates the Body's position and yaw based on its velocity and rotational velocity.
+ */
 export const MovementSystem = (): System => {
   function update(entity: Entity<"Body">, delta: number) {
+    const deltaSeconds = delta / 1000;
     const { body } = entity.components;
 
-    // Add the body's velocity vector to its position, multiplied by how much of a second has passed.
-    // We work in seconds so that velocity is a more intuitive concept: pixels per second.
-    body.pos.add(body.vel.clone().multiplyScalar(delta / 1000));
+    body.position.add(body.velocity.clone().multiplyScalar(deltaSeconds));
+    body.yaw += body.angularVelocity * deltaSeconds;
   }
 
   return { componentKinds: ["Body"], update };

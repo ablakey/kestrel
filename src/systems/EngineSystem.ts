@@ -3,27 +3,22 @@ import { Entity, System } from "../ecs";
 import { Direction, Thrust } from "../enum";
 
 export const EngineSystem = (): System => {
-  const keyState: Record<string, boolean | undefined> = {};
+  function update(entity: Entity<"Engine" | "Body" | "Kinematics">) {
+    const { body, engine, kinematics } = entity.components;
 
-  document.addEventListener("keydown", (e) => (keyState[e.key] = true));
-  document.addEventListener("keyup", (e) => (keyState[e.key] = false));
-
-  function update(entity: Entity<"Engine" | "Body">) {
-    const { body, engine } = entity.components;
-
-    // Update
+    // Update direction
     if (engine.direction === Direction.Left) {
-      body.yaw += 0.05;
+      body.angularVelocity = kinematics.turnRate; // TODO: lerp?
     } else if (engine.direction === Direction.Right) {
-      body.yaw -= 0.05; // TODO: this hsould be a variable.
+      body.angularVelocity = -kinematics.turnRate;
     }
 
     // Update the ship's velocity.
     if (engine.thrust === Thrust.Forward) {
       const p = new Victor(4, 0).rotate(body.yaw);
-      body.vel.add(p);
+      body.velocity.add(p);
     }
   }
 
-  return { componentKinds: ["Engine", "Body"], update };
+  return { componentKinds: ["Engine", "Body", "Kinematics"], update };
 };
