@@ -1,5 +1,4 @@
 import { Component } from "./components";
-import { Tag } from "./enum";
 import { factoryCreators } from "./factories";
 
 (window as any).hit = 0;
@@ -8,7 +7,6 @@ import { factoryCreators } from "./factories";
 export type Kind = Component["kind"];
 
 export interface System {
-  tags: Tag[];
   componentKinds: Kind[];
   onTick?: (delta: number) => void;
   update: (entity: Entity<Kind>, delta: number) => void;
@@ -27,7 +25,6 @@ export type Entity<T extends Kind> = {
   components: ComponentDict<T> & Partial<ComponentDict<Kind>>;
   lifespan?: number;
   destroyed: boolean;
-  tags: Tag[];
 };
 
 type PartialEntity = Omit<Entity<Kind>, "components"> & {
@@ -45,9 +42,9 @@ export class ECS {
    * The queryCache is a way to cache sets of entities that match a given query.
    * This is a huge optimization because query might be called many times per tick. A smarter
    * implementation might try to cleverly partially invalidate the cache, but we just purge it
-   * any time any data changes.  Changes include:
-   * - Adding or deleting entities.
-   * - Changing tags.
+   * any time any entities are added or deleted.
+   *
+   * Entities cannot currently gain or lose components once spawned.
    */
   private queryCache: Record<string, Entity<any>[] | undefined> = {};
 
@@ -61,7 +58,6 @@ export class ECS {
   public addEntity(
     components: Partial<ComponentDict<Kind>>,
     options?: {
-      tags?: Tag[];
       lifespan?: number;
     }
   ) {
@@ -73,17 +69,14 @@ export class ECS {
       components,
       lifespan: options?.lifespan,
       destroyed: false,
-      tags: options?.tags ?? [],
     });
   }
 
   /**
-   * `componentKinds` cannot be optional. There's nothing a system can do if it cannot act on any
-   * components. Tags are optional and when populated, every tag must be found on an entity to
-   * return the query.
+   * Return a collection of entities that contain ALL the componentKinds provided.
    */
-  public query<K extends Kind>(componentKinds: K[], tags?: Tag[]): Entity<K>[] {
-    const hash = [...componentKinds, ...(tags ?? [])].join("");
+  public query<K extends Kind>(componentKinds: K[]): Entity<K>[] {
+    const hash = componentKinds.join("");
 
     if (this.queryCache[hash]) {
       (window as any).hit++;
@@ -92,12 +85,8 @@ export class ECS {
       (window as any).miss++;
     }
 
-    // Optimize this by caching the values based on componentKinds and tags.
-    // If a component is destroyed. Remove it from all caches.
-    // Each cache is a dict of a  set of entities, keyed by the query hash.
-
     const hits = Array.from(this.entities.values()).filter((e) =>
-      this.isMatch(e, componentKinds, tags)
+      this.isMatch(e, componentKinds)
     ) as Entity<K>[];
 
     this.queryCache[hash] = hits;
@@ -109,32 +98,19 @@ export class ECS {
     requestAnimationFrame(this.tick.bind(this));
   }
 
-  /**
-   * Given an entity, a list of component kinds, and an optional list of tags, return true if the
-   * entity is a subset of these properties.
-   */
-  private isMatch(entity: PartialEntity, componentKinds: Kind[], tags?: Tag[]): boolean {
+  private isMatch(entity: PartialEntity, componentKinds: Kind[]): boolean {
     const kinds = Object.values(entity.components).map((c) => c.kind);
     for (const c of componentKinds) {
       if (!kinds.includes(c)) {
         return false;
       }
     }
-
-    for (const t of tags ?? []) {
-      if (!entity.tags.includes(t)) {
-        return false;
-      }
-    }
-
     return true;
   }
 
   /**
-   * For each system, query all relevant entities based on components and tags,
-   * call update on the system for each entity, independently.
-   *
-   * If a system has no entities to act on, it is not run.
+   * For each system, query all relevant entities based on components, call update on the system for
+   * each entity, independently. If a system has no entities to act on, it is not run.
    */
   private tick(timestamp: number) {
     const delta = timestamp - this.elapsed;
@@ -164,7 +140,7 @@ export class ECS {
      */
     this.systems.forEach((sys) => {
       this.entities.forEach((e) => {
-        if (this.isMatch(e, sys.componentKinds, sys.tags)) {
+        if (this.isMatch(e, sys.componentKinds)) {
           sys.update(e as Entity<Kind>, delta);
         }
       });

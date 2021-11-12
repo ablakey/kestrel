@@ -20,5 +20,5 @@ export const StatsSystem = (ecs: ECS): System => {
     }
   }
 
-  return { update, componentKinds: ["Stats"], tags: [] };
+  return { update, componentKinds: ["Stats"] };
 };

@@ -2,7 +2,6 @@ import { times } from "lodash";
 import ReactDOM from "react-dom";
 import Victor from "victor";
 import { ECS } from "./ecs";
-import { Tag } from "./enum";
 import { BulletSystem } from "./systems/BulletSystem";
 import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
@@ -26,7 +25,6 @@ ecs.factories.ShipFactory.create({
   pos: new Victor(0, 0),
   yaw: 0,
   shipName: "Blue",
-  tags: [Tag.Player],
 });
 
 const TEST_RANGE = 3000;
@@ -39,10 +37,9 @@ times(TEST_COUNT, () => {
     ),
     yaw: 0,
     shipName: "Red",
-    tags: [Tag.Enemy],
   });
 
-  ecs.query(["Offensive"], [Tag.Enemy]).forEach((e) => {
+  ecs.query(["Offensive"]).forEach((e) => {
     e.components.offensive.primaryFire = true;
   });
 });

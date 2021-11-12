@@ -1,6 +1,6 @@
 import Victor from "victor";
 import { Entity, System } from "../ecs";
-import { Direction, Tag, Thrust } from "../enum";
+import { Direction, Thrust } from "../enum";
 
 export const EngineSystem = (): System => {
   const keyState: Record<string, boolean | undefined> = {};
@@ -18,10 +18,6 @@ export const EngineSystem = (): System => {
       body.yaw -= 0.05; // TODO: this hsould be a variable.
     }
 
-    if (entity.tags.includes(Tag.Enemy)) {
-      return;
-    }
-
     // Update the ship's velocity.
     if (engine.thrust === Thrust.Forward) {
       const p = new Victor(4, 0).rotate(body.yaw);
@@ -29,5 +25,5 @@ export const EngineSystem = (): System => {
     }
   }
 
-  return { componentKinds: ["Engine", "Body"], update, tags: [] };
+  return { componentKinds: ["Engine", "Body"], update };
 };

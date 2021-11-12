@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js";
 import bg from "../assets/spr_stars01.png";
 import bg2 from "../assets/spr_stars02.png";
 import { Entity, System } from "../ecs";
-import { Tag } from "../enum";
 
 const PARALLAX_MAGNIUDE = 0.5;
 
@@ -82,7 +81,7 @@ export const RenderSystem = (): System => {
      * Follow player.
      * Parallax scroll backgrounf.
      */
-    if (entity.tags.includes(Tag.Player)) {
+    if (entity.components.player) {
       container.x = -entity.components.body.pos.x;
       container.y = entity.components.body.pos.y;
 
@@ -109,5 +108,5 @@ export const RenderSystem = (): System => {
     item.rotation = 0 - entity.components.body.yaw + Math.PI / 2;
   }
 
-  return { update, componentKinds: ["Body", "Sprite"], tags: [] };
+  return { update, componentKinds: ["Body", "Sprite"] };
 };

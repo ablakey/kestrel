@@ -1,5 +1,5 @@
 import { Entity, System } from "../ecs";
-import { Direction, Tag, Thrust } from "../enum";
+import { Direction, Thrust } from "../enum";
 
 export const InputSystem = (): System => {
   const keyState: Record<string, boolean | undefined> = {};
@@ -24,5 +24,5 @@ export const InputSystem = (): System => {
     entity.components.offensive.primaryFire = keyState["Space"] ?? false;
   }
 
-  return { tags: [Tag.Player], componentKinds: ["Engine", "Offensive"], update };
+  return { componentKinds: ["Engine", "Offensive"], update };
 };
