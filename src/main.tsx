@@ -21,11 +21,13 @@ const ecs = new ECS([
   RenderSystem,
 ]);
 
-ecs.factories.ShipFactory.create({
+const playerShip = ecs.factories.ShipFactory.create({
   pos: new Victor(0, 0),
   yaw: 0,
   shipName: "Blue",
 });
+
+playerShip.components.player = { kind: "Player" };
 
 const TEST_RANGE = 3000;
 const TEST_COUNT = 400;
@@ -40,6 +42,10 @@ times(TEST_COUNT, () => {
   });
 
   ecs.query(["Offensive"]).forEach((e) => {
+    if (e.components.player) {
+      return;
+    }
+
     e.components.offensive.primaryFire = true;
   });
 });

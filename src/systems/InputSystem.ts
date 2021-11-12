@@ -7,7 +7,7 @@ export const InputSystem = (): System => {
   document.addEventListener("keydown", (e) => (keyState[e.code] = true));
   document.addEventListener("keyup", (e) => (keyState[e.code] = false));
 
-  function update(entity: Entity<"Engine" | "Offensive">) {
+  function update(entity: Entity<"Engine" | "Offensive" | "Player">) {
     // Rotate?
     if (keyState["KeyA"]) {
       entity.components.engine.direction = Direction.Left;
@@ -24,5 +24,5 @@ export const InputSystem = (): System => {
     entity.components.offensive.primaryFire = keyState["Space"] ?? false;
   }
 
-  return { componentKinds: ["Engine", "Offensive"], update };
+  return { componentKinds: ["Engine", "Offensive", "Player"], update };
 };

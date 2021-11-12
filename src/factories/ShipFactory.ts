@@ -1,5 +1,5 @@
 import Victor from "victor";
-import { Direction, Tag, Thrust } from "../enum";
+import { Direction, Thrust } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
 import { BaseFactory } from "./BaseFactory";
 

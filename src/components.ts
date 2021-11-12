@@ -51,4 +51,8 @@ export type Sprite = {
   texture: string;
 };
 
-export type Component = Body | Engine | Offensive | Stats | Sprite | Damage;
+export type Player = {
+  kind: "Player";
+};
+
+export type Component = Body | Engine | Offensive | Stats | Sprite | Damage | Player;

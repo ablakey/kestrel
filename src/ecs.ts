@@ -63,13 +63,18 @@ export class ECS {
   ) {
     this.queryCache = {};
 
-    this.entities.set(this.nextId, {
-      id: this.nextId++,
+    const entity = {
+      id: this.nextId,
       spawned: this.elapsed,
       components,
       lifespan: options?.lifespan,
       destroyed: false,
-    });
+    };
+
+    this.entities.set(this.nextId, entity);
+    this.nextId++;
+
+    return entity;
   }
 
   /**
