@@ -1,6 +1,7 @@
 import Victor from "victor";
 import { DamageEffect } from "./Effects";
 import { Direction, Thrust } from "./enum";
+import { Weapon, WeaponName } from "./Items/Weapons";
 
 // export type Sprite   <- need to start associating sprites with entities.
 
@@ -8,7 +9,7 @@ export type Body = {
   kind: "Body";
   position: Victor;
   velocity: Victor;
-  yaw: number;
+  yaw: Victor;
   angularVelocity: number; // radians per second
 };
 
@@ -16,6 +17,11 @@ export type Engine = {
   kind: "Engine";
   direction: Direction;
   thrust: Thrust;
+};
+
+export type Inventory = {
+  kind: "Inventory";
+  weapons: { name: WeaponName }[]; // TODO: cooldownUntil, etc.
 };
 
 /**
@@ -26,6 +32,7 @@ export type Offensive = {
   primaryFire: boolean;
   primaryCooldownUntil: number;
   bulletOffset: number;
+  target: number | null; // Component ID
   // currentSecondaryWeapon
 };
 
@@ -63,4 +70,19 @@ export type Player = {
   kind: "Player";
 };
 
-export type Component = Body | Engine | Offensive | Health | Sprite | Damage | Player | Kinematics;
+export type Navigation = {
+  kind: "Navigation";
+  goal: Victor | null;
+};
+
+export type Component =
+  | Body
+  | Engine
+  | Offensive
+  | Health
+  | Sprite
+  | Damage
+  | Player
+  | Kinematics
+  | Navigation
+  | Inventory;

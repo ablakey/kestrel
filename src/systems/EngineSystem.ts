@@ -11,11 +11,13 @@ export const EngineSystem = (): System => {
       body.angularVelocity = kinematics.turnRate; // TODO: lerp?
     } else if (engine.direction === Direction.Right) {
       body.angularVelocity = -kinematics.turnRate;
+    } else {
+      body.angularVelocity = 0;
     }
 
     // Update the ship's velocity.
     if (engine.thrust === Thrust.Forward) {
-      const p = new Victor(4, 0).rotate(body.yaw);
+      const p = new Victor(4, 0).rotate(body.yaw.angle());
       body.velocity.add(p);
     }
   }

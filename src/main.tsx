@@ -1,18 +1,19 @@
 import { times } from "lodash";
 import ReactDOM from "react-dom";
-import Victor from "victor";
 import { ECS } from "./ecs";
+import { AICombatSystem } from "./systems/AICombatSystem";
 import { BulletSystem } from "./systems/BulletSystem";
+import { CombatSystem } from "./systems/CombatSystem";
 import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
 import { MovementSystem } from "./systems/MovementSystem";
 import { RenderSystem } from "./systems/RenderSystem";
 import { StatsSystem } from "./systems/StatsSystem";
-import { CombatSystem } from "./systems/CombatSystem";
 import { UiRoot } from "./ui/UiRoot";
 
 const ecs = new ECS([
   InputSystem,
+  AICombatSystem,
   EngineSystem,
   MovementSystem,
   CombatSystem,
@@ -30,23 +31,17 @@ const playerShip = ecs.factories.ShipFactory.create({
 
 playerShip.components.player = { kind: "Player" };
 
-const TEST_RANGE = 3000;
-const TEST_COUNT = 400;
+const TEST_RANGE = 1000;
+const TEST_COUNT = 1;
 times(TEST_COUNT, () => {
-  ecs.factories.ShipFactory.create({
+  const ship = ecs.factories.ShipFactory.create({
     x: Math.random() * TEST_RANGE - TEST_RANGE / 2,
     y: Math.random() * TEST_RANGE - TEST_RANGE / 2,
     yaw: 0,
     shipName: "Red",
   });
 
-  ecs.query(["Offensive"]).forEach((e) => {
-    if (e.components.player) {
-      return;
-    }
-
-    e.components.offensive.primaryFire = true;
-  });
+  ship.components.offensive!.target = 0;
 });
 
 ecs.start();

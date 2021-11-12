@@ -13,13 +13,15 @@ export const CombatSystem = (ecs: ECS): System => {
       const bulletPos = entity.components.body.position
         .clone()
         .add(
-          new Victor(entity.components.offensive.bulletOffset, 0).rotate(entity.components.body.yaw)
+          new Victor(entity.components.offensive.bulletOffset, 0).rotate(
+            entity.components.body.yaw.angle()
+          )
         );
 
       ecs.factories.BulletFactory.create({
         x: bulletPos.x,
         y: bulletPos.y,
-        yaw: entity.components.body.yaw,
+        yaw: entity.components.body.yaw.angle(),
         weaponName: "LaserCannon",
       });
     }

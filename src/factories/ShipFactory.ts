@@ -16,15 +16,20 @@ export class ShipFactory extends BaseFactory {
       body: {
         kind: "Body",
         position: new Victor(opts.x, opts.y),
-        yaw: opts.yaw,
+        yaw: new Victor(1, 0).rotate(opts.yaw),
         velocity: new Victor(0, 0),
         angularVelocity: 0,
+      },
+      inventory: {
+        kind: "Inventory",
+        weapons: [{ name: "LaserCannon" }], // TODO.
       },
       offensive: {
         kind: "Offensive",
         primaryCooldownUntil: 0,
         primaryFire: false,
         bulletOffset: shipType.radius,
+        target: null,
         // Ships need to contain an array of primaryWeapons and one currentPrimaryWeapon.
         // The weapon will define the speed, rate, and other properties about firing a bullet.
         // But the bullet itself will define what it looks like, its damage, etc.

@@ -105,7 +105,7 @@ export const RenderSystem = (): System => {
      */
     item.x = entity.components.body.position.x;
     item.y = -entity.components.body.position.y;
-    item.rotation = 0 - entity.components.body.yaw + Math.PI / 2;
+    item.rotation = 0 - entity.components.body.yaw.angle() + Math.PI / 2;
   }
 
   return { update, componentKinds: ["Body", "Sprite"] };

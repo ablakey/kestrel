@@ -6,6 +6,7 @@ export type Weapon = Item & {
   speed: number;
   bulletTexture: string;
   damage: number;
+  maxRange: number;
   type: "Primary" | "Secondary";
 };
 
@@ -16,6 +17,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     speed: 100,
     bulletTexture: laserTexture,
     damage: 0,
+    maxRange: 1000,
     label: "Laser Cannon",
     type: "Primary",
   },
@@ -24,6 +26,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     speed: 100,
     bulletTexture: protonTexture,
     damage: 0,
+    maxRange: 1000,
     type: "Primary",
   },
 };

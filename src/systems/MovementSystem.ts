@@ -9,7 +9,7 @@ export const MovementSystem = (): System => {
     const { body } = entity.components;
 
     body.position.add(body.velocity.clone().multiplyScalar(deltaSeconds));
-    body.yaw += body.angularVelocity * deltaSeconds;
+    body.yaw.rotate(body.angularVelocity * deltaSeconds);
   }
 
   return { componentKinds: ["Body"], update };
