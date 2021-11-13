@@ -19,6 +19,10 @@ export const EngineSystem = (): System => {
     if (Engine.thrust === Thrust.Forward) {
       const p = new Victor(4, 0).rotate(Body.yaw.angle());
       Body.velocity.add(p);
+
+      if (Body.velocity.magnitude() > Kinematics.maxSpeed) {
+        Body.velocity.normalize().multiplyScalar(Kinematics.maxSpeed);
+      }
     }
   }
 

@@ -6,6 +6,7 @@
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "strictPropertyInitialization": false
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true
   }
 }

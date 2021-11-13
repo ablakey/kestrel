@@ -33,8 +33,8 @@ ecs.factories.ShipFactory.create({
   behaviour: ShipBehaviour.Player,
 });
 
-const TEST_RANGE = 1000;
-const TEST_COUNT = 1;
+const TEST_RANGE = 1500;
+const TEST_COUNT = 3;
 times(TEST_COUNT, () => {
   const ship = ecs.factories.ShipFactory.create({
     x: Math.random() * TEST_RANGE - TEST_RANGE / 2,

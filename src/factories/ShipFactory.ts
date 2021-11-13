@@ -47,9 +47,9 @@ export class ShipFactory extends BaseFactory {
       },
       Kinematics: {
         kind: "Kinematics",
-        maxSpeed: 500,
-        acceleration: 100,
-        turnRate: 2,
+        maxSpeed: shipType.maxSpeed,
+        acceleration: shipType.acceleration,
+        turnRate: shipType.turnRate,
       },
       Sprite: {
         kind: "Sprite",
@@ -58,7 +58,11 @@ export class ShipFactory extends BaseFactory {
       Player: opts.behaviour === ShipBehaviour.Player ? { kind: "Player" } : undefined,
       AI:
         opts.behaviour === ShipBehaviour.Aggressive
-          ? { kind: "AI", behaviour: opts.behaviour, movementBehaviour: MovementBehaviour.PointAt }
+          ? {
+              kind: "AI",
+              behaviour: opts.behaviour,
+              movementBehaviour: MovementBehaviour.FlyThrough,
+            }
           : undefined,
     });
   }
