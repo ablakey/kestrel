@@ -9,6 +9,8 @@ export type Ship = Item & {
   maxSpeed: number;
   acceleration: number;
   turnRate: number; // rad/sec.
+  offsetX: number;
+  offsetY: number;
 };
 export type ShipName = "Blue" | "Red";
 
@@ -21,6 +23,8 @@ export const Ships: Record<ShipName, Ship> = {
     maxSpeed: 500,
     acceleration: 200,
     turnRate: 4,
+    offsetX: 0.5,
+    offsetY: 0.6,
   },
   Red: {
     hp: 100,
@@ -30,5 +34,7 @@ export const Ships: Record<ShipName, Ship> = {
     maxSpeed: 500,
     acceleration: 200,
     turnRate: 4,
+    offsetX: 0.5,
+    offsetY: 0.6,
   },
 };

@@ -54,6 +54,8 @@ export class ShipFactory extends BaseFactory {
       Sprite: {
         kind: "Sprite",
         texture: shipType.texture,
+        offsetX: shipType.offsetX,
+        offsetY: shipType.offsetY,
       },
       Player: opts.behaviour === ShipBehaviour.Player ? { kind: "Player" } : undefined,
       AI:

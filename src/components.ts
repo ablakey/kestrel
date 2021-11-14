@@ -64,6 +64,8 @@ export type Health = {
 export type Sprite = {
   kind: "Sprite";
   texture: string;
+  offsetX: number;
+  offsetY: number;
 };
 
 export type Player = {

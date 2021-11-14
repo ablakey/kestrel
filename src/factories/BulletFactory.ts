@@ -22,6 +22,8 @@ export class BulletFactory extends BaseFactory {
         Sprite: {
           kind: "Sprite",
           texture: weaponType.bulletTexture,
+          offsetX: 0.5,
+          offsetY: 0.5,
         },
       },
       { lifespan: 500 }

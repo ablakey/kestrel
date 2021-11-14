@@ -102,18 +102,13 @@ export const RenderSystem = (ecs: ECS): System => {
   container.position.set(app.renderer.screen.width / 2, app.renderer.screen.height / 2);
   app.stage.addChild(container);
 
-  // /**
-  //  * Create a targeting reticle.
-  //  */
-  // const reticle = createReticle(100);
-  // container.addChild(reticle);
-
-  function getOrCreateSprite(entity: Entity<"Body" | "Sprite">): PIXI.Sprite {
+  function getOrCreateSprite(entity: Entity<"Sprite">): PIXI.Sprite {
+    const { Sprite } = entity.components;
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
-      const newItem = PIXI.Sprite.from(entity.components.Sprite.texture);
-      newItem.anchor.set(0.5);
+      const newItem = PIXI.Sprite.from(Sprite.texture);
+      newItem.anchor.set(Sprite.offsetX, Sprite.offsetY);
       container.addChild(newItem);
       renderedItems[entity.id] = newItem;
       return newItem;
