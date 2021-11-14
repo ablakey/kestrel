@@ -25,13 +25,15 @@ const ecs = new ECS([
   RenderSystem,
 ]);
 
-ecs.factories.ShipFactory.create({
+const playerShip = ecs.factories.ShipFactory.create({
   x: 0,
   y: 0,
   yaw: 0,
   shipName: "Blue",
   behaviour: ShipBehaviour.Player,
 });
+
+playerShip.components.Offensive!.target = 1;
 
 const TEST_RANGE = 1500;
 const TEST_COUNT = 3;

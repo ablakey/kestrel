@@ -1,7 +1,45 @@
 import * as PIXI from "pixi.js";
 import bg from "../assets/spr_stars01.png";
 import bg2 from "../assets/spr_stars02.png";
-import { Entity, System } from "../ecs";
+import { ECS, Entity, System } from "../ecs";
+import { assert } from "../utils";
+
+/**
+ * Create a reticle, which is four L shapes at the corners, resembling a square.
+ * Remember that in the context of drawing, positive y increases downwards.
+ */
+function createReticle(size: number) {
+  const halfSize = size / 2;
+  const min = -halfSize;
+  const max = halfSize;
+
+  const graphics = new PIXI.Graphics();
+
+  // graphics.beginFill(0xff3300);
+  graphics.lineStyle(4, 0xffd900, 1);
+
+  // Top-left
+  graphics.moveTo(min, min + 20);
+  graphics.lineTo(min, min);
+  graphics.lineTo(min + 20, min);
+
+  // Top-right
+  graphics.moveTo(max - 20, min);
+  graphics.lineTo(max, min);
+  graphics.lineTo(max, min + 20);
+
+  // Bottom-right
+  graphics.moveTo(max, max - 20);
+  graphics.lineTo(max, max);
+  graphics.lineTo(max - 20, max);
+
+  // Bottom-left
+  graphics.moveTo(min + 20, max);
+  graphics.lineTo(min, max);
+  graphics.lineTo(min, max - 20);
+
+  return graphics;
+}
 
 const PARALLAX_MAGNIUDE = 0.5;
 
@@ -10,8 +48,10 @@ const PARALLAX_MAGNIUDE = 0.5;
  */
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-export const RenderSystem = (): System => {
+export const RenderSystem = (ecs: ECS): System => {
   const renderedItems: Record<string, PIXI.Sprite> = {};
+  let renderedReticle: { targetId: number; graphic: PIXI.Graphics } | undefined = undefined;
+
   const viewport = document.querySelector<HTMLElement>("#viewport")!;
   const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: viewport });
   viewport.appendChild(app.view);
@@ -62,6 +102,12 @@ export const RenderSystem = (): System => {
   container.position.set(app.renderer.screen.width / 2, app.renderer.screen.height / 2);
   app.stage.addChild(container);
 
+  // /**
+  //  * Create a targeting reticle.
+  //  */
+  // const reticle = createReticle(100);
+  // container.addChild(reticle);
+
   function getOrCreateSprite(entity: Entity<"Body" | "Sprite">): PIXI.Sprite {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
@@ -75,22 +121,35 @@ export const RenderSystem = (): System => {
   }
 
   function update(entity: Entity<"Body" | "Sprite">) {
-    const { Player, Body } = entity.components;
+    const { Player, Body, Offensive } = entity.components;
     const item = getOrCreateSprite(entity);
 
-    /**
-     * Follow player.
-     * Parallax scroll backgrounf.
-     */
     if (Player) {
+      // Follow camera on player.
       container.x = -Body.position.x;
       container.y = Body.position.y;
 
+      // Update parallax.
       tilingSprite.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE * 0.75);
       tilingSprite.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE * 0.75;
-
       tilingSprite2.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE);
       tilingSprite2.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE;
+
+      if (Offensive?.target) {
+        const target = ecs.entities.get(Offensive.target);
+        assert(target?.components.Body);
+        let graphic;
+        if (renderedReticle?.targetId === Offensive.target) {
+          graphic = renderedReticle.graphic;
+        } else {
+          graphic = createReticle(120);
+          container.addChild(graphic);
+          renderedReticle = { targetId: target.id, graphic };
+        }
+
+        renderedReticle.graphic.x = target.components.Body.position.x;
+        renderedReticle.graphic.y = -target.components.Body.position.y;
+      }
     }
 
     if (entity.destroyed) {
