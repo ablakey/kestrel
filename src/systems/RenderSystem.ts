@@ -41,6 +41,7 @@ function createReticle(size: number) {
   return graphics;
 }
 
+const PARALLAX_OFFSET = 0.9;
 const PARALLAX_MAGNIUDE = 0.5;
 
 /**
@@ -125,12 +126,13 @@ export const RenderSystem = (ecs: ECS): System => {
       container.y = Body.position.y;
 
       // Update parallax.
-      tilingSprite.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE * 0.75);
-      tilingSprite.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE * 0.75;
+      tilingSprite.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE * PARALLAX_OFFSET);
+      tilingSprite.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE * PARALLAX_OFFSET;
       tilingSprite2.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE);
       tilingSprite2.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE;
 
-      if (Offensive?.target) {
+      // Update target reticle.
+      if (Offensive && Offensive?.target) {
         const target = ecs.entities.get(Offensive.target);
         assert(target?.components.Body);
         let graphic;

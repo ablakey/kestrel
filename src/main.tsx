@@ -52,6 +52,19 @@ times(TEST_COUNT, () => {
 ecs.start();
 
 /**
+ * For debugging?
+ * Fundamentally a bad idea to reference things from window? Is prop drilling (or context) really better?
+ * None of this is a library or will see re-use.
+ */
+declare global {
+  interface Window {
+    ecs: ECS;
+  }
+}
+
+window.ecs = ecs;
+
+/**
  * UI.
  */
 function render() {
@@ -60,14 +73,3 @@ function render() {
 
 render();
 setInterval(render, 100);
-
-/**
- * For debugging.
- */
-declare global {
-  interface Window {
-    ecs: any;
-  }
-}
-
-window.ecs = ecs;

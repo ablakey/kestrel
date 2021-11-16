@@ -1,5 +1,12 @@
 import { Panel } from "./Panel";
 
 export function Info() {
-  return <Panel style={{ flexGrow: 2 }}>Info</Panel>;
+  const player = window.ecs.query(["Player"])[0];
+
+  return (
+    <Panel>
+      <div>{`${window.ecs.entities.size} entites`}</div>
+      <div>{`${player.components.Body!.velocity.magnitude().toFixed(0)} m/s`}</div>
+    </Panel>
+  );
 }

@@ -2,7 +2,7 @@ import { Entity, System } from "../ecs";
 
 export const StatsSystem = (): System => {
   function update(entity: Entity<"Health">) {
-    const { Health } = entity.components;
+    const { Health, Player } = entity.components;
 
     /**
      * Apply damage.
@@ -15,7 +15,7 @@ export const StatsSystem = (): System => {
     /**
      * Is ship destroyed?
      */
-    if (Health.hp <= 0) {
+    if (Health.hp <= 0 && !Player) {
       entity.destroyed = true;
     }
   }

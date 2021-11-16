@@ -1,12 +1,11 @@
-import { ECS } from "../../ecs";
 import { Panel } from "./Panel";
 
-export function Stats(props: { ecs: ECS }) {
-  const player = props.ecs.query(["Body"]).find((e) => e.components.Player);
+export function Stats(props: { hp: number }) {
   return (
-    <Panel>
-      <div>{`${props.ecs.entities.size} entites`}</div>
-      <div>{`${player?.components.Body.velocity.magnitude().toFixed(0)} m/s`}</div>
+    <Panel style={{ display: "flex", flexDirection: "column", padding: 4 }}>
+      <progress style={{ width: "100%" }} max={100} value={props.hp}></progress>
+      <progress style={{ width: "100%" }} max={100} value={70}></progress>
+      <progress style={{ width: "100%" }} max={100} value={70}></progress>
     </Panel>
   );
 }

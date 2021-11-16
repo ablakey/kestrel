@@ -1,12 +1,15 @@
-import { ECS } from "../ecs";
 import { Overlay } from "./Overlay";
 import { Right } from "./Right";
 
-export function UiRoot(props: { ecs: ECS }) {
+/**
+ * UiRoot is forcibly updated and provides the entire ECS state.
+ * It will be passed down to major components, but then for lesser components, a normalized state is provided.
+ */
+export function UiRoot() {
   return (
     <>
       <Overlay />
-      <Right ecs={props.ecs} />
+      <Right />
     </>
   );
 }

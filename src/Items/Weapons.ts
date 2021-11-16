@@ -16,7 +16,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
   LaserCannon: {
     speed: 100,
     bulletTexture: laserTexture,
-    damage: 0,
+    damage: 1,
     maxRange: 1000,
     label: "Laser Cannon",
     type: "Primary",
