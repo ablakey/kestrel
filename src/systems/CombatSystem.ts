@@ -4,8 +4,8 @@ import { ECS, Entity, System } from "../ecs";
 const PRIMARY_WEAPON_DELAY_MS = 100;
 
 export const CombatSystem = (ecs: ECS): System => {
-  function update(entity: Entity<"Offensive" | "Body">) {
-    const { Offensive, Body } = entity.components;
+  function update(entity: Entity<"Offensive" | "Body" | "Inventory">) {
+    const { Offensive, Body, Inventory } = entity.components;
 
     if (Offensive.primaryFire && Offensive.primaryCooldownUntil <= ecs.elapsed) {
       Offensive.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
@@ -18,9 +18,9 @@ export const CombatSystem = (ecs: ECS): System => {
         x: bulletPos.x,
         y: bulletPos.y,
         yaw: Body.yaw.angle(),
-        weaponName: "LaserCannon",
+        weaponName: Inventory.weapons[0].name,
       });
     }
   }
-  return { update, componentKinds: ["Offensive", "Body"] };
+  return { update, componentKinds: ["Offensive", "Body", "Inventory"] };
 };

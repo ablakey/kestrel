@@ -28,7 +28,9 @@ export class ShipFactory extends BaseFactory {
       },
       Inventory: {
         kind: "Inventory",
-        weapons: [{ name: "LaserCannon" }], // TODO.
+        weapons: shipType.weapons.map((w) => {
+          return { name: w };
+        }),
       },
       Offensive: {
         kind: "Offensive",

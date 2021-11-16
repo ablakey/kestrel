@@ -134,6 +134,11 @@ export const RenderSystem = (ecs: ECS): System => {
       // Update target reticle.
       if (Offensive && Offensive?.target) {
         const target = ecs.entities.get(Offensive.target);
+
+        if (target === undefined) {
+          console.log("target is undefined");
+        }
+
         assert(target?.components.Body);
         let graphic;
         if (renderedReticle?.targetId === Offensive.target) {
