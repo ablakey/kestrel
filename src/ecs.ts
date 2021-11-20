@@ -1,8 +1,39 @@
 import { Component } from "./components";
-import { factoryCreators } from "./factories";
+import { AICombatSystem } from "./systems/AICombatSystem";
+import { AIMovementSystem } from "./systems/AIMovementSystem";
+import { BulletSystem } from "./systems/BulletSystem";
+import { CombatSystem } from "./systems/CombatSystem";
+import { EngineSystem } from "./systems/EngineSystem";
+import { InputSystem } from "./systems/InputSystem";
+import { MovementSystem } from "./systems/MovementSystem";
+import { RenderSystem } from "./systems/RenderSystem";
+import { StatsSystem } from "./systems/StatsSystem";
+import { BulletFactory } from "./utilities/BulletFactory";
+import { ShipFactory } from "./utilities/ShipFactory";
 
-(window as any).hit = 0;
-(window as any).miss = 0;
+/**
+ * A collection of UtilityCreators that are instantiated to create a with-context set of
+ * utility functions, callable anywhere `ecs` is available.
+ */
+const UtilityCreators = {
+  BulletFactory,
+  ShipFactory,
+};
+
+/**
+ * An ordered list of systems, invokved in the order described here.
+ */
+const SystemCreators = [
+  InputSystem,
+  AIMovementSystem,
+  AICombatSystem,
+  EngineSystem,
+  MovementSystem,
+  CombatSystem,
+  BulletSystem,
+  StatsSystem,
+  RenderSystem,
+];
 
 export type Kind = Component["kind"];
 
@@ -12,8 +43,9 @@ export interface System {
   update: (entity: Entity<Kind>, delta: number) => void;
 }
 
-type FactoryCreators = typeof factoryCreators;
-type FactoryInstances = { [key in keyof FactoryCreators]: InstanceType<FactoryCreators[key]> };
+type UtilityInstances = {
+  [key in keyof typeof UtilityCreators]: InstanceType<typeof UtilityCreators[key]>;
+};
 
 type ComponentDict<T extends Kind> = {
   [key in T]: Extract<Component, { kind: key }>;
@@ -35,7 +67,7 @@ export class ECS {
   private nextId = 0;
   private systems: System[];
   public entities: Map<number, PartialEntity> = new Map();
-  public factories: FactoryInstances;
+  public utilities: UtilityInstances;
   public elapsed = 0;
 
   /**
@@ -48,11 +80,11 @@ export class ECS {
    */
   private queryCache: Record<string, Entity<any>[] | undefined> = {};
 
-  constructor(systemCreators: ((ecs: ECS) => System)[]) {
-    this.factories = Object.fromEntries(
-      Object.entries(factoryCreators).map(([name, Factory]) => [name, new Factory(this)])
-    ) as FactoryInstances;
-    this.systems = systemCreators.map((s) => s(this));
+  constructor() {
+    this.utilities = Object.fromEntries(
+      Object.entries(UtilityCreators).map(([name, Utility]) => [name, new Utility(this)])
+    ) as UtilityInstances;
+    this.systems = SystemCreators.map((s) => s(this));
   }
 
   public addEntity(
@@ -84,10 +116,7 @@ export class ECS {
     const hash = componentKinds.join("");
 
     if (this.queryCache[hash]) {
-      (window as any).hit++;
       return this.queryCache[hash] as Entity<K>[];
-    } else {
-      (window as any).miss++;
     }
 
     const hits = Array.from(this.entities.values()).filter((e) =>

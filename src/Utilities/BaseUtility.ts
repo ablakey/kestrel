@@ -1,6 +1,6 @@
 import { ECS } from "../ecs";
 
-export class BaseFactory {
+export class BaseUtility {
   protected ecs: ECS;
 
   constructor(ecs: ECS) {

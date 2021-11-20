@@ -1,9 +1,9 @@
 import Victor from "victor";
 import { ShipBehaviour, Direction, Thrust, MovementBehaviour } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
-import { BaseFactory } from "./BaseFactory";
+import { BaseUtility } from "./BaseUtility";
 
-export class ShipFactory extends BaseFactory {
+export class ShipFactory extends BaseUtility {
   create(opts: {
     x: number;
     y: number;

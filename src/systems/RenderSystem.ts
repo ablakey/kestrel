@@ -136,21 +136,24 @@ export const RenderSystem = (ecs: ECS): System => {
         const target = ecs.entities.get(Offensive.target);
 
         if (target === undefined) {
-          console.log("target is undefined");
-        }
-
-        assert(target?.components.Body);
-        let graphic;
-        if (renderedReticle?.targetId === Offensive.target) {
-          graphic = renderedReticle.graphic;
+          renderedReticle?.graphic.destroy();
+          renderedReticle = undefined;
         } else {
-          graphic = createReticle(120);
-          container.addChild(graphic);
-          renderedReticle = { targetId: target.id, graphic };
-        }
+          assert(target?.components.Body);
 
-        renderedReticle.graphic.x = target.components.Body.position.x;
-        renderedReticle.graphic.y = -target.components.Body.position.y;
+          let graphic;
+
+          if (renderedReticle?.targetId === Offensive.target) {
+            graphic = renderedReticle.graphic;
+          } else {
+            graphic = createReticle(120);
+            container.addChild(graphic);
+            renderedReticle = { targetId: target.id, graphic };
+          }
+
+          renderedReticle.graphic.x = target.components.Body.position.x;
+          renderedReticle.graphic.y = -target.components.Body.position.y;
+        }
       }
     }
 

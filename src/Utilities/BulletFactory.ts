@@ -1,8 +1,8 @@
 import Victor from "victor";
 import { WeaponName, Weapons } from "../Items/Weapons";
-import { BaseFactory } from "./BaseFactory";
+import { BaseUtility } from "./BaseUtility";
 
-export class BulletFactory extends BaseFactory {
+export class BulletFactory extends BaseUtility {
   create(opts: { x: number; y: number; yaw: number; weaponName: WeaponName }) {
     const weaponType = Weapons[opts.weaponName];
 
