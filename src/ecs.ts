@@ -1,15 +1,16 @@
 import { Component } from "./components";
-import { AICombatSystem } from "./systems/AICombatSystem";
-import { AIMovementSystem } from "./systems/AIMovementSystem";
-import { BulletSystem } from "./systems/BulletSystem";
-import { CombatSystem } from "./systems/CombatSystem";
-import { EngineSystem } from "./systems/EngineSystem";
-import { InputSystem } from "./systems/InputSystem";
-import { MovementSystem } from "./systems/MovementSystem";
-import { RenderSystem } from "./systems/RenderSystem";
-import { StatsSystem } from "./systems/StatsSystem";
-import { BulletFactory } from "./utilities/BulletFactory";
-import { ShipFactory } from "./utilities/ShipFactory";
+import { AICombatSystem } from "./Systems/AICombatSystem";
+import { AIMovementSystem } from "./Systems/AIMovementSystem";
+import { BulletSystem } from "./Systems/BulletSystem";
+import { CombatSystem } from "./Systems/CombatSystem";
+import { EngineSystem } from "./Systems/EngineSystem";
+import { InputSystem } from "./Systems/InputSystem";
+import { MovementSystem } from "./Systems/MovementSystem";
+import { RenderSystem } from "./Systems/RenderSystem";
+import { StatsSystem } from "./Systems/StatsSystem";
+import { BulletFactory } from "./Utilities/BulletFactory";
+import { QueryHelpers } from "./Utilities/QueryHelpers";
+import { ShipFactory } from "./Utilities/ShipFactory";
 
 /**
  * A collection of UtilityCreators that are instantiated to create a with-context set of
@@ -18,6 +19,7 @@ import { ShipFactory } from "./utilities/ShipFactory";
 const UtilityCreators = {
   BulletFactory,
   ShipFactory,
+  QueryHelpers,
 };
 
 /**

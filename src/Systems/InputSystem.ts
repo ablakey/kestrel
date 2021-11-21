@@ -64,7 +64,7 @@ export const InputSystem = (ecs: ECS): System => {
 
       // Target
       if (k === Inputs.NextTarget.key) {
-        Offensive.target = ecs.utilities.TargetingHelpers.getNextTarget(Offensive.target);
+        Offensive.target = ecs.utilities.QueryHelpers.getNextTarget(Offensive.target);
       }
     });
   }
