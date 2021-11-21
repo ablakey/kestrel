@@ -1,7 +1,7 @@
 import { times } from "lodash";
 import ReactDOM from "react-dom";
 import { ECS } from "./ecs";
-import { ShipBehaviour } from "./enum";
+import { Team } from "./enum";
 import { UiRoot } from "./ui/UiRoot";
 
 const ecs = new ECS();
@@ -11,7 +11,7 @@ const playerShip = ecs.utilities.ShipFactory.create({
   y: 0,
   yaw: 0,
   shipName: "Blue",
-  behaviour: ShipBehaviour.Player,
+  team: Team.Player,
 });
 
 playerShip.components.Offensive!.target = 1;
@@ -24,7 +24,7 @@ times(TEST_COUNT, () => {
     y: Math.random() * TEST_RANGE - TEST_RANGE / 2,
     yaw: 0,
     shipName: "Red",
-    behaviour: ShipBehaviour.Aggressive,
+    team: Team.Independent,
   });
 
   ship.components.Offensive!.target = 0;

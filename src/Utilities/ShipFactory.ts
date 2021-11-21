@@ -1,16 +1,10 @@
 import Victor from "victor";
-import { ShipBehaviour, Direction, Thrust, MovementBehaviour } from "../enum";
+import { Direction, MovementBehaviour, Team, Thrust } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
 import { BaseUtility } from "./BaseUtility";
 
 export class ShipFactory extends BaseUtility {
-  create(opts: {
-    x: number;
-    y: number;
-    yaw: number;
-    shipName: ShipName;
-    behaviour: ShipBehaviour;
-  }) {
+  create(opts: { x: number; y: number; yaw: number; shipName: ShipName; team: Team }) {
     const shipType = Ships[opts.shipName];
 
     return this.ecs.addEntity({
@@ -18,6 +12,10 @@ export class ShipFactory extends BaseUtility {
         kind: "Engine",
         direction: Direction.None,
         thrust: Thrust.None,
+      },
+      Politics: {
+        kind: "Politics",
+        team: opts.team,
       },
       Body: {
         kind: "Body",
@@ -59,12 +57,11 @@ export class ShipFactory extends BaseUtility {
         offsetX: shipType.offsetX,
         offsetY: shipType.offsetY,
       },
-      Player: opts.behaviour === ShipBehaviour.Player ? { kind: "Player" } : undefined,
+      Player: opts.team === Team.Player ? { kind: "Player" } : undefined,
       AI:
-        opts.behaviour === ShipBehaviour.Aggressive
+        opts.team !== Team.Player
           ? {
               kind: "AI",
-              behaviour: opts.behaviour,
               movementBehaviour: MovementBehaviour.FlyThrough,
             }
           : undefined,

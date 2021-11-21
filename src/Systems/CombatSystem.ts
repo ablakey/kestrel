@@ -14,7 +14,7 @@ export const CombatSystem = (ecs: ECS): System => {
         .clone()
         .add(new Victor(entity.components.Offensive.bulletOffset, 0).rotate(Body.yaw.angle()));
 
-      ecs.factories.BulletFactory.create({
+      ecs.utilities.BulletFactory.create({
         x: bulletPos.x,
         y: bulletPos.y,
         yaw: Body.yaw.angle(),

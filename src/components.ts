@@ -1,9 +1,7 @@
 import Victor from "victor";
 import { DamageEffect } from "./Effects";
-import { Direction, MovementBehaviour, ShipBehaviour, Thrust } from "./enum";
+import { Direction, MovementBehaviour, Team, Thrust } from "./enum";
 import { WeaponName } from "./Items/Weapons";
-
-// export type Sprite   <- need to start associating sprites with entities.
 
 export type Body = {
   kind: "Body";
@@ -24,9 +22,6 @@ export type Inventory = {
   weapons: { name: WeaponName }[]; // TODO: cooldownUntil, etc.
 };
 
-/**
- * An entity with Offensive is able to fire weapons.
- */
 export type Offensive = {
   kind: "Offensive";
   primaryFire: boolean;
@@ -36,11 +31,6 @@ export type Offensive = {
   // currentSecondaryWeapon
 };
 
-/**
- * An entity with Damage will do a type of damage to something it hits.
- * This is likely just bullets: missiles, rockets, bombs, beams, etc.  But it could be longer
- * lived things like asteroids, mines, maybe ships.
- */
 export type Damage = {
   kind: "Damage";
   damage: number;
@@ -79,19 +69,24 @@ export type Navigation = {
 
 export type AI = {
   kind: "AI";
-  behaviour: ShipBehaviour;
   movementBehaviour: MovementBehaviour;
 };
 
+export type Politics = {
+  kind: "Politics";
+  team: Team;
+};
+
 export type Component =
+  | AI
   | Body
-  | Engine
-  | Offensive
-  | Health
-  | Sprite
   | Damage
-  | Player
+  | Engine
+  | Health
+  | Inventory
   | Kinematics
   | Navigation
-  | Inventory
-  | AI;
+  | Offensive
+  | Player
+  | Politics
+  | Sprite;
