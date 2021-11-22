@@ -9,13 +9,18 @@ export enum Thrust {
   Forward,
 }
 
-// TODO: CombatBehaviour: Aggressive, Defensive, Passive, Fleeing,
-
 export enum MovementBehaviour {
   None,
   PointAt,
   FlyThrough, // Fly straight through the nav target (eg. a missile)
   FlyTo, // Attempt to stop on the nav target.
+}
+
+// TODO: we might need another Behaviour type that governs the overall movement + combat.  Behaviour trees?
+export enum CombatBehaviour {
+  None,
+  Aggressive,
+  Defensive,
 }
 
 export enum Team {

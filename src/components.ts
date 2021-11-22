@@ -1,6 +1,6 @@
 import Victor from "victor";
 import { DamageEffect } from "./Effects";
-import { Direction, MovementBehaviour, Team, Thrust } from "./enum";
+import { CombatBehaviour, Direction, MovementBehaviour, Team, Thrust } from "./enum";
 import { WeaponName } from "./Items/Weapons";
 
 export type Body = {
@@ -69,6 +69,7 @@ export type Navigation = {
 
 export type AI = {
   kind: "AI";
+  combatBehaviour: CombatBehaviour;
   movementBehaviour: MovementBehaviour;
 };
 

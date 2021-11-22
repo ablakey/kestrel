@@ -1,10 +1,17 @@
 import Victor from "victor";
-import { Direction, MovementBehaviour, Team, Thrust } from "../enum";
+import { CombatBehaviour, Direction, MovementBehaviour, Team, Thrust } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
 import { BaseUtility } from "./BaseUtility";
 
 export class ShipFactory extends BaseUtility {
-  create(opts: { x: number; y: number; yaw: number; shipName: ShipName; team: Team }) {
+  create(opts: {
+    x: number;
+    y: number;
+    yaw: number;
+    shipName: ShipName;
+    team: Team;
+    runAi?: boolean;
+  }) {
     const shipType = Ships[opts.shipName];
 
     return this.ecs.addEntity({
@@ -59,7 +66,8 @@ export class ShipFactory extends BaseUtility {
       },
       AI: {
         kind: "AI",
-        movementBehaviour: MovementBehaviour.None,
+        combatBehaviour: opts.runAi ? CombatBehaviour.Aggressive : CombatBehaviour.None,
+        movementBehaviour: opts.runAi ? MovementBehaviour.PointAt : MovementBehaviour.None,
       },
     });
   }

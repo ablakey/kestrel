@@ -10,7 +10,7 @@ export const AIMovementSystem = (ecs: ECS): System => {
       return;
     }
 
-    const target = ecs.entities.get(Offensive.target);
+    const target = ecs.getEntity(Offensive.target);
     assert(target);
     assert(target?.components.Body);
 

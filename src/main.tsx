@@ -25,6 +25,7 @@ times(TEST_COUNT, () => {
     y: Math.random() * TEST_RANGE - TEST_RANGE / 2,
     yaw: 0,
     shipName: "Red",
+    runAi: true,
     team: Team.Independent,
   });
 

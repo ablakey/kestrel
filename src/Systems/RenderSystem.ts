@@ -133,7 +133,7 @@ export const RenderSystem = (ecs: ECS): System => {
 
       // Update target reticle.
       if (Offensive && Offensive?.target) {
-        const target = ecs.entities.get(Offensive.target);
+        const target = ecs.getEntity(Offensive.target);
 
         if (target === undefined) {
           renderedReticle?.graphic.destroy();

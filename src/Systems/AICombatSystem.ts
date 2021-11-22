@@ -1,4 +1,5 @@
 import { ECS, Entity, System } from "../ecs";
+import { CombatBehaviour } from "../enum";
 import { Weapons } from "../Items/Weapons";
 import { assert, isFacing } from "../utils";
 
@@ -8,6 +9,11 @@ import { assert, isFacing } from "../utils";
  */
 export const AICombatSystem = (ecs: ECS): System => {
   function update(entity: Entity<"Offensive" | "Body" | "Inventory" | "AI">) {
+    // Do not attempt to do any AI combat.
+    if (entity.components.AI.combatBehaviour === CombatBehaviour.None) {
+      return;
+    }
+
     if (entity.components.Offensive.target === null) {
       // If an entity has no target, stop firing.
       if (entity.components.Offensive.primaryFire) {
@@ -19,7 +25,7 @@ export const AICombatSystem = (ecs: ECS): System => {
     /**
      * Calculate if primary weapons should be firing.
      */
-    const target = ecs.entities.get(entity.components.Offensive.target);
+    const target = ecs.getEntity(entity.components.Offensive.target);
     assert(target);
     assert(target.components.Body);
 
