@@ -1,4 +1,5 @@
 import { Component } from "./components";
+import { MovementBehaviour } from "./enum";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
 import { BulletSystem } from "./Systems/BulletSystem";
@@ -10,7 +11,8 @@ import { RenderSystem } from "./Systems/RenderSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
 import { BulletFactory } from "./Utilities/BulletFactory";
 import { QueryHelpers } from "./Utilities/QueryHelpers";
-import { ShipFactory } from "./Utilities/ShipFactory";
+import { ShipEntity, ShipFactory } from "./Utilities/ShipFactory";
+import { assert } from "./utils";
 
 /**
  * A collection of UtilityCreators that are instantiated to create a with-context set of
@@ -49,26 +51,22 @@ type UtilityInstances = {
   [key in keyof typeof UtilityCreators]: InstanceType<typeof UtilityCreators[key]>;
 };
 
-type ComponentDict<T extends Kind> = {
+type Components<T extends Kind> = {
   [key in T]: Extract<Component, { kind: key }>;
 };
 
-export type Entity<T extends Kind> = {
+export type Entity<T extends Kind = Exclude<Kind, Kind>> = {
   id: number;
   spawned: number;
-  components: Readonly<ComponentDict<T> & Partial<ComponentDict<Kind>>>;
+  components: Required<Components<T>> & Partial<Components<Exclude<Kind, T>>>;
   lifespan?: number;
   destroyed: boolean;
-};
-
-type PartialEntity = Omit<Entity<Kind>, "components"> & {
-  components: Readonly<Partial<ComponentDict<Kind>>>;
 };
 
 export class ECS {
   private nextId = 0;
   private systems: System[];
-  public entities: Map<number, PartialEntity> = new Map();
+  private entities: Map<number, Entity> = new Map();
   public utilities: UtilityInstances;
   public elapsed = 0;
 
@@ -89,12 +87,34 @@ export class ECS {
     this.systems = SystemCreators.map((s) => s(this));
   }
 
-  public addEntity(
-    components: Partial<ComponentDict<Kind>>,
+  /**
+   * Convenience wrapper around `this.entities.get` to handle null input ids rather than switching on those at the call
+   * site.
+   */
+  public getEntity(id: number | null): Entity | null {
+    if (id === null) {
+      return null;
+    }
+
+    return this.entities.get(id) ?? null;
+  }
+
+  public get entityCount(): number {
+    return this.entities.size;
+  }
+
+  public getPlayer() {
+    const player = this.query(["Player"])[0];
+    assert(player);
+    return player as ShipEntity;
+  }
+
+  public addEntity<T extends Kind>(
+    components: Components<T>,
     options?: {
       lifespan?: number;
     }
-  ): PartialEntity {
+  ): Entity<T> {
     this.queryCache = {};
 
     const entity = {
@@ -108,7 +128,7 @@ export class ECS {
     this.entities.set(this.nextId, entity);
     this.nextId++;
 
-    return entity;
+    return entity as Entity<T>;
   }
 
   /**
@@ -134,7 +154,7 @@ export class ECS {
     requestAnimationFrame(this.tick.bind(this));
   }
 
-  private isMatch(entity: PartialEntity, componentKinds: Kind[]): boolean {
+  private isMatch(entity: Entity, componentKinds: Kind[]): boolean {
     const kinds = Object.values(entity.components)
       .filter((c) => c !== undefined)
       .map((c) => c.kind);

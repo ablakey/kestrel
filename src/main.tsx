@@ -14,6 +14,7 @@ const playerShip = ecs.utilities.ShipFactory.create({
   team: Team.Player,
 });
 
+playerShip.components.Player = { kind: "Player" };
 playerShip.components.Offensive!.target = 1;
 
 const TEST_RANGE = 1500;
@@ -32,25 +33,20 @@ times(TEST_COUNT, () => {
 
 ecs.start();
 
-/**
- * For debugging?
- * Fundamentally a bad idea to reference things from window? Is prop drilling (or context) really better?
- * None of this is a library or will see re-use.
- */
 declare global {
   interface Window {
-    ecs: ECS;
+    _ecs: ECS;
   }
 }
 
-window.ecs = ecs;
+window._ecs = ecs;
 
 /**
  * UI.
  */
 function render() {
-  ReactDOM.render(<UiRoot />, document.getElementById("ui"));
+  ReactDOM.render(<UiRoot ecs={ecs} />, document.getElementById("ui"));
+  requestAnimationFrame(render);
 }
 
 render();
-setInterval(render, 100);

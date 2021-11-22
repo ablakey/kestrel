@@ -1,14 +1,14 @@
-import { assert } from "../../utils";
+import { ECS } from "../../ecs";
 import { Info } from "./Info";
 import { Minimap } from "./Minimap";
 import { Stats } from "./Stats";
 import { Target } from "./Target";
 
-export function Right() {
-  const { Health } = window.ecs.query(["Player"])[0].components;
-  assert(Health);
+export function Right(props: { ecs: ECS }) {
+  const player = props.ecs.getPlayer();
 
-  const hp = Health.hp;
+  const target = props.ecs.getEntity(player.components.Offensive.target);
+
   return (
     <div
       style={{
@@ -22,9 +22,9 @@ export function Right() {
       }}
     >
       <Minimap />
-      <Stats hp={hp} />
-      <Target />
-      <Info />
+      <Stats hp={player.components.Health.hp} />
+      <Target target={target} />
+      <Info entityCount={props.ecs.entityCount} player={player} />
     </div>
   );
 }

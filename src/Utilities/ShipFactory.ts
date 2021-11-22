@@ -57,14 +57,12 @@ export class ShipFactory extends BaseUtility {
         offsetX: shipType.offsetX,
         offsetY: shipType.offsetY,
       },
-      Player: opts.team === Team.Player ? { kind: "Player" } : undefined,
-      AI:
-        opts.team !== Team.Player
-          ? {
-              kind: "AI",
-              movementBehaviour: MovementBehaviour.FlyThrough,
-            }
-          : undefined,
+      AI: {
+        kind: "AI",
+        movementBehaviour: MovementBehaviour.None,
+      },
     });
   }
 }
+
+export type ShipEntity = ReturnType<ShipFactory["create"]>;

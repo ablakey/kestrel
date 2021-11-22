@@ -1,4 +1,6 @@
-export function Overlay() {
+import { ECS } from "../ecs";
+
+export function Overlay(props: { ecs: ECS }) {
   return (
     <div
       style={{
