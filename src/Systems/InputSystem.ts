@@ -12,6 +12,7 @@ const Inputs = {
 
   // Targeting.
   NextTarget: { key: "Tab", asEvent: true },
+  PreviousTarget: { key: "ShiftTab", asEvent: true },
 } as const;
 
 const keysInUse = new Set(Object.values(Inputs).map((k) => k.key));
@@ -21,21 +22,26 @@ const inputsByKey = Object.entries(Inputs).reduce((acc, [input, config]) => {
   return acc;
 }, {} as Record<string, { input: string; asEvent?: boolean; key: string }>);
 
+function parseFullKey(e: KeyboardEvent): string {
+  return `${e.altKey ? "Alt" : ""}${e.ctrlKey ? "Ctrl" : ""}${e.shiftKey ? "Shift" : ""}${e.code}`;
+}
+
 export const InputSystem = (ecs: ECS): System => {
   const keyState: Record<string, boolean | undefined> = {};
   const inputQueue: Set<string> = new Set(); // Set to avoid multiples of same key.
 
-  document.addEventListener("keyup", (e) => (keyState[e.code] = false));
+  document.addEventListener("keyup", (e) => (keyState[parseFullKey(e)] = false));
 
   document.addEventListener("keydown", (e) => {
-    if (!keysInUse.has(e.code as any)) {
+    const code = parseFullKey(e);
+    if (!keysInUse.has(code as any)) {
       return;
     }
 
-    if (inputsByKey[e.code].asEvent) {
-      inputQueue.add(e.code);
+    if (inputsByKey[code].asEvent) {
+      inputQueue.add(code);
     } else {
-      keyState[e.code] = true;
+      keyState[code] = true;
     }
 
     e.preventDefault();
@@ -64,7 +70,9 @@ export const InputSystem = (ecs: ECS): System => {
 
       // Target
       if (k === Inputs.NextTarget.key) {
-        Offensive.target = ecs.utilities.QueryHelpers.getNextTarget(Offensive.target);
+        Offensive.target = ecs.utilities.QueryHelpers.getTarget(Offensive.target, 1);
+      } else if (k === Inputs.PreviousTarget.key) {
+        Offensive.target = ecs.utilities.QueryHelpers.getTarget(Offensive.target, -1);
       }
     });
   }

@@ -146,6 +146,8 @@ export const RenderSystem = (ecs: ECS): System => {
           if (renderedReticle?.targetId === Offensive.target) {
             graphic = renderedReticle.graphic;
           } else {
+            renderedReticle?.graphic.destroy();
+            renderedReticle = undefined;
             graphic = createReticle(120);
             container.addChild(graphic);
             renderedReticle = { targetId: target.id, graphic };
