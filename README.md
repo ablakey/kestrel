@@ -44,6 +44,27 @@ Do I need the bullets to be AI aware?
 - BulletSystem for now can just use Kinematics component to know how to turn and how fast to go.
 - AISystem can use Kinematics more intelligently.
 
+
+## AI exploration
+
+
+## Movement AI
+If a ship is hostile to a team:
+- Does team exist?
+  - No: return
+  - Yes: Continue
+- Is target hostile?
+    - No: target hostile ship
+    - Yes: continue
+
+## Weapons AI
+- Can we shoot primary at target?
+ - No: primaryFire = false
+   Yes: primaryFire = true
+
+- Can we shoot
+
+
 ## Ship AI
 
 Probably going to keep this very simple for now.
