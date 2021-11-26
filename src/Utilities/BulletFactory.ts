@@ -12,7 +12,7 @@ export class BulletFactory extends BaseUtility {
           kind: "Body",
           position: new Victor(opts.x, opts.y),
           yaw: new Victor(1, 0).rotate(opts.yaw),
-          velocity: new Victor(1, 0).multiplyScalar(2000).rotate(opts.yaw),
+          velocity: new Victor(1, 0).multiplyScalar(weaponType.speed).rotate(opts.yaw),
           angularVelocity: 0,
         },
         Damage: {
@@ -26,7 +26,7 @@ export class BulletFactory extends BaseUtility {
           offsetY: 0.5,
         },
       },
-      { lifespan: 500 }
+      { lifespan: weaponType.lifespan }
     );
   }
 }

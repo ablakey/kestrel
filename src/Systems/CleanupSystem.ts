@@ -6,7 +6,7 @@ export const CleanupSystem = (ecs: ECS): System => {
     /**
      * Clear targets if the target doesn't exist anymore.
      */
-    if (Offensive.target !== null && !ecs.getEntity(Offensive.target)) {
+    if (Offensive.target !== null && ecs.isEntityDestroyed(Offensive.target)) {
       Offensive.target = null;
     }
   }

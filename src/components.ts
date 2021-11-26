@@ -1,7 +1,7 @@
 import Victor from "victor";
 import { DamageEffect } from "./Effects";
 import { CombatBehaviour, Direction, MovementBehaviour, Team, Thrust } from "./enum";
-import { WeaponName } from "./Items/Weapons";
+import { WeaponInstance } from "./Items";
 
 export type Body = {
   kind: "Body";
@@ -19,7 +19,7 @@ export type Engine = {
 
 export type Inventory = {
   kind: "Inventory";
-  weapons: { name: WeaponName }[]; // TODO: cooldownUntil, etc.
+  weapons: WeaponInstance[];
 };
 
 export type Offensive = {

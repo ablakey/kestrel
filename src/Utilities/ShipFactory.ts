@@ -33,9 +33,7 @@ export class ShipFactory extends BaseUtility {
       },
       Inventory: {
         kind: "Inventory",
-        weapons: shipType.weapons.map((w) => {
-          return { name: w };
-        }),
+        weapons: shipType.weapons,
       },
       Offensive: {
         kind: "Offensive",

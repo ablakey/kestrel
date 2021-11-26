@@ -120,42 +120,51 @@ export const RenderSystem = (ecs: ECS): System => {
     const { Player, Body, Offensive } = entity.components;
     const item = getOrCreateSprite(entity);
 
+    /**
+     * Player-specific updates.
+     */
     if (Player) {
-      // Follow camera on player.
+      assert(Offensive); // Player always has an offensive component.
+
+      /**
+       * Camera follow player.
+       */
       container.x = -Body.position.x;
       container.y = Body.position.y;
 
-      // Update parallax.
+      /**
+       * Parallax relative to player.
+       */
       tilingSprite.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE * PARALLAX_OFFSET);
       tilingSprite.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE * PARALLAX_OFFSET;
       tilingSprite2.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE);
       tilingSprite2.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE;
 
-      // Update target reticle.
-      if (Offensive && Offensive?.target) {
-        const target = ecs.getEntity(Offensive.target);
+      /**
+       * Update reticle position if there is a target, otherwise create one, otherwise delete it.
+       */
+      const target = ecs.getEntity(Offensive.target);
+      if (target === null && renderedReticle) {
+        console.log("destroy reticle");
+        renderedReticle?.graphic.destroy();
+        renderedReticle = undefined;
+      } else if (target) {
+        assert(target?.components.Body);
 
-        if (target === undefined) {
+        let graphic;
+
+        if (renderedReticle?.targetId === Offensive.target) {
+          graphic = renderedReticle.graphic;
+        } else {
           renderedReticle?.graphic.destroy();
           renderedReticle = undefined;
-        } else {
-          assert(target?.components.Body);
-
-          let graphic;
-
-          if (renderedReticle?.targetId === Offensive.target) {
-            graphic = renderedReticle.graphic;
-          } else {
-            renderedReticle?.graphic.destroy();
-            renderedReticle = undefined;
-            graphic = createReticle(120);
-            container.addChild(graphic);
-            renderedReticle = { targetId: target.id, graphic };
-          }
-
-          renderedReticle.graphic.x = target.components.Body.position.x;
-          renderedReticle.graphic.y = -target.components.Body.position.y;
+          graphic = createReticle(120);
+          container.addChild(graphic);
+          renderedReticle = { targetId: target.id, graphic };
         }
+
+        renderedReticle.graphic.x = target.components.Body.position.x;
+        renderedReticle.graphic.y = -target.components.Body.position.y;
       }
     }
 

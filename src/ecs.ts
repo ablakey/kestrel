@@ -1,8 +1,8 @@
 import { Component } from "./components";
-import { MovementBehaviour } from "./enum";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
 import { BulletSystem } from "./Systems/BulletSystem";
+import { CleanupSystem } from "./Systems/CleanupSystem";
 import { CombatSystem } from "./Systems/CombatSystem";
 import { EngineSystem } from "./Systems/EngineSystem";
 import { InputSystem } from "./Systems/InputSystem";
@@ -37,6 +37,7 @@ const SystemCreators = [
   BulletSystem,
   StatsSystem,
   RenderSystem,
+  CleanupSystem,
 ];
 
 export type Kind = Component["kind"];
@@ -97,6 +98,14 @@ export class ECS {
     }
 
     return this.entities.get(id) ?? null;
+  }
+
+  /**
+   * Entity doesn't exist or `isDestroyed === true`
+   */
+  public isEntityDestroyed(id: number): boolean {
+    const entity = this.getEntity(id);
+    return entity === null || entity.destroyed;
   }
 
   public get entityCount(): number {

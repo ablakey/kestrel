@@ -1,14 +1,20 @@
 import Victor from "victor";
 import { ECS, Entity, System } from "../ecs";
-
-const PRIMARY_WEAPON_DELAY_MS = 100;
+import { Weapons } from "../Items/Weapons";
 
 export const CombatSystem = (ecs: ECS): System => {
   function update(entity: Entity<"Offensive" | "Body" | "Inventory">) {
     const { Offensive, Body, Inventory } = entity.components;
 
+    /**
+     * Primary fire.
+     *
+     */
     if (Offensive.primaryFire && Offensive.primaryCooldownUntil <= ecs.elapsed) {
-      Offensive.primaryCooldownUntil = ecs.elapsed + PRIMARY_WEAPON_DELAY_MS;
+      const weapon = Inventory.weapons[0];
+      const weaponType = Weapons[weapon.name];
+
+      Offensive.primaryCooldownUntil = ecs.elapsed + 1000 / weaponType.fireRate;
 
       const bulletPos = Body.position
         .clone()
@@ -18,7 +24,7 @@ export const CombatSystem = (ecs: ECS): System => {
         x: bulletPos.x,
         y: bulletPos.y,
         yaw: Body.yaw.angle(),
-        weaponName: Inventory.weapons[0].name,
+        weaponName: weapon.name,
       });
     }
   }

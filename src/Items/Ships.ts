@@ -1,7 +1,6 @@
-import { Item } from ".";
+import { Item, WeaponInstance } from ".";
 import blueShip from "../assets/pixel_ship_blue.png";
 import redShip from "../assets/pixel_ship_red.png";
-import { WeaponName } from "./Weapons";
 
 export type Ship = Item & {
   hp: number;
@@ -12,8 +11,9 @@ export type Ship = Item & {
   turnRate: number; // rad/sec.
   offsetX: number;
   offsetY: number;
-  weapons: WeaponName[];
+  weapons: WeaponInstance[];
 };
+
 export type ShipName = "Blue" | "Red";
 
 export const Ships: Record<ShipName, Ship> = {
@@ -27,7 +27,7 @@ export const Ships: Record<ShipName, Ship> = {
     turnRate: 4,
     offsetX: 0.5,
     offsetY: 0.6,
-    weapons: ["ProtonCannon"],
+    weapons: [{ name: "ProtonCannon", count: 1 }],
   },
   Red: {
     hp: 100,
@@ -39,6 +39,7 @@ export const Ships: Record<ShipName, Ship> = {
     turnRate: 4,
     offsetX: 0.5,
     offsetY: 0.6,
-    weapons: ["LaserCannon"],
+    weapons: [{ name: "LaserCannon", count: 1 }],
   },
 };
+4;
