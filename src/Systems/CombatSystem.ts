@@ -23,7 +23,7 @@ export const CombatSystem = (ecs: ECS): System => {
       ecs.utilities.BulletFactory.create({
         x: bulletPos.x,
         y: bulletPos.y,
-        yaw: Body.yaw.angle(),
+        yaw: Body.yaw.angle() + Math.random() * (1 - weaponType.accuracy),
         weaponName: w.name,
       });
 

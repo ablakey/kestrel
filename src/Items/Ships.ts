@@ -39,7 +39,10 @@ export const Ships: Record<ShipName, Ship> = {
     turnRate: 4,
     offsetX: 0.5,
     offsetY: 0.6,
-    weapons: [{ name: "LaserCannon", count: 1, lastUsed: 0 }],
+    weapons: [
+      { name: "LaserCannon", count: 1, lastUsed: 0 },
+      { name: "ProtonCannon", lastUsed: 0, count: 1 },
+    ],
   },
 };
 4;
