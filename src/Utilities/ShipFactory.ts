@@ -1,3 +1,4 @@
+import { cloneDeep } from "lodash";
 import Victor from "victor";
 import { CombatBehaviour, Direction, MovementBehaviour, Team, Thrust } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
@@ -33,11 +34,10 @@ export class ShipFactory extends BaseUtility {
       },
       Inventory: {
         kind: "Inventory",
-        weapons: shipType.weapons,
+        weapons: cloneDeep(shipType.weapons),
       },
       Offensive: {
         kind: "Offensive",
-        primaryCooldownUntil: 0,
         primaryFire: false,
         bulletOffset: shipType.radius, // TODO: remove this duplicate.
         target: null,

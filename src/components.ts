@@ -25,7 +25,6 @@ export type Inventory = {
 export type Offensive = {
   kind: "Offensive";
   primaryFire: boolean;
-  primaryCooldownUntil: number;
   bulletOffset: number;
   target: number | null; // Component ID
   // currentSecondaryWeapon

@@ -28,7 +28,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
   ProtonCannon: {
     label: "Proton Cannon",
     speed: 1_200,
-    fireRate: 1,
+    fireRate: 3,
     bulletTexture: protonTexture,
     damage: 5,
     maxRange: 1_000,

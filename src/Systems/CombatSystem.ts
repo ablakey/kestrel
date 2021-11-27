@@ -6,15 +6,15 @@ export const CombatSystem = (ecs: ECS): System => {
   function update(entity: Entity<"Offensive" | "Body" | "Inventory">) {
     const { Offensive, Body, Inventory } = entity.components;
 
-    /**
-     * Primary fire.
-     *
-     */
-    if (Offensive.primaryFire && Offensive.primaryCooldownUntil <= ecs.elapsed) {
-      const weapon = Inventory.weapons[0];
-      const weaponType = Weapons[weapon.name];
+    Inventory.weapons.forEach((w) => {
+      const weaponType = Weapons[w.name];
 
-      Offensive.primaryCooldownUntil = ecs.elapsed + 1000 / weaponType.fireRate;
+      const isFiring = weaponType.type === "Primary" ? Offensive.primaryFire : false; // TODO secondary.
+      const fireDelay = 1000 / (weaponType.fireRate * w.count); // delay between shots in ms.
+
+      if (!isFiring || w.lastUsed + fireDelay > ecs.elapsed) {
+        return;
+      }
 
       const bulletPos = Body.position
         .clone()
@@ -24,9 +24,11 @@ export const CombatSystem = (ecs: ECS): System => {
         x: bulletPos.x,
         y: bulletPos.y,
         yaw: Body.yaw.angle(),
-        weaponName: weapon.name,
+        weaponName: w.name,
       });
-    }
+
+      w.lastUsed = ecs.elapsed;
+    });
   }
   return { update, componentKinds: ["Offensive", "Body", "Inventory"] };
 };
