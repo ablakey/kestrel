@@ -70,9 +70,9 @@ export const InputSystem = (ecs: ECS): System => {
 
       // Target
       if (k === Inputs.NextTarget.key) {
-        Offensive.target = ecs.utilities.QueryHelpers.getTarget(Offensive.target, 1);
+        Offensive.target = ecs.entities.getTarget(Offensive.target, 1);
       } else if (k === Inputs.PreviousTarget.key) {
-        Offensive.target = ecs.utilities.QueryHelpers.getTarget(Offensive.target, -1);
+        Offensive.target = ecs.entities.getTarget(Offensive.target, -1);
       }
     });
   }

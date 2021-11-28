@@ -5,7 +5,7 @@ export const BulletSystem = (ecs: ECS): System => {
     /**
      * Detect collisions.
      */
-    ecs.query(["Body", "Health"]).forEach((e) => {
+    ecs.entities.query(["Body", "Health"]).forEach((e) => {
       const distance = entity.components.Body.position.distance(e.components.Body.position);
       if (distance < 50) {
         entity.destroyed = true;

@@ -25,7 +25,7 @@ export const AICombatSystem = (ecs: ECS): System => {
     /**
      * Calculate if primary weapons should be firing.
      */
-    const target = ecs.getEntity(entity.components.Offensive.target);
+    const target = ecs.entities.get(entity.components.Offensive.target);
     assert(target);
     assert(target.components.Body);
 

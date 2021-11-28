@@ -1,4 +1,5 @@
 import { Component } from "./components";
+import { Entities } from "./EntityManager";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
 import { BulletSystem } from "./Systems/BulletSystem";
@@ -8,22 +9,11 @@ import { EngineSystem } from "./Systems/EngineSystem";
 import { InputSystem } from "./Systems/InputSystem";
 import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
-import { SoundSystem } from "./Systems/SoundSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
+import { AudioFactory } from "./Utilities/AudioFactory";
 import { BulletFactory } from "./Utilities/BulletFactory";
-import { QueryHelpers } from "./Utilities/QueryHelpers";
 import { ShipEntity, ShipFactory } from "./Utilities/ShipFactory";
 import { assert } from "./utils";
-
-/**
- * A collection of UtilityCreators that are instantiated to create a with-context set of
- * utility functions, callable anywhere `ecs` is available.
- */
-const UtilityCreators = {
-  BulletFactory,
-  ShipFactory,
-  QueryHelpers,
-};
 
 /**
  * An ordered list of systems, invokved in the order described here.
@@ -38,7 +28,6 @@ const SystemCreators = [
   BulletSystem,
   StatsSystem,
   RenderSystem,
-  SoundSystem,
   CleanupSystem,
 ];
 
@@ -50,11 +39,7 @@ export interface System {
   update?: (entity: Entity<Kind>, delta: number) => void;
 }
 
-type UtilityInstances = {
-  [key in keyof typeof UtilityCreators]: InstanceType<typeof UtilityCreators[key]>;
-};
-
-type Components<T extends Kind> = {
+export type Components<T extends Kind> = {
   [key in T]: Extract<Component, { kind: key }>;
 };
 
@@ -67,122 +52,37 @@ export type Entity<T extends Kind = Exclude<Kind, Kind>> = {
 };
 
 export class ECS {
-  private nextId = 0;
   private systems: System[];
-  private entities: Map<number, Entity> = new Map();
-  public utilities: UtilityInstances;
   public elapsed = 0;
+  public entities: Entities;
 
   /**
-   * The queryCache is a way to cache sets of entities that match a given query.
-   * This is a huge optimization because query might be called many times per tick. A smarter
-   * implementation might try to cleverly partially invalidate the cache, but we just purge it
-   * any time any entities are added or deleted.
-   *
-   * Entities cannot currently gain or lose components once spawned.
+   * Helpers / utilities / factories.
    */
-  private queryCache: Record<string, Entity<any>[] | undefined> = {};
+  public bulletFactory: BulletFactory;
+  public shipFactory: ShipFactory;
+  public audioFactory: AudioFactory;
 
   constructor() {
-    this.utilities = Object.fromEntries(
-      Object.entries(UtilityCreators).map(([name, Utility]) => [name, new Utility(this)])
-    ) as UtilityInstances;
+    this.bulletFactory = new BulletFactory(this);
+    this.shipFactory = new ShipFactory(this);
+    this.audioFactory = new AudioFactory(this);
     this.systems = SystemCreators.map((s) => s(this));
+    this.entities = new Entities(this);
   }
 
-  /**
-   * Convenience wrapper around `this.entities.get` to handle null input ids rather than switching on those at the call
-   * site.
-   */
-  public getEntity(id: number | null): Entity | null {
-    if (id === null) {
-      return null;
-    }
-
-    return this.entities.get(id) ?? null;
-  }
-
-  /**
-   * Entity doesn't exist or `isDestroyed === true`
-   */
-  public isEntityDestroyed(id: number): boolean {
-    const entity = this.getEntity(id);
-    return entity === null || entity.destroyed;
-  }
-
-  public get entityCount(): number {
-    return this.entities.size;
-  }
+  // public get entityCount(): number {
+  //   return this.entities.size;
+  // }
 
   public getPlayer() {
-    const player = this.query(["Player"])[0];
+    const player = this.entities.query(["Player"])[0];
     assert(player);
     return player as ShipEntity;
   }
 
-  public addEntity<T extends Kind>(
-    components: Components<T>,
-    options?: {
-      lifespan?: number;
-    }
-  ): Entity<T> {
-    this.queryCache = {};
-
-    const entity = {
-      id: this.nextId,
-      spawned: this.elapsed,
-      components,
-      lifespan: options?.lifespan,
-      destroyed: false,
-    };
-
-    this.entities.set(this.nextId, entity);
-    this.nextId++;
-
-    return entity as Entity<T>;
-  }
-
-  /**
-   * Return a collection of entities that contain ALL the componentKinds provided.
-   */
-  public query<K extends Kind>(componentKinds: K[]): Entity<K>[] {
-    const hash = componentKinds.join("");
-
-    if (this.queryCache[hash]) {
-      return this.queryCache[hash] as Entity<K>[];
-    }
-
-    const hits = Array.from(this.entities.values()).filter((e) =>
-      this.isMatch(e, componentKinds)
-    ) as Entity<K>[];
-
-    this.queryCache[hash] = hits;
-
-    return hits;
-  }
-
   public start() {
     requestAnimationFrame(this.tick.bind(this));
-  }
-
-  /**
-   * Return if this entity matches the provided componentKinds. It must include ALL kinds.
-   * If componentKinds is false, then it handles no entities.
-   */
-  private isMatch(entity: Entity, componentKinds: Kind[]): boolean {
-    if (!componentKinds.length) {
-      return false;
-    }
-
-    const kinds = Object.values(entity.components)
-      .filter((c) => c !== undefined)
-      .map((c) => c.kind);
-    for (const c of componentKinds) {
-      if (!kinds.includes(c)) {
-        return false;
-      }
-    }
-    return true;
   }
 
   /**
@@ -217,7 +117,7 @@ export class ECS {
      */
     this.systems.forEach((sys) => {
       this.entities.forEach((e) => {
-        if (this.isMatch(e, sys.componentKinds)) {
+        if (this.entities.isMatch(e, sys.componentKinds)) {
           sys.update?.(e as Entity<Kind>, delta);
         }
       });
@@ -228,7 +128,7 @@ export class ECS {
      */
     this.entities.forEach((e) => {
       if (e.destroyed) {
-        this.entities.delete(e.id);
+        this.entities._delete(e.id);
       }
     });
 

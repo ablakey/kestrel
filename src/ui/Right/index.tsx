@@ -7,7 +7,7 @@ import { Target } from "./Target";
 export function Right(props: { ecs: ECS }) {
   const player = props.ecs.getPlayer();
 
-  const target = props.ecs.getEntity(player.components.Offensive.target);
+  const target = props.ecs.entities.get(player.components.Offensive.target);
 
   return (
     <div
@@ -24,7 +24,7 @@ export function Right(props: { ecs: ECS }) {
       <Minimap />
       <Stats hp={player.components.Health.hp} />
       <Target target={target} />
-      <Info entityCount={props.ecs.entityCount} player={player} />
+      <Info entityCount={props.ecs.entities.length} player={player} />
     </div>
   );
 }

@@ -1,5 +1,4 @@
 import Victor from "victor";
-import { events } from "../events";
 import { WeaponName, Weapons } from "../Items/Weapons";
 import { BaseUtility } from "./BaseUtility";
 
@@ -9,15 +8,9 @@ export class BulletFactory extends BaseUtility {
 
     const position = new Victor(opts.x, opts.y);
 
-    /**
-     * Emit the event.
-     */
-    events.emit("spawn", { position, sound: weaponType.sound });
+    this.ecs.audioFactory.playSound(weaponType.sound);
 
-    /**
-     * Spawn the entity.
-     */
-    this.ecs.addEntity(
+    this.ecs.entities.add(
       {
         Body: {
           kind: "Body",

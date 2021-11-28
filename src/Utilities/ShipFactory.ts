@@ -15,7 +15,7 @@ export class ShipFactory extends BaseUtility {
   }) {
     const shipType = Ships[opts.shipName];
 
-    return this.ecs.addEntity({
+    return this.ecs.entities.add({
       Engine: {
         kind: "Engine",
         direction: Direction.None,

@@ -143,7 +143,7 @@ export const RenderSystem = (ecs: ECS): System => {
       /**
        * Update reticle position if there is a target, otherwise create one, otherwise delete it.
        */
-      const target = ecs.getEntity(Offensive.target);
+      const target = ecs.entities.get(Offensive.target);
       if (target === null && renderedReticle) {
         console.log("destroy reticle");
         renderedReticle?.graphic.destroy();
