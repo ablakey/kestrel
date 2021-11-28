@@ -10,7 +10,7 @@ import { InputSystem } from "./Systems/InputSystem";
 import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
-import { AudioFactory } from "./Utilities/AudioFactory";
+import { Audio } from "./Utilities/audio";
 import { BulletFactory } from "./Utilities/BulletFactory";
 import { ShipEntity, ShipFactory } from "./Utilities/ShipFactory";
 import { assert } from "./utils";
@@ -61,12 +61,12 @@ export class ECS {
    */
   public bulletFactory: BulletFactory;
   public shipFactory: ShipFactory;
-  public audioFactory: AudioFactory;
+  public audio: Audio;
 
   constructor() {
     this.bulletFactory = new BulletFactory(this);
     this.shipFactory = new ShipFactory(this);
-    this.audioFactory = new AudioFactory(this);
+    this.audio = new Audio(this);
     this.systems = SystemCreators.map((s) => s(this));
     this.entities = new Entities(this);
   }

@@ -69,10 +69,10 @@ export const InputSystem = (ecs: ECS): System => {
       inputQueue.delete(k);
 
       // Target
-      if (k === Inputs.NextTarget.key) {
-        Offensive.target = ecs.entities.getTarget(Offensive.target, 1);
-      } else if (k === Inputs.PreviousTarget.key) {
-        Offensive.target = ecs.entities.getTarget(Offensive.target, -1);
+      if ([Inputs.NextTarget.key, Inputs.PreviousTarget.key].includes(k as any)) {
+        const index = k === Inputs.NextTarget.key ? 1 : -1;
+        Offensive.target = ecs.entities.getTarget(Offensive.target, index);
+        ecs.audio.playSound("Beep1");
       }
     });
   }

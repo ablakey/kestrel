@@ -147,7 +147,6 @@ export const RenderSystem = (ecs: ECS): System => {
        */
       const target = ecs.entities.get(Offensive.target);
       if (target === null && renderedReticle) {
-        console.log("destroy reticle");
         renderedReticle?.graphic.destroy();
         renderedReticle = undefined;
       } else if (target) {
