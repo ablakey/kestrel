@@ -1,6 +1,6 @@
 import { Item, WeaponInstance } from ".";
-import blueShip from "../assets/pixel_ship_blue.png";
-import redShip from "../assets/pixel_ship_red.png";
+import blueShip from "../assets/sprites/pixel_ship_blue.png";
+import redShip from "../assets/sprites/pixel_ship_red.png";
 
 export type Ship = Item & {
   hp: number;
@@ -27,7 +27,7 @@ export const Ships: Record<ShipName, Ship> = {
     turnRate: 4,
     offsetX: 0.5,
     offsetY: 0.6,
-    weapons: [{ name: "ProtonCannon", count: 1, lastUsed: 0 }],
+    weapons: [{ name: "ProtonCannon", count: 2, lastUsed: 0 }],
   },
   Red: {
     hp: 100,

@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
-import bg from "../assets/spr_stars01.png";
-import bg2 from "../assets/spr_stars02.png";
+import bg from "../assets/sprites/spr_stars01.png";
+import bg2 from "../assets/sprites/spr_stars02.png";
 import { ECS, Entity, System } from "../ecs";
 import { assert } from "../utils";
 

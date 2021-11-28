@@ -1,5 +1,8 @@
-import laserTexture from "../assets/pixel_laser_green.png";
-import protonTexture from "../assets/pixel_laser_blue.png";
+import laserTexture from "../assets/sprites/pixel_laser_green.png";
+import protonTexture from "../assets/sprites/pixel_laser_blue.png";
+import laserSound from "../assets/sounds/laser.mp3";
+import protonSound from "../assets/sounds/proton.mp3";
+
 import { Item } from ".";
 
 export type Weapon = Item & {
@@ -11,6 +14,7 @@ export type Weapon = Item & {
   lifespan: number; // ms that bullets weapon this wepaon live for.
   type: "Primary" | "Secondary";
   accuracy: number; // 0-1 where 0 fires in any direction while 1 is always the correct direction.
+  sound: string;
 };
 
 export type WeaponName = "LaserCannon" | "ProtonCannon";
@@ -26,6 +30,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     accuracy: 0.95,
     label: "Laser Cannon",
     type: "Primary",
+    sound: laserSound,
   },
   ProtonCannon: {
     label: "Proton Cannon",
@@ -37,5 +42,6 @@ export const Weapons: Record<WeaponName, Weapon> = {
     lifespan: 1_000,
     accuracy: 0.95,
     type: "Primary",
+    sound: protonSound,
   },
 };

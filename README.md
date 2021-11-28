@@ -14,8 +14,7 @@ I fought with this for a while. I don't think I have the best solution here, but
 - didn't want to have to explicitly define the constructor and call super every time
   - particularly if I had class members that needed initialization on create
 
-## onTick
-An optional function for each system that is called once per simulation tick.
+
 
 ## Tags
 I tried to remove tags once thinking it wasn't that useful. Ran into the issue that I need tags to sub-query things.

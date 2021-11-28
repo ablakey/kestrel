@@ -1,10 +1,6 @@
 import { ECS, Entity, System } from "../ecs";
 
 export const BulletSystem = (ecs: ECS): System => {
-  // function onTick(delta: number) {
-  //   ecs.query(["Body", "Health"], [Tag.Enemy]).forEach((e) => {});
-  // }
-
   function update(entity: Entity<"Damage" | "Body">) {
     /**
      * Detect collisions.

@@ -8,6 +8,7 @@ import { EngineSystem } from "./Systems/EngineSystem";
 import { InputSystem } from "./Systems/InputSystem";
 import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
+import { SoundSystem } from "./Systems/SoundSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
 import { BulletFactory } from "./Utilities/BulletFactory";
 import { QueryHelpers } from "./Utilities/QueryHelpers";
@@ -37,6 +38,7 @@ const SystemCreators = [
   BulletSystem,
   StatsSystem,
   RenderSystem,
+  SoundSystem,
   CleanupSystem,
 ];
 
@@ -45,7 +47,7 @@ export type Kind = Component["kind"];
 export interface System {
   componentKinds: Kind[];
   onTick?: (delta: number) => void;
-  update: (entity: Entity<Kind>, delta: number) => void;
+  update?: (entity: Entity<Kind>, delta: number) => void;
 }
 
 type UtilityInstances = {
@@ -163,7 +165,15 @@ export class ECS {
     requestAnimationFrame(this.tick.bind(this));
   }
 
+  /**
+   * Return if this entity matches the provided componentKinds. It must include ALL kinds.
+   * If componentKinds is false, then it handles no entities.
+   */
   private isMatch(entity: Entity, componentKinds: Kind[]): boolean {
+    if (!componentKinds.length) {
+      return false;
+    }
+
     const kinds = Object.values(entity.components)
       .filter((c) => c !== undefined)
       .map((c) => c.kind);
@@ -208,7 +218,7 @@ export class ECS {
     this.systems.forEach((sys) => {
       this.entities.forEach((e) => {
         if (this.isMatch(e, sys.componentKinds)) {
-          sys.update(e as Entity<Kind>, delta);
+          sys.update?.(e as Entity<Kind>, delta);
         }
       });
     });
