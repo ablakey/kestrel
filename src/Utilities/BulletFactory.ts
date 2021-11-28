@@ -8,7 +8,7 @@ export class BulletFactory extends BaseUtility {
 
     const position = new Victor(opts.x, opts.y);
 
-    this.ecs.audio.playSound(weaponType.sound);
+    this.ecs.audio.playSound(weaponType.sound, { position: position });
 
     this.ecs.entities.add(
       {
