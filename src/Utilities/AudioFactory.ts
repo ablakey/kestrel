@@ -1,23 +1,15 @@
 import { Howl } from "howler";
 import Victor from "victor";
+import { SoundName, Sounds } from "../resources";
 import { BaseUtility } from "./BaseUtility";
-import laserSound from "../assets/sounds/laser.mp3";
-import protonSound from "../assets/sounds/proton.mp3";
 
 const POSITION_SCALE = 0.1; // Adjust to affect how distance plays a role in sound.
 const GLOBAL_VOLUME = 0.5;
 
-const soundFiles = {
-  Laser: laserSound,
-  Proton: protonSound,
-};
-
-export type SoundName = keyof typeof soundFiles;
-
 export class AudioFactory extends BaseUtility {
   public playSound(soundName: SoundName, opts?: { position: Victor }) {
     const sound = new Howl({
-      src: [soundFiles[soundName]],
+      src: [Sounds[soundName]],
       volume: GLOBAL_VOLUME,
       // html5: true,
     });

@@ -25,7 +25,7 @@ export class BulletFactory extends BaseUtility {
         },
         Sprite: {
           kind: "Sprite",
-          texture: weaponType.bulletTexture,
+          sprite: weaponType.sprite,
           offsetX: 0.5,
           offsetY: 0.5,
         },

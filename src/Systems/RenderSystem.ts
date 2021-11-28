@@ -2,6 +2,7 @@ import * as PIXI from "pixi.js";
 import bg from "../assets/sprites/spr_stars01.png";
 import bg2 from "../assets/sprites/spr_stars02.png";
 import { ECS, Entity, System } from "../ecs";
+import { Sprites } from "../resources";
 import { assert } from "../utils";
 
 /**
@@ -108,7 +109,8 @@ export const RenderSystem = (ecs: ECS): System => {
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
-      const newItem = PIXI.Sprite.from(Sprite.texture);
+      const spriteFile = Sprites[Sprite.sprite];
+      const newItem = PIXI.Sprite.from(spriteFile);
       newItem.anchor.set(Sprite.offsetX, Sprite.offsetY);
       container.addChild(newItem);
       renderedItems[entity.id] = newItem;

@@ -2,6 +2,7 @@ import Victor from "victor";
 import { DamageEffect } from "./Effects";
 import { CombatBehaviour, Direction, MovementBehaviour, Team, Thrust } from "./enum";
 import { WeaponInstance } from "./Items";
+import { SpriteName } from "./resources";
 
 export type Body = {
   kind: "Body";
@@ -52,7 +53,7 @@ export type Health = {
 
 export type Sprite = {
   kind: "Sprite";
-  texture: string;
+  sprite: SpriteName;
   offsetX: number;
   offsetY: number;
 };

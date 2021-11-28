@@ -1,10 +1,10 @@
 import { Item, WeaponInstance } from ".";
-import blueShip from "../assets/sprites/pixel_ship_blue.png";
-import redShip from "../assets/sprites/pixel_ship_red.png";
+
+import { SpriteName } from "../resources";
 
 export type Ship = Item & {
   hp: number;
-  texture: string;
+  sprite: SpriteName;
   radius: number;
   maxSpeed: number;
   acceleration: number;
@@ -19,7 +19,7 @@ export type ShipName = "Blue" | "Red";
 export const Ships: Record<ShipName, Ship> = {
   Blue: {
     hp: 100,
-    texture: blueShip,
+    sprite: "BlueShip",
     label: "Blue Ship",
     radius: 60,
     maxSpeed: 500,
@@ -31,7 +31,7 @@ export const Ships: Record<ShipName, Ship> = {
   },
   Red: {
     hp: 100,
-    texture: redShip,
+    sprite: "RedShip",
     label: "Red Ship",
     radius: 60,
     maxSpeed: 500,

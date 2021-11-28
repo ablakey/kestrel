@@ -58,7 +58,7 @@ export class ShipFactory extends BaseUtility {
       },
       Sprite: {
         kind: "Sprite",
-        texture: shipType.texture,
+        sprite: shipType.sprite,
         offsetX: shipType.offsetX,
         offsetY: shipType.offsetY,
       },

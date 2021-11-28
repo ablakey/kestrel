@@ -1,13 +1,10 @@
-import laserTexture from "../assets/sprites/pixel_laser_green.png";
-import protonTexture from "../assets/sprites/pixel_laser_blue.png";
-
 import { Item } from ".";
-import { SoundName } from "../Utilities/AudioFactory";
+import { SoundName, SpriteName } from "../resources";
 
 export type Weapon = Item & {
   speed: number;
   fireRate: number; // How many bullets per second are fired from this weapon.
-  bulletTexture: string;
+  sprite: SpriteName;
   damage: number;
   maxRange: number; // range in units this weapon is effective at.  For AI.
   lifespan: number; // ms that bullets weapon this wepaon live for.
@@ -22,7 +19,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
   LaserCannon: {
     speed: 1_100,
     fireRate: 2,
-    bulletTexture: laserTexture,
+    sprite: "Laser",
     damage: 1,
     maxRange: 1_000,
     lifespan: 1_000,
@@ -35,7 +32,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     label: "Proton Cannon",
     speed: 1_200,
     fireRate: 1.5,
-    bulletTexture: protonTexture,
+    sprite: "Proton",
     damage: 5,
     maxRange: 1_000,
     lifespan: 1_000,
