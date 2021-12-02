@@ -1,8 +1,8 @@
 # Snakefood
 
-## Why is ECS so tightly bound to the game?
+## Why is Game so tightly bound to the game?
 It's not a library and I didn't want to add extra verbosity in many places by making it generic.
-There's many better ECS libraries anyway.
+There's many better Game libraries anyway.
 
 ## Systems are closures?
 
@@ -90,3 +90,28 @@ Probably going to keep this very simple for now.
 - Ship WeaponsAI
   - Decide what weapon to fire.
   - Decide when to fire it.
+
+
+## Tracking Hostility
+
+- Some factions are always hostile with each other
+- Faction hostility can change
+- Per-system reputation
+- You can be hostile with individual ships.
+
+I think the way we handle it might be:
+
+- World state:
+  - Every faction has reputations with every other faction (by default it can be like: 10)
+  - If a reputation is below 0, they're default hostile
+  - Reputation can go up and down between entire factions
+
+- Instance state:
+  - Is initialized based on world state
+  - A second set of state for this instance (the system we're in)
+  - We can make it get worse or better
+  - it affects world state to a lesser amount.  (eg. make an entire faction attack you in a system hurts your rep with them globally, but not as steep. They might not attack you in another system yet)
+
+- Ship Politics component state:
+  - Are initialized based on instance state
+  - Can go up and down in the immediate case. (eg. making a single ship hostile with you)

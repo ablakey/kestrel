@@ -1,12 +1,12 @@
 import { times } from "lodash";
 import ReactDOM from "react-dom";
-import { ECS } from "./ecs";
+import { Game } from "./game";
 import { Team } from "./enum";
 import { UiRoot } from "./ui/UiRoot";
 
-const ecs = new ECS();
+const game = new Game();
 
-const playerShip = ecs.shipFactory.create({
+const playerShip = game.shipFactory.create({
   x: 0,
   y: 0,
   yaw: 0,
@@ -20,7 +20,7 @@ playerShip.components.Offensive!.target = 1;
 const TEST_RANGE = 1500;
 const TEST_COUNT = 3;
 times(TEST_COUNT, () => {
-  const ship = ecs.shipFactory.create({
+  const ship = game.shipFactory.create({
     x: Math.random() * TEST_RANGE - TEST_RANGE / 2,
     y: Math.random() * TEST_RANGE - TEST_RANGE / 2,
     yaw: 0,
@@ -32,21 +32,21 @@ times(TEST_COUNT, () => {
   ship.components.Offensive!.target = 0;
 });
 
-ecs.start();
+game.start();
 
 declare global {
   interface Window {
-    _ecs: ECS;
+    _game: Game;
   }
 }
 
-window._ecs = ecs;
+window._game = game;
 
 /**
  * UI.
  */
 function render() {
-  ReactDOM.render(<UiRoot ecs={ecs} />, document.getElementById("ui"));
+  ReactDOM.render(<UiRoot game={game} />, document.getElementById("ui"));
   requestAnimationFrame(render);
 }
 

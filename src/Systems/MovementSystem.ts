@@ -1,4 +1,4 @@
-import { Entity, System } from "../ecs";
+import { Entity, System } from "../game";
 
 /**
  * Updates the Body's position and yaw based on its velocity and rotational velocity.

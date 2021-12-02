@@ -1,4 +1,4 @@
-import { ECS, Entity, System } from "../ecs";
+import { Game, Entity, System } from "../game";
 import { CombatBehaviour } from "../enum";
 import { Weapons } from "../Items/Weapons";
 import { assert, isFacing } from "../utils";
@@ -7,7 +7,7 @@ import { assert, isFacing } from "../utils";
  * System decides what weapons to fire and when.
  * This will involve concerns such as weapon range, direction facing, etc.
  */
-export const AICombatSystem = (ecs: ECS): System => {
+export const AICombatSystem = (game: Game): System => {
   function update(entity: Entity<"Offensive" | "Body" | "Inventory" | "AI">) {
     // Do not attempt to do any AI combat.
     if (entity.components.AI.combatBehaviour === CombatBehaviour.None) {
@@ -25,7 +25,7 @@ export const AICombatSystem = (ecs: ECS): System => {
     /**
      * Calculate if primary weapons should be firing.
      */
-    const target = ecs.entities.get(entity.components.Offensive.target);
+    const target = game.entities.get(entity.components.Offensive.target);
     assert(target);
     assert(target.components.Body);
 

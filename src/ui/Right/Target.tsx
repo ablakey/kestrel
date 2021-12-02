@@ -1,4 +1,3 @@
-import { Sprites } from "../../resources";
 import { TeamLabel } from "../../strings";
 import { ShipEntity } from "../../Utilities/ShipFactory";
 
@@ -6,10 +5,8 @@ export function Target(props: { target: ShipEntity | null }) {
   const { target } = props;
 
   if (target === null) {
-    return "No Target Selected.";
+    return <span>"No Target Selected."</span>;
   }
-
-  // const shipType = Ships[props.tar];
 
   return (
     <div

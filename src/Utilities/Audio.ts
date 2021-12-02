@@ -4,7 +4,7 @@ import { SoundName, Sounds } from "../resources";
 import { BaseUtility } from "./BaseUtility";
 
 const POSITION_SCALE = 0.1; // Adjust to affect how distance plays a role in sound.
-const GLOBAL_VOLUME = 0.5;
+const GLOBAL_VOLUME = 0.1;
 
 export class Audio extends BaseUtility {
   public playSound(soundName: SoundName, opts?: { position: Victor }) {
@@ -16,10 +16,9 @@ export class Audio extends BaseUtility {
 
     /**
      * Calculate position.
-     * If within a threshold, just play centred.
      */
     if (opts?.position) {
-      const playerPosition = this.ecs.getPlayer().components.Body.position;
+      const playerPosition = this.game.getPlayer().components.Body.position;
       const soundPosition = opts.position.clone().subtract(playerPosition);
 
       sound.pos(soundPosition.x * POSITION_SCALE, soundPosition.y * POSITION_SCALE, 0);
