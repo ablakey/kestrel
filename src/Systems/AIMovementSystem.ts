@@ -1,8 +1,8 @@
-import { ECS, Entity, System } from "../ecs";
+import { Game, Entity, System } from "../game";
 import { MovementBehaviour, Thrust } from "../enum";
 import { assert, getDeltaAngle, getTurnDirection } from "../utils";
 
-export const AIMovementSystem = (ecs: ECS): System => {
+export const AIMovementSystem = (game: Game): System => {
   function update(entity: Entity<"Body" | "AI" | "Offensive" | "Engine">) {
     const { AI, Offensive, Body, Engine } = entity.components;
 
@@ -10,7 +10,7 @@ export const AIMovementSystem = (ecs: ECS): System => {
       return;
     }
 
-    const target = ecs.entities.get(Offensive.target);
+    const target = game.entities.get(Offensive.target);
     assert(target);
     assert(target?.components.Body);
 

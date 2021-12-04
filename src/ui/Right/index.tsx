@@ -1,14 +1,15 @@
-import { ECS } from "../../ecs";
+import { Game } from "../../game";
+import { ShipEntity } from "../../Utilities/ShipFactory";
 import { Info } from "./Info";
 import { Minimap } from "./Minimap";
 import { Panel } from "./Panel";
 import { Stats } from "./Stats";
 import { Target } from "./Target";
 
-export function Right(props: { ecs: ECS }) {
-  const player = props.ecs.getPlayer();
+export function Right(props: { game: Game }) {
+  const player = props.game.getPlayer();
 
-  const target = props.ecs.entities.get(player.components.Offensive.target);
+  const target = props.game.entities.get(player.components.Offensive.target) as ShipEntity;
 
   return (
     <div
@@ -27,7 +28,7 @@ export function Right(props: { ecs: ECS }) {
       <Panel style={{ height: 200 }}>
         <Target target={target} />
       </Panel>
-      <Info entityCount={props.ecs.entities.length} player={player} />
+      <Info entityCount={props.game.entities.length} player={player} />
     </div>
   );
 }

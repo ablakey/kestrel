@@ -1,5 +1,5 @@
 import Victor from "victor";
-import { Entity, System } from "../ecs";
+import { Entity, System } from "../game";
 import { Direction, Thrust } from "../enum";
 
 export const EngineSystem = (): System => {

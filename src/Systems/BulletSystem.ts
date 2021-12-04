@@ -1,11 +1,11 @@
-import { ECS, Entity, System } from "../ecs";
+import { Game, Entity, System } from "../game";
 
-export const BulletSystem = (ecs: ECS): System => {
+export const BulletSystem = (game: Game): System => {
   function update(entity: Entity<"Damage" | "Body">) {
     /**
      * Detect collisions.
      */
-    ecs.entities.query(["Body", "Health"]).forEach((e) => {
+    game.entities.query(["Body", "Health"]).forEach((e) => {
       const distance = entity.components.Body.position.distance(e.components.Body.position);
       if (distance < 50) {
         entity.destroyed = true;

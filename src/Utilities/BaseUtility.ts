@@ -1,9 +1,9 @@
-import { ECS } from "../ecs";
+import { Game } from "../game";
 
 export class BaseUtility {
-  protected ecs: ECS;
+  protected game: Game;
 
-  constructor(ecs: ECS) {
-    this.ecs = ecs;
+  constructor(game: Game) {
+    this.game = game;
   }
 }

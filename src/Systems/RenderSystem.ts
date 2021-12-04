@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import bg from "../assets/sprites/spr_stars01.png";
 import bg2 from "../assets/sprites/spr_stars02.png";
-import { ECS, Entity, System } from "../ecs";
+import { Game, Entity, System } from "../game";
 import { Sprites } from "../resources";
 import { assert } from "../utils";
 
@@ -50,7 +50,7 @@ const PARALLAX_MAGNIUDE = 0.5;
  */
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-export const RenderSystem = (ecs: ECS): System => {
+export const RenderSystem = (game: Game): System => {
   const renderedItems: Record<string, PIXI.Sprite> = {};
   let renderedReticle: { targetId: number; graphic: PIXI.Graphics } | undefined = undefined;
 
@@ -145,7 +145,7 @@ export const RenderSystem = (ecs: ECS): System => {
       /**
        * Update reticle position if there is a target, otherwise create one, otherwise delete it.
        */
-      const target = ecs.entities.get(Offensive.target);
+      const target = game.entities.get(Offensive.target);
       if (target === null && renderedReticle) {
         renderedReticle?.graphic.destroy();
         renderedReticle = undefined;

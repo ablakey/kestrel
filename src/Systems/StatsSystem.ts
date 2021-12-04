@@ -1,4 +1,4 @@
-import { Entity, System } from "../ecs";
+import { Entity, System } from "../game";
 
 export const StatsSystem = (): System => {
   function update(entity: Entity<"Health">) {

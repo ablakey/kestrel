@@ -10,7 +10,7 @@ import { InputSystem } from "./Systems/InputSystem";
 import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
-import { Audio } from "./Utilities/audio";
+import { Audio } from "./Utilities/Audio";
 import { BulletFactory } from "./Utilities/BulletFactory";
 import { ShipEntity, ShipFactory } from "./Utilities/ShipFactory";
 import { assert } from "./utils";
@@ -51,7 +51,7 @@ export type Entity<T extends Kind = Exclude<Kind, Kind>> = {
   destroyed: boolean;
 };
 
-export class ECS {
+export class Game {
   private systems: System[];
   public elapsed = 0;
   public entities: Entities;

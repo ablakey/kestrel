@@ -1,4 +1,4 @@
-import { Components, ECS, Entity, Kind } from "./ecs";
+import { Components, Game, Entity, Kind } from "./game";
 import { Team } from "./enum";
 import { assert } from "./utils";
 
@@ -14,10 +14,10 @@ export class Entities {
   private queryCache: Record<string, Entity<any>[] | undefined> = {};
   private entities: Map<number, Entity> = new Map();
   private nextId = 0;
-  private ecs: ECS;
+  private game: Game;
 
-  constructor(ecs: ECS) {
-    this.ecs = ecs;
+  constructor(game: Game) {
+    this.game = game;
   }
 
   public get length() {
@@ -38,7 +38,7 @@ export class Entities {
 
     const entity = {
       id: this.nextId,
-      spawned: this.ecs.elapsed,
+      spawned: this.game.elapsed,
       components,
       lifespan: options?.lifespan,
       destroyed: false,
@@ -52,7 +52,7 @@ export class Entities {
 
   /**
    * Delete an entity.
-   * Should only be used by ECS.
+   * Should only be used by Game.
    */
   public _delete(id: number) {
     this.entities.delete(id);
@@ -123,7 +123,7 @@ export class Entities {
 
   /**
    * From all possible targets, get the next one by indexing one beyond previousTarget.
-   * This depends on ecs.query returning stable results.
+   * This depends on game.query returning stable results.
    */
   getTarget(currentTarget: number | null, offsetIndex?: number): number | null {
     const targets = this.getTargets();

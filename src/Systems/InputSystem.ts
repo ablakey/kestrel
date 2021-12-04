@@ -1,4 +1,4 @@
-import { ECS, Entity, System } from "../ecs";
+import { Game, Entity, System } from "../game";
 import { Direction, Thrust } from "../enum";
 
 const Inputs = {
@@ -26,7 +26,7 @@ function parseFullKey(e: KeyboardEvent): string {
   return `${e.altKey ? "Alt" : ""}${e.ctrlKey ? "Ctrl" : ""}${e.shiftKey ? "Shift" : ""}${e.code}`;
 }
 
-export const InputSystem = (ecs: ECS): System => {
+export const InputSystem = (game: Game): System => {
   const keyState: Record<string, boolean | undefined> = {};
   const inputQueue: Set<string> = new Set(); // Set to avoid multiples of same key.
 
@@ -71,8 +71,8 @@ export const InputSystem = (ecs: ECS): System => {
       // Target
       if ([Inputs.NextTarget.key, Inputs.PreviousTarget.key].includes(k as any)) {
         const index = k === Inputs.NextTarget.key ? 1 : -1;
-        Offensive.target = ecs.entities.getTarget(Offensive.target, index);
-        ecs.audio.playSound("Beep1");
+        Offensive.target = game.entities.getTarget(Offensive.target, index);
+        game.audio.playSound("Beep1");
       }
     });
   }

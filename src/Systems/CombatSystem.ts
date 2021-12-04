@@ -1,8 +1,8 @@
 import Victor from "victor";
-import { ECS, Entity, System } from "../ecs";
+import { Game, Entity, System } from "../game";
 import { Weapons } from "../Items/Weapons";
 
-export const CombatSystem = (ecs: ECS): System => {
+export const CombatSystem = (game: Game): System => {
   function update(entity: Entity<"Offensive" | "Body" | "Inventory">) {
     const { Offensive, Body, Inventory } = entity.components;
 
@@ -12,7 +12,7 @@ export const CombatSystem = (ecs: ECS): System => {
       const isFiring = weaponType.type === "Primary" ? Offensive.primaryFire : false; // TODO secondary.
       const fireDelay = 1000 / (weaponType.fireRate * w.count); // delay between shots in ms.
 
-      if (!isFiring || w.lastUsed + fireDelay > ecs.elapsed) {
+      if (!isFiring || w.lastUsed + fireDelay > game.elapsed) {
         return;
       }
 
@@ -20,14 +20,14 @@ export const CombatSystem = (ecs: ECS): System => {
         .clone()
         .add(new Victor(entity.components.Offensive.bulletOffset, 0).rotate(Body.yaw.angle()));
 
-      ecs.bulletFactory.create({
+      game.bulletFactory.create({
         x: bulletPos.x,
         y: bulletPos.y,
         yaw: Body.yaw.angle() + Math.random() * (1 - weaponType.accuracy),
         weaponName: w.name,
       });
 
-      w.lastUsed = ecs.elapsed;
+      w.lastUsed = game.elapsed;
     });
   }
   return { update, componentKinds: ["Offensive", "Body", "Inventory"] };

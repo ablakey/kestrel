@@ -1,6 +1,6 @@
-import { ECS } from "../ecs";
+import { Game } from "../game";
 
-export function Overlay(props: { ecs: ECS }) {
+export function Overlay(props: { game: Game }) {
   return (
     <div
       style={{
