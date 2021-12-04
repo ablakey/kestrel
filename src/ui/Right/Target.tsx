@@ -1,4 +1,3 @@
-import { Sprites } from "../../resources";
 import { TeamLabel } from "../../strings";
 import { ShipEntity } from "../../Utilities/ShipFactory";
 
