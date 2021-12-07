@@ -19,7 +19,7 @@ export function Target(props: { target: ShipEntity | null }) {
         padding: 6,
       }}
     >
-      <div>Top</div>
+      <div>{target.components.Description.label}</div>
       <div
         style={{
           display: "flex",

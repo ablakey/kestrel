@@ -13,7 +13,7 @@ export const StatsSystem = (): System => {
     }
 
     /**
-     * Is ship destroyed?
+     * Is destroyed?
      */
     if (Health.hp <= 0 && !Player) {
       entity.destroyed = true;

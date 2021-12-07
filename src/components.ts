@@ -78,6 +78,16 @@ export type Politics = {
   team: Team;
 };
 
+export type Description = {
+  kind: "Description";
+  label: string;
+};
+
+export type Exploding = {
+  kind: "Exploding";
+  start: number;
+};
+
 export type Component =
   | AI
   | Body
@@ -90,4 +100,6 @@ export type Component =
   | Offensive
   | Player
   | Politics
-  | Sprite;
+  | Sprite
+  | Description
+  | Exploding;

@@ -1,6 +1,7 @@
 import { Components, Game, Entity, Kind } from "./game";
 import { Team } from "./enum";
 import { assert } from "./utils";
+import { Component } from "./components";
 
 export class Entities {
   /**
@@ -125,7 +126,7 @@ export class Entities {
    * From all possible targets, get the next one by indexing one beyond previousTarget.
    * This depends on game.query returning stable results.
    */
-  getTarget(currentTarget: number | null, offsetIndex?: number): number | null {
+  public getTarget(currentTarget: number | null, offsetIndex?: number): number | null {
     const targets = this.getTargets();
 
     if (!targets.length) {
@@ -141,5 +142,14 @@ export class Entities {
       assert(newTarget);
       return newTarget.id;
     }
+  }
+
+  public addComponent(entityId: number, component: Component) {
+    const entity = this.get(entityId);
+    assert(entity);
+    if (entity.components[component.kind]) {
+      throw new Error("Cannot add component. It already exists.");
+    }
+    entity.components[component.kind] = component as any; // TODO Type safety.
   }
 }

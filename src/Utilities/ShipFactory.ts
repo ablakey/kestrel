@@ -16,6 +16,10 @@ export class ShipFactory extends BaseUtility {
     const shipType = Ships[opts.shipName];
 
     return this.game.entities.add({
+      Description: {
+        kind: "Description",
+        label: shipType.label,
+      },
       Engine: {
         kind: "Engine",
         direction: Direction.None,
