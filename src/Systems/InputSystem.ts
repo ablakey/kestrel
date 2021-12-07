@@ -15,7 +15,7 @@ const Inputs = {
   PreviousTarget: { key: "ShiftTab", asEvent: true },
 
   // UI
-  ToggleDebugModal: { key: "KeyI" },
+  ToggleDebugModal: { key: "KeyI", asEvent: true },
 } as const;
 
 const keysInUse = new Set(Object.values(Inputs).map((k) => k.key));
@@ -33,7 +33,15 @@ export const InputSystem = (game: Game): System => {
   const keyState: Record<string, boolean | undefined> = {};
   const inputQueue: Set<string> = new Set(); // Set to avoid multiples of same key.
 
-  document.addEventListener("keyup", (e) => (keyState[parseFullKey(e)] = false));
+  document.addEventListener("keyup", (e) => {
+    const code = parseFullKey(e);
+
+    if (inputsByKey[code]?.asEvent) {
+      inputQueue.add(code);
+    } else {
+      keyState[code] = false;
+    }
+  });
 
   document.addEventListener("keydown", (e) => {
     const code = parseFullKey(e);
@@ -41,9 +49,7 @@ export const InputSystem = (game: Game): System => {
       return;
     }
 
-    if (inputsByKey[code].asEvent) {
-      inputQueue.add(code);
-    } else {
+    if (!inputsByKey[code].asEvent) {
       keyState[code] = true;
     }
 
@@ -83,6 +89,7 @@ export const InputSystem = (game: Game): System => {
           game.audio.playSound("Beep1");
           break;
         case Inputs.ToggleDebugModal.key:
+          console.log("toggle debug");
           game.state.showDebug = !game.state.showDebug;
           break;
       }

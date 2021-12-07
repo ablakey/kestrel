@@ -1,15 +1,17 @@
-import { Game } from "../../game";
 import { ShipEntity } from "../../Utilities/ShipFactory";
+import { useGame } from "../uiHelpers";
 import { Info } from "./Info";
 import { Minimap } from "./Minimap";
 import { Panel } from "./Panel";
 import { Stats } from "./Stats";
 import { Target } from "./Target";
 
-export function Right(props: { game: Game }) {
-  const player = props.game.getPlayer();
+export function Right() {
+  const game = useGame();
 
-  const target = props.game.entities.get(player.components.Offensive.target) as ShipEntity;
+  const player = game.getPlayer();
+
+  const target = game.entities.get(player.components.Offensive.target) as ShipEntity;
 
   return (
     <div
@@ -28,7 +30,7 @@ export function Right(props: { game: Game }) {
       <Panel style={{ height: 200 }}>
         <Target target={target} />
       </Panel>
-      <Info entityCount={props.game.entities.length} player={player} />
+      <Info entityCount={game.entities.length} player={player} />
     </div>
   );
 }

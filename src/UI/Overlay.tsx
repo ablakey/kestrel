@@ -1,6 +1,4 @@
-import { Game } from "../game";
-
-export function Overlay(props: { game: Game }) {
+export function Overlay() {
   return (
     <div
       style={{

@@ -4,13 +4,13 @@ import { SoundName, Sounds } from "../resources";
 import { BaseUtility } from "./BaseUtility";
 
 const POSITION_SCALE = 0.1; // Adjust to affect how distance plays a role in sound.
-const GLOBAL_VOLUME = 0.1;
+const GLOBAL_VOLUME_ADJUST = 0.5; // Volume at 1.0 is way too loud.
 
 export class Audio extends BaseUtility {
   public playSound(soundName: SoundName, opts?: { position: Victor }) {
     const sound = new Howl({
       src: [Sounds[soundName]],
-      volume: GLOBAL_VOLUME,
+      volume: this.game.state.volume * GLOBAL_VOLUME_ADJUST,
       // html5: true,
     });
 

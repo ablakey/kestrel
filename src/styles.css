@@ -34,6 +34,7 @@ body {
 
 .modal {
   border: 2px solid white;
+  padding: 12px;
   background-color: black;
   position: fixed;
   top: 50%;
