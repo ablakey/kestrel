@@ -36,15 +36,24 @@ export const InputSystem = (game: Game): System => {
   document.addEventListener("keyup", (e) => {
     const code = parseFullKey(e);
 
+    // Only capture keys that we're using.
+    if (!keysInUse.has(code as any)) {
+      return;
+    }
+
     if (inputsByKey[code]?.asEvent) {
       inputQueue.add(code);
     } else {
       keyState[code] = false;
     }
+
+    e.preventDefault();
   });
 
   document.addEventListener("keydown", (e) => {
     const code = parseFullKey(e);
+
+    // Only capture keys that we're using.
     if (!keysInUse.has(code as any)) {
       return;
     }
