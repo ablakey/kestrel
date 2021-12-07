@@ -13,6 +13,9 @@ const Inputs = {
   // Targeting.
   NextTarget: { key: "Tab", asEvent: true },
   PreviousTarget: { key: "ShiftTab", asEvent: true },
+
+  // UI
+  ToggleDebugModal: { key: "KeyI" },
 } as const;
 
 const keysInUse = new Set(Object.values(Inputs).map((k) => k.key));
@@ -65,14 +68,23 @@ export const InputSystem = (game: Game): System => {
     // Armament
     Offensive.primaryFire = keyState[Inputs.FirePrimary.key] ?? false;
 
+    /**
+     * Handle event keys.
+     * Keys as events are triggered once, rather than persisting a state, which get polled.
+     */
     inputQueue.forEach((k) => {
       inputQueue.delete(k);
 
-      // Target
-      if ([Inputs.NextTarget.key, Inputs.PreviousTarget.key].includes(k as any)) {
-        const index = k === Inputs.NextTarget.key ? 1 : -1;
-        Offensive.target = game.entities.getTarget(Offensive.target, index);
-        game.audio.playSound("Beep1");
+      switch (k) {
+        case Inputs.NextTarget.key:
+        case Inputs.PreviousTarget.key:
+          const index = k === Inputs.NextTarget.key ? 1 : -1;
+          Offensive.target = game.entities.getTarget(Offensive.target, index);
+          game.audio.playSound("Beep1");
+          break;
+        case Inputs.ToggleDebugModal.key:
+          game.state.showDebug = !game.state.showDebug;
+          break;
       }
     });
   }

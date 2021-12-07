@@ -15,10 +15,10 @@ const playerShip = game.shipFactory.create({
 });
 
 playerShip.components.Player = { kind: "Player" };
-playerShip.components.Offensive!.target = 1;
+// playerShip.components.Offensive!.target = 1;
 
 const TEST_RANGE = 1500;
-const TEST_COUNT = 3;
+const TEST_COUNT = 0;
 times(TEST_COUNT, () => {
   const ship = game.shipFactory.create({
     x: Math.random() * TEST_RANGE - TEST_RANGE / 2,

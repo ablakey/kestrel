@@ -1,4 +1,5 @@
 import { Game } from "../game";
+import { DebugModal } from "./DebugModal";
 import { Overlay } from "./Overlay";
 import { Right } from "./Right";
 
@@ -11,6 +12,7 @@ export function UiRoot(props: { game: Game }) {
     <>
       <Overlay game={props.game} />
       <Right game={props.game} />
+      <DebugModal />
     </>
   );
 }

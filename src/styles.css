@@ -31,3 +31,14 @@ body {
   font-family: "ShareTechMono";
   src: url("./assets/ShareTechMono-Regular.ttf") format("truetype");
 }
+
+.modal {
+  border: 2px solid white;
+  background-color: black;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 600px;
+  min-height: 400px;
+}

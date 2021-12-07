@@ -1,5 +1,6 @@
 import { Component } from "./components";
 import { Entities } from "./EntityManager";
+import { GameState, initialState } from "./gameState";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
 import { BulletSystem } from "./Systems/BulletSystem";
@@ -55,6 +56,7 @@ export class Game {
   private systems: System[];
   public elapsed = 0;
   public entities: Entities;
+  public state: GameState;
 
   /**
    * Helpers / utilities / factories.
@@ -69,11 +71,8 @@ export class Game {
     this.audio = new Audio(this);
     this.systems = SystemCreators.map((s) => s(this));
     this.entities = new Entities(this);
+    this.state = initialState;
   }
-
-  // public get entityCount(): number {
-  //   return this.entities.size;
-  // }
 
   public getPlayer() {
     const player = this.entities.query(["Player"])[0];
