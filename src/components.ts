@@ -22,7 +22,7 @@ export class Body {
    */
   public static getDeltaAngle(src: Body, target: Body) {
     const targetAngle = src.position.clone().subtract(target.position).norm().angle() - Math.PI;
-    return ((targetAngle - src.yaw.angle() + Math.PI * 3) % TAU) - Math.PI;
+    return ((targetAngle - src.yaw.angle() + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
   }
 
   /**
@@ -103,8 +103,8 @@ export type Navigation = {
   goal: Victor | null;
 };
 
-export type AI = {
-  kind: "AI";
+export type Ai = {
+  kind: "Ai";
   combatBehaviour: CombatBehaviour;
   movementBehaviour: MovementBehaviour;
 };
@@ -125,7 +125,7 @@ export type Exploding = {
 };
 
 export type Component =
-  | AI
+  | Ai
   | Body
   | Damage
   | Engine

@@ -1,10 +1,10 @@
 import { Game, Entity, System } from "../game";
 import { MovementBehaviour, Thrust } from "../enum";
-import { assert, getDeltaAngle, getTurnDirection } from "../utils";
+import { assert } from "../utils";
 
 export const AIMovementSystem = (game: Game): System => {
   function update(entity: Entity<"Body" | "AI" | "Offensive" | "Engine">) {
-    const { AI, Offensive, Body, Engine } = entity.components;
+    const { ai, offensive, body, engine } = entity.components;
 
     if (Offensive.target === null) {
       return;
@@ -18,7 +18,7 @@ export const AIMovementSystem = (game: Game): System => {
      * Point at a target.
      */
     if ([MovementBehaviour.PointAt, MovementBehaviour.FlyThrough].includes(AI.movementBehaviour)) {
-      const turnDirection = getTurnDirection(Body, target.components.Body, 0.03);
+      const turnDirection = Body.getTurnDirection(Body, target.components.Body, 0.03);
       Engine.direction = turnDirection;
     }
 

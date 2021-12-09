@@ -119,7 +119,7 @@ export class Entities {
    * TODO make public. Accept an optional  "teams" array to filter by?
    */
   private getTargets() {
-    return this.query(["Politics"]).filter((e) => e.components.Politics.team !== Team.Player);
+    return this.query(["Politics"]).filter((e) => e.components.politics.team !== Team.Player);
   }
 
   /**

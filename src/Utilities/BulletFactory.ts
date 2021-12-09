@@ -12,18 +12,18 @@ export class BulletFactory extends BaseUtility {
 
     this.game.entities.add(
       {
-        Body: {
+        body: {
           kind: "Body",
           position,
           yaw: new Victor(1, 0).rotate(opts.yaw),
           velocity: new Victor(1, 0).multiplyScalar(weaponType.speed).rotate(opts.yaw),
           angularVelocity: 0,
         },
-        Damage: {
+        damage: {
           kind: "Damage",
           damage: weaponType.damage,
         },
-        Sprite: {
+        sprite: {
           kind: "Sprite",
           sprite: weaponType.sprite,
           offsetX: 0.5,
