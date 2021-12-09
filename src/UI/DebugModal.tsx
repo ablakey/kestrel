@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Team } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
 import { Dropdown } from "./Components/Dropdown";
@@ -9,14 +9,6 @@ import { useGame } from "./uiHelpers";
 export function DebugModal() {
   const game = useGame();
   const [selectedSpawn, setSelectedSpawn] = useState<ShipName>("Red");
-
-  useEffect(() => {
-    window.addEventListener("keydown", (e) => {
-      console.log(e);
-      e.stopImmediatePropagation();
-      e.preventDefault();
-    });
-  }, []);
 
   const spawnShipOptions = Object.entries(Ships).map(([name, ship]) => ({
     label: ship.label,

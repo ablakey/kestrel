@@ -66,6 +66,11 @@ export const InputSystem = (game: Game): System => {
   });
 
   function update(entity: Entity<"Engine" | "Offensive" | "Player">) {
+    if (game.state.isPaused) {
+      inputQueue.clear();
+      return;
+    }
+
     const { Engine, Offensive } = entity.components;
 
     // Rotate
@@ -98,8 +103,8 @@ export const InputSystem = (game: Game): System => {
           game.audio.playSound("Beep1");
           break;
         case Inputs.ToggleDebugModal.key:
-          console.log("toggle debug");
           game.state.showDebug = !game.state.showDebug;
+          game.state.isPaused = !game.state.isPaused;
           break;
       }
     });
