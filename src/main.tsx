@@ -17,20 +17,20 @@ const playerShip = game.shipFactory.create({
 playerShip.components.Player = { kind: "Player" };
 // playerShip.components.Offensive!.target = 1;
 
-const TEST_RANGE = 1500;
-const TEST_COUNT = 3;
-times(TEST_COUNT, () => {
-  const ship = game.shipFactory.create({
-    x: Math.random() * TEST_RANGE - TEST_RANGE / 2,
-    y: Math.random() * TEST_RANGE - TEST_RANGE / 2,
-    yaw: 0,
-    shipName: "Red",
-    runAi: true,
-    team: Team.Independent,
-  });
+// const TEST_RANGE = 1500;
+// const TEST_COUNT = 3;
+// times(TEST_COUNT, () => {
+//   const ship = game.shipFactory.create({
+//     x: Math.random() * TEST_RANGE - TEST_RANGE / 2,
+//     y: Math.random() * TEST_RANGE - TEST_RANGE / 2,
+//     yaw: 0,
+//     shipName: "Red",
+//     runAi: true,
+//     team: Team.Independent,
+//   });
 
-  ship.components.Offensive!.target = 0;
-});
+//   ship.components.Offensive!.target = 0;
+// });
 
 game.start();
 

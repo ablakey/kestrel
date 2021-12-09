@@ -115,3 +115,18 @@ I think the way we handle it might be:
 - Ship Politics component state:
   - Are initialized based on instance state
   - Can go up and down in the immediate case. (eg. making a single ship hostile with you)
+
+
+## Keyboard inputs
+- keys only invoke state changes when appropriate (eg. if hte game is paused, don't move the ship)
+- keys can be re-used depending on context (eg. when a menu is open, different buttons do different things)
+- two kinds of managers
+  - I tried to do it with one but no luck.
+  - so one manager is a system
+  - the other is a react hook?
+    - we use a hook so that the correct component, when mounted, can listen for keys and do things for its UI
+    - this means that the main manager needs to know when NOT to handle events.
+- manager
+  - A bunch of keys always get listened to
+  - Some only when game is running
+- Maybe we don't have to track state, but rather just track when game is paused or not.

@@ -41,9 +41,7 @@ export const InputSystem = (game: Game): System => {
       return;
     }
 
-    if (inputsByKey[code]?.asEvent) {
-      inputQueue.add(code);
-    } else {
+    if (!inputsByKey[code]?.asEvent) {
       keyState[code] = false;
     }
 
@@ -60,6 +58,8 @@ export const InputSystem = (game: Game): System => {
 
     if (!inputsByKey[code].asEvent) {
       keyState[code] = true;
+    } else {
+      inputQueue.add(code);
     }
 
     e.preventDefault();
