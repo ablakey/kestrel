@@ -16,31 +16,31 @@ export class ShipFactory extends BaseUtility {
     const shipType = Ships[opts.shipName];
 
     return this.game.entities.add({
-      Description: {
+      description: {
         kind: "Description",
         label: shipType.label,
       },
-      Engine: {
+      engine: {
         kind: "Engine",
         direction: Direction.None,
         thrust: Thrust.None,
       },
-      Politics: {
+      politics: {
         kind: "Politics",
         team: opts.team,
       },
-      Body: {
+      body: {
         kind: "Body",
         position: new Victor(opts.x, opts.y),
         yaw: new Victor(1, 0).rotate(opts.yaw),
         velocity: new Victor(0, 0),
         angularVelocity: 0,
       },
-      Inventory: {
+      inventory: {
         kind: "Inventory",
         weapons: cloneDeep(shipType.weapons),
       },
-      Offensive: {
+      offensive: {
         kind: "Offensive",
         primaryFire: false,
         bulletOffset: shipType.radius, // TODO: remove this duplicate.
@@ -49,25 +49,25 @@ export class ShipFactory extends BaseUtility {
         // The weapon will define the speed, rate, and other properties about firing a bullet.
         // But the bullet itself will define what it looks like, its damage, etc.
       },
-      Health: {
+      health: {
         kind: "Health",
         hp: shipType.hp,
         effects: [],
       },
-      Kinematics: {
+      kinematics: {
         kind: "Kinematics",
         maxSpeed: shipType.maxSpeed,
         acceleration: shipType.acceleration,
         turnRate: shipType.turnRate,
       },
-      Sprite: {
+      sprite: {
         kind: "Sprite",
         sprite: shipType.sprite,
         offsetX: shipType.offsetX,
         offsetY: shipType.offsetY,
       },
-      AI: {
-        kind: "AI",
+      ai: {
+        kind: "Ai",
         combatBehaviour: opts.runAi ? CombatBehaviour.Aggressive : CombatBehaviour.None,
         movementBehaviour: opts.runAi ? MovementBehaviour.PointAt : MovementBehaviour.None,
       },

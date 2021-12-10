@@ -30,7 +30,7 @@ export class Entities {
   }
 
   public add<T extends Kind>(
-    components: Components<T>,
+    components: Partial<Components<T>>,
     options?: {
       lifespan?: number;
     }
@@ -147,9 +147,9 @@ export class Entities {
   public addComponent(entityId: number, component: Component) {
     const entity = this.get(entityId);
     assert(entity);
-    if (entity.components[component.kind]) {
+    if (entity.components[component.kind as Lowercase<Kind>]) {
       throw new Error("Cannot add component. It already exists.");
     }
-    entity.components[component.kind] = component as any; // TODO Type safety.
+    entity.components[component.kind as Lowercase<Kind>] = component as any; // TODO Type safety.
   }
 }

@@ -71,22 +71,22 @@ export const InputSystem = (game: Game): System => {
       return;
     }
 
-    const { Engine, Offensive } = entity.components;
+    const { engine, offensive } = entity.components;
 
     // Rotate
     if (keyState[Inputs.RotateLeft.key]) {
-      Engine.direction = Direction.Left;
+      engine.direction = Direction.Left;
     } else if (keyState[Inputs.RotateRight.key]) {
-      Engine.direction = Direction.Right;
+      engine.direction = Direction.Right;
     } else {
-      Engine.direction = Direction.None;
+      engine.direction = Direction.None;
     }
 
     // Thruster
-    Engine.thrust = keyState[Inputs.Thrust.key] ? Thrust.Forward : Thrust.None;
+    engine.thrust = keyState[Inputs.Thrust.key] ? Thrust.Forward : Thrust.None;
 
     // Armament
-    Offensive.primaryFire = keyState[Inputs.FirePrimary.key] ?? false;
+    offensive.primaryFire = keyState[Inputs.FirePrimary.key] ?? false;
 
     /**
      * Handle event keys.
@@ -99,7 +99,7 @@ export const InputSystem = (game: Game): System => {
         case Inputs.NextTarget.key:
         case Inputs.PreviousTarget.key:
           const index = k === Inputs.NextTarget.key ? 1 : -1;
-          Offensive.target = game.entities.getTarget(Offensive.target, index);
+          offensive.target = game.entities.getTarget(offensive.target, index);
           game.audio.playSound("Beep1");
           break;
         case Inputs.ToggleDebugModal.key:

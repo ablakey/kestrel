@@ -4,24 +4,24 @@ import { Direction, Thrust } from "../enum";
 
 export const EngineSystem = (): System => {
   function update(entity: Entity<"Engine" | "Body" | "Kinematics">) {
-    const { Body, Engine, Kinematics } = entity.components;
+    const { body, engine, kinematics } = entity.components;
 
     // Update direction
-    if (Engine.direction === Direction.Left) {
-      Body.angularVelocity = Kinematics.turnRate; // TODO: lerp?
-    } else if (Engine.direction === Direction.Right) {
-      Body.angularVelocity = -Kinematics.turnRate;
+    if (engine.direction === Direction.Left) {
+      body.angularVelocity = kinematics.turnRate; // TODO: lerp?
+    } else if (engine.direction === Direction.Right) {
+      body.angularVelocity = -kinematics.turnRate;
     } else {
-      Body.angularVelocity = 0;
+      body.angularVelocity = 0;
     }
 
     // Update the ship's velocity.
-    if (Engine.thrust === Thrust.Forward) {
-      const p = new Victor(4, 0).rotate(Body.yaw.angle());
-      Body.velocity.add(p);
+    if (engine.thrust === Thrust.Forward) {
+      const p = new Victor(4, 0).rotate(body.yaw.angle());
+      body.velocity.add(p);
 
-      if (Body.velocity.magnitude() > Kinematics.maxSpeed) {
-        Body.velocity.normalize().multiplyScalar(Kinematics.maxSpeed);
+      if (body.velocity.magnitude() > kinematics.maxSpeed) {
+        body.velocity.normalize().multiplyScalar(kinematics.maxSpeed);
       }
     }
   }

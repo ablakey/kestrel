@@ -41,7 +41,7 @@ export interface System {
 }
 
 export type Components<T extends Kind> = {
-  [key in Uncapitalize<T>]: Extract<Component, { kind: Capitalize<key> }>;
+  [key in Lowercase<T>]: Extract<Component, { kind: Capitalize<key> }>;
 };
 
 export type Entity<T extends Kind = Exclude<Kind, Kind>> = {
@@ -50,12 +50,6 @@ export type Entity<T extends Kind = Exclude<Kind, Kind>> = {
   components: Required<Components<T>> & Partial<Components<Exclude<Kind, T>>>;
   lifespan?: number;
   destroyed: boolean;
-};
-
-const x: Components<"Player"> = {
-  player: {
-    kind: "Player",
-  },
 };
 
 export class Game {

@@ -105,13 +105,13 @@ export const RenderSystem = (game: Game): System => {
   app.stage.addChild(container);
 
   function getOrCreateSprite(entity: Entity<"Sprite">): PIXI.Sprite {
-    const { Sprite } = entity.components;
+    const { sprite } = entity.components;
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
     } else {
-      const spriteFile = Sprites[Sprite.sprite];
+      const spriteFile = Sprites[sprite.sprite];
       const newItem = PIXI.Sprite.from(spriteFile);
-      newItem.anchor.set(Sprite.offsetX, Sprite.offsetY);
+      newItem.anchor.set(sprite.offsetX, sprite.offsetY);
       container.addChild(newItem);
       renderedItems[entity.id] = newItem;
       return newItem;
@@ -119,42 +119,42 @@ export const RenderSystem = (game: Game): System => {
   }
 
   function update(entity: Entity<"Body" | "Sprite">) {
-    const { Player, Body, Offensive } = entity.components;
+    const { player, body, offensive } = entity.components;
     const item = getOrCreateSprite(entity);
 
     /**
      * Player-specific updates.
      */
-    if (Player) {
-      assert(Offensive); // Player always has an offensive component.
+    if (player) {
+      assert(offensive); // Player always has an offensive component.
 
       /**
        * Camera follow player.
        */
-      container.x = -Body.position.x;
-      container.y = Body.position.y;
+      container.x = -body.position.x;
+      container.y = body.position.y;
 
       /**
        * Parallax relative to player.
        */
-      tilingSprite.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE * PARALLAX_OFFSET);
-      tilingSprite.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE * PARALLAX_OFFSET;
-      tilingSprite2.tilePosition.x = -(Body.position.x * PARALLAX_MAGNIUDE);
-      tilingSprite2.tilePosition.y = Body.position.y * PARALLAX_MAGNIUDE;
+      tilingSprite.tilePosition.x = -(body.position.x * PARALLAX_MAGNIUDE * PARALLAX_OFFSET);
+      tilingSprite.tilePosition.y = body.position.y * PARALLAX_MAGNIUDE * PARALLAX_OFFSET;
+      tilingSprite2.tilePosition.x = -(body.position.x * PARALLAX_MAGNIUDE);
+      tilingSprite2.tilePosition.y = body.position.y * PARALLAX_MAGNIUDE;
 
       /**
        * Update reticle position if there is a target, otherwise create one, otherwise delete it.
        */
-      const target = game.entities.get(Offensive.target);
+      const target = game.entities.get(offensive.target);
       if (target === null && renderedReticle) {
         renderedReticle?.graphic.destroy();
         renderedReticle = undefined;
       } else if (target) {
-        assert(target?.components.Body);
+        assert(target?.components.body);
 
         let graphic;
 
-        if (renderedReticle?.targetId === Offensive.target) {
+        if (renderedReticle?.targetId === offensive.target) {
           graphic = renderedReticle.graphic;
         } else {
           renderedReticle?.graphic.destroy();
@@ -164,8 +164,8 @@ export const RenderSystem = (game: Game): System => {
           renderedReticle = { targetId: target.id, graphic };
         }
 
-        renderedReticle.graphic.x = target.components.Body.position.x;
-        renderedReticle.graphic.y = -target.components.Body.position.y;
+        renderedReticle.graphic.x = target.components.body.position.x;
+        renderedReticle.graphic.y = -target.components.body.position.y;
       }
     }
 
@@ -180,9 +180,9 @@ export const RenderSystem = (game: Game): System => {
     /**
      * Update rendered entity position. Convert coordinate system.
      */
-    item.x = Body.position.x;
-    item.y = -Body.position.y;
-    item.rotation = 0 - Body.yaw.angle() + Math.PI / 2;
+    item.x = body.position.x;
+    item.y = -body.position.y;
+    item.rotation = 0 - body.yaw.angle() + Math.PI / 2;
   }
 
   return { update, componentKinds: ["Body", "Sprite"] };

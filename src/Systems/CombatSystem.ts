@@ -4,26 +4,26 @@ import { Weapons } from "../Items/Weapons";
 
 export const CombatSystem = (game: Game): System => {
   function update(entity: Entity<"Offensive" | "Body" | "Inventory">) {
-    const { Offensive, Body, Inventory } = entity.components;
+    const { offensive, body, inventory } = entity.components;
 
-    Inventory.weapons.forEach((w) => {
+    inventory.weapons.forEach((w) => {
       const weaponType = Weapons[w.name];
 
-      const isFiring = weaponType.type === "Primary" ? Offensive.primaryFire : false; // TODO secondary.
+      const isFiring = weaponType.type === "Primary" ? offensive.primaryFire : false; // TODO secondary.
       const fireDelay = 1000 / (weaponType.fireRate * w.count); // delay between shots in ms.
 
       if (!isFiring || w.lastUsed + fireDelay > game.elapsed) {
         return;
       }
 
-      const bulletPos = Body.position
+      const bulletPos = body.position
         .clone()
-        .add(new Victor(entity.components.Offensive.bulletOffset, 0).rotate(Body.yaw.angle()));
+        .add(new Victor(offensive.bulletOffset, 0).rotate(body.yaw.angle()));
 
       game.bulletFactory.create({
         x: bulletPos.x,
         y: bulletPos.y,
-        yaw: Body.yaw.angle() + Math.random() * (1 - weaponType.accuracy),
+        yaw: body.yaw.angle() + Math.random() * (1 - weaponType.accuracy),
         weaponName: w.name,
       });
 

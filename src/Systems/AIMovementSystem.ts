@@ -1,38 +1,39 @@
 import { Game, Entity, System } from "../game";
 import { MovementBehaviour, Thrust } from "../enum";
 import { assert } from "../utils";
+import { Body } from "../components";
 
 export const AIMovementSystem = (game: Game): System => {
-  function update(entity: Entity<"Body" | "AI" | "Offensive" | "Engine">) {
+  function update(entity: Entity<"Body" | "Ai" | "Offensive" | "Engine">) {
     const { ai, offensive, body, engine } = entity.components;
 
-    if (Offensive.target === null) {
+    if (offensive.target === null) {
       return;
     }
 
-    const target = game.entities.get(Offensive.target);
+    const target = game.entities.get(offensive.target);
     assert(target);
-    assert(target?.components.Body);
+    assert(target?.components.body);
 
     /**
      * Point at a target.
      */
-    if ([MovementBehaviour.PointAt, MovementBehaviour.FlyThrough].includes(AI.movementBehaviour)) {
-      const turnDirection = Body.getTurnDirection(Body, target.components.Body, 0.03);
-      Engine.direction = turnDirection;
+    if ([MovementBehaviour.PointAt, MovementBehaviour.FlyThrough].includes(ai.movementBehaviour)) {
+      const turnDirection = Body.getTurnDirection(body, target.components.body, 0.03);
+      engine.direction = turnDirection;
     }
 
     /**
      * Fly towards a target.
      */
-    if (AI.movementBehaviour === MovementBehaviour.FlyThrough) {
-      if (getDeltaAngle(Body, target.components.Body) < 0.03) {
-        Engine.thrust = Thrust.Forward;
+    if (ai.movementBehaviour === MovementBehaviour.FlyThrough) {
+      if (Body.getDeltaAngle(body, target.components.body) < 0.03) {
+        engine.thrust = Thrust.Forward;
       } else {
-        Engine.thrust = Thrust.None;
+        engine.thrust = Thrust.None;
       }
     }
   }
 
-  return { update, componentKinds: ["Body", "AI", "Offensive", "Engine"] };
+  return { update, componentKinds: ["Body", "Ai", "Offensive", "Engine"] };
 };

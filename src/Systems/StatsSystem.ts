@@ -2,20 +2,20 @@ import { Entity, System } from "../game";
 
 export const StatsSystem = (): System => {
   function update(entity: Entity<"Health">) {
-    const { Health, Player } = entity.components;
+    const { health, player } = entity.components;
 
     /**
      * Apply damage.
      */
-    while (Health.effects.length) {
-      const effect = Health.effects.pop()!;
-      Health.hp -= effect.damage;
+    while (health.effects.length) {
+      const effect = health.effects.pop()!;
+      health.hp -= effect.damage;
     }
 
     /**
      * Is destroyed?
      */
-    if (Health.hp <= 0 && !Player) {
+    if (health.hp <= 0 && !player) {
       entity.destroyed = true;
     }
   }

@@ -6,10 +6,10 @@ import { Entity, System } from "../game";
 export const MovementSystem = (): System => {
   function update(entity: Entity<"Body">, delta: number) {
     const deltaSeconds = delta / 1000;
-    const { Body } = entity.components;
+    const { body } = entity.components;
 
-    Body.position.add(Body.velocity.clone().multiplyScalar(deltaSeconds));
-    Body.yaw.rotate(Body.angularVelocity * deltaSeconds);
+    body.position.add(body.velocity.clone().multiplyScalar(deltaSeconds));
+    body.yaw.rotate(body.angularVelocity * deltaSeconds);
   }
 
   return { componentKinds: ["Body"], update };

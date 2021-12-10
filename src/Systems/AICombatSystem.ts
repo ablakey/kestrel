@@ -1,23 +1,25 @@
 import { Game, Entity, System } from "../game";
 import { CombatBehaviour } from "../enum";
 import { Weapons } from "../Items/Weapons";
-import { assert, isFacing } from "../utils";
+import { assert } from "../utils";
+import { Body } from "../components";
 
 /**
  * System decides what weapons to fire and when.
  * This will involve concerns such as weapon range, direction facing, etc.
  */
 export const AICombatSystem = (game: Game): System => {
-  function update(entity: Entity<"Offensive" | "Body" | "Inventory" | "AI">) {
+  function update(entity: Entity<"Offensive" | "Body" | "Inventory" | "Ai">) {
+    const { offensive, ai, body, inventory } = entity.components;
     // Do not attempt to do any AI combat.
-    if (entity.components.AI.combatBehaviour === CombatBehaviour.None) {
+    if (ai.combatBehaviour === CombatBehaviour.None) {
       return;
     }
 
-    if (entity.components.Offensive.target === null) {
+    if (offensive.target === null) {
       // If an entity has no target, stop firing.
-      if (entity.components.Offensive.primaryFire) {
-        entity.components.Offensive.primaryFire = false;
+      if (offensive.primaryFire) {
+        offensive.primaryFire = false;
       }
       return;
     }
@@ -25,17 +27,17 @@ export const AICombatSystem = (game: Game): System => {
     /**
      * Calculate if primary weapons should be firing.
      */
-    const target = game.entities.get(entity.components.Offensive.target);
+    const target = game.entities.get(offensive.target);
     assert(target);
-    assert(target.components.Body);
+    assert(target.components.body);
 
-    const facing = isFacing(entity.components.Body, target.components.Body, 0.1);
-    const distance = entity.components.Body.position.distance(target.components.Body.position);
-    const maxRanges = entity.components.Inventory.weapons.map((w) => Weapons[w.name].maxRange);
+    const facing = Body.isFacing(body, target.components.body, 0.1);
+    const distance = body.position.distance(target.components.body.position);
+    const maxRanges = inventory.weapons.map((w) => Weapons[w.name].maxRange);
     const inRange = distance < maxRanges[0]; // TODO: filter by weapons that are available.
     // TODO: we should only fire if at least one weapon is in range.
 
-    entity.components.Offensive.primaryFire = facing && inRange;
+    offensive.primaryFire = facing && inRange;
   }
-  return { update, componentKinds: ["Offensive", "Body", "Inventory", "AI"] };
+  return { update, componentKinds: ["Offensive", "Body", "Inventory", "Ai"] };
 };

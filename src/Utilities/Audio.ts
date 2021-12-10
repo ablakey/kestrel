@@ -18,7 +18,7 @@ export class Audio extends BaseUtility {
      * Calculate position.
      */
     if (opts?.position) {
-      const playerPosition = this.game.getPlayer().components.Body.position;
+      const playerPosition = this.game.getPlayer().components.body.position;
       const soundPosition = opts.position.clone().subtract(playerPosition);
 
       sound.pos(soundPosition.x * POSITION_SCALE, soundPosition.y * POSITION_SCALE, 0);
