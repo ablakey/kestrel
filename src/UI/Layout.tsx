@@ -1,9 +1,9 @@
 import React from "react";
 import { Game } from "../game";
+import { GameContext } from "../utils";
 import { DebugModal } from "./DebugModal";
 import { Overlay } from "./Overlay";
 import { Right } from "./Right";
-import { GameContext } from "./uiHelpers";
 
 /**
  * UiRoot is forcibly updated and provides the entire Game state.

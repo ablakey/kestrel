@@ -1,11 +1,12 @@
 import { Game, Entity, System } from "../game";
 import { Direction, Thrust } from "../enum";
+import { stringifyFullKey } from "../utils";
 
 const Inputs = {
   // Movement.
-  Thrust: { key: "KeyW" },
-  RotateLeft: { key: "KeyA" },
-  RotateRight: { key: "KeyD" },
+  Thrust: { key: "W" },
+  RotateLeft: { key: "A" },
+  RotateRight: { key: "D" },
 
   // Attack.
   FirePrimary: { key: "Space" },
@@ -15,7 +16,7 @@ const Inputs = {
   PreviousTarget: { key: "ShiftTab", asEvent: true },
 
   // UI
-  ToggleDebugModal: { key: "KeyI", asEvent: true },
+  ToggleDebugModal: { key: "I", asEvent: true },
 } as const;
 
 const keysInUse = new Set(Object.values(Inputs).map((k) => k.key));
@@ -25,16 +26,12 @@ const inputsByKey = Object.entries(Inputs).reduce((acc, [input, config]) => {
   return acc;
 }, {} as Record<string, { input: string; asEvent?: boolean; key: string }>);
 
-function parseFullKey(e: KeyboardEvent): string {
-  return `${e.altKey ? "Alt" : ""}${e.ctrlKey ? "Ctrl" : ""}${e.shiftKey ? "Shift" : ""}${e.code}`;
-}
-
 export const InputSystem = (game: Game): System => {
   const keyState: Record<string, boolean | undefined> = {};
   const inputQueue: Set<string> = new Set(); // Set to avoid multiples of same key.
 
   document.addEventListener("keyup", (e) => {
-    const code = parseFullKey(e);
+    const code = stringifyFullKey(e);
 
     // Only capture keys that we're using.
     if (!keysInUse.has(code as any)) {
@@ -49,7 +46,7 @@ export const InputSystem = (game: Game): System => {
   });
 
   document.addEventListener("keydown", (e) => {
-    const code = parseFullKey(e);
+    const code = stringifyFullKey(e);
 
     // Only capture keys that we're using.
     if (!keysInUse.has(code as any)) {

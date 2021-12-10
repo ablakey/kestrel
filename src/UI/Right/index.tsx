@@ -1,5 +1,5 @@
 import { ShipEntity } from "../../Utilities/ShipFactory";
-import { useGame } from "../uiHelpers";
+import { useGame } from "../../utils";
 import { Info } from "./Info";
 import { Minimap } from "./Minimap";
 import { Panel } from "./Panel";
@@ -11,7 +11,7 @@ export function Right() {
 
   const player = game.getPlayer();
 
-  const target = game.entities.get(player.components.Offensive.target) as ShipEntity;
+  const target = game.entities.get(player.components.offensive.target) as ShipEntity;
 
   return (
     <div
@@ -26,7 +26,7 @@ export function Right() {
       }}
     >
       <Minimap />
-      <Stats hp={player.components.Health.hp} />
+      <Stats hp={player.components.health.hp} />
       <Panel style={{ height: 200 }}>
         <Target target={target} />
       </Panel>

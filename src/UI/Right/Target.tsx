@@ -19,7 +19,7 @@ export function Target(props: { target: ShipEntity | null }) {
         padding: 6,
       }}
     >
-      <div>{target.components.Description.label}</div>
+      <div>{target.components.description.label}</div>
       <div
         style={{
           display: "flex",
@@ -27,8 +27,8 @@ export function Target(props: { target: ShipEntity | null }) {
           justifyContent: "space-between",
         }}
       >
-        <div>{`Health: ${target.components.Health.hp}`}</div>
-        <div>{TeamLabel[target.components.Politics.team]}</div>
+        <div>{`Health: ${target.components.health.hp}`}</div>
+        <div>{TeamLabel[target.components.politics.team]}</div>
       </div>
     </div>
   );
