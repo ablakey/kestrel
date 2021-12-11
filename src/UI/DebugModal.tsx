@@ -6,9 +6,14 @@ import { Dropdown } from "./Components/Dropdown";
 import { Modal } from "./Components/Modal";
 import { Slider } from "./Components/Slider";
 
+const spawnShipOptions = Object.entries(Ships).map(([name, ship]) => ({
+  label: ship.label,
+  value: name as ShipName,
+}));
+
 export function DebugModal() {
   const game = useGame();
-  const [selectedSpawn, setSelectedSpawn] = useState<ShipName>("Red");
+  const [selectedSpawn, setSelectedSpawn] = useState<ShipName>(spawnShipOptions[1].value);
 
   useKeypress(["Escape"], () => {
     game.setState((draft) => {
@@ -16,11 +21,6 @@ export function DebugModal() {
       draft.showDebug = false;
     });
   });
-
-  const spawnShipOptions = Object.entries(Ships).map(([name, ship]) => ({
-    label: ship.label,
-    value: name as ShipName,
-  }));
 
   function spawnShip() {
     game.shipFactory.create({
@@ -45,7 +45,12 @@ export function DebugModal() {
       </div>
       <div style={{ flexGrow: 1 }}>
         <div>
-          <Dropdown label="Spawn" options={spawnShipOptions} onChange={setSelectedSpawn} />
+          <Dropdown
+            label="Spawn"
+            value={selectedSpawn}
+            options={spawnShipOptions}
+            onChange={setSelectedSpawn}
+          />
           <button onClick={spawnShip}>Spawn</button>
         </div>
       </div>

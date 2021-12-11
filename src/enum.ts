@@ -16,6 +16,13 @@ export enum MovementBehaviour {
   FlyTo, // Attempt to stop on the nav target.
 }
 
+export enum StrategyBehaviour {
+  None,
+  Attack,
+  Dock,
+  Board,
+}
+
 // TODO: we might need another Behaviour type that governs the overall movement + combat.  Behaviour trees?
 export enum CombatBehaviour {
   None,
@@ -24,6 +31,6 @@ export enum CombatBehaviour {
 }
 
 export enum Team {
-  Independent,
-  Player,
+  Independent = "Independent",
+  Player = "Player",
 }

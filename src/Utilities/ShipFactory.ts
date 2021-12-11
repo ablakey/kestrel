@@ -1,6 +1,13 @@
 import { cloneDeep } from "lodash";
 import Victor from "victor";
-import { CombatBehaviour, Direction, MovementBehaviour, Team, Thrust } from "../enum";
+import {
+  CombatBehaviour,
+  Direction,
+  MovementBehaviour,
+  StrategyBehaviour,
+  Team,
+  Thrust,
+} from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
 import { BaseUtility } from "./BaseUtility";
 
@@ -27,6 +34,7 @@ export class ShipFactory extends BaseUtility {
       },
       politics: {
         kind: "Politics",
+        relations: this.game.state.instanceRelations,
         team: opts.team,
       },
       body: {
@@ -68,6 +76,7 @@ export class ShipFactory extends BaseUtility {
       },
       ai: {
         kind: "Ai",
+        strategy: StrategyBehaviour.None,
         combatBehaviour: opts.runAi ? CombatBehaviour.Aggressive : CombatBehaviour.None,
         movementBehaviour: opts.runAi ? MovementBehaviour.PointAt : MovementBehaviour.None,
       },

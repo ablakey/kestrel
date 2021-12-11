@@ -13,6 +13,7 @@ import { MinimapSystem } from "./Systems/MinimapSystem";
 import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
+import { DeepReadonly } from "./types";
 import { Audio } from "./Utilities/Audio";
 import { BulletFactory } from "./Utilities/BulletFactory";
 import { ShipEntity, ShipFactory } from "./Utilities/ShipFactory";
@@ -60,7 +61,7 @@ export class Game {
   public elapsed = 0;
   private lastTime = 0;
   public entities: Entities;
-  public state: GameState;
+  public state: DeepReadonly<GameState>;
 
   /**
    * Helpers / utilities / factories.

@@ -1,6 +1,14 @@
 import Victor from "victor";
 import { DamageEffect } from "./Effects";
-import { CombatBehaviour, Direction, MovementBehaviour, Team, Thrust } from "./enum";
+import {
+  CombatBehaviour,
+  Direction,
+  MovementBehaviour,
+  StrategyBehaviour,
+  Team,
+  Thrust,
+} from "./enum";
+import { Relations } from "./gameState";
 import { WeaponInstance } from "./Items";
 import { SpriteName } from "./resources";
 
@@ -107,6 +115,7 @@ export type Navigation = {
 
 export type Ai = {
   kind: "Ai";
+  strategy: StrategyBehaviour;
   combatBehaviour: CombatBehaviour;
   movementBehaviour: MovementBehaviour;
 };
@@ -114,6 +123,7 @@ export type Ai = {
 export type Politics = {
   kind: "Politics";
   team: Team;
+  relations: Relations;
 };
 
 export type Description = {
