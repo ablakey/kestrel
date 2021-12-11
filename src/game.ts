@@ -55,6 +55,7 @@ export type Entity<T extends Kind = Exclude<Kind, Kind>> = {
 export class Game {
   private systems: System[];
   public elapsed = 0;
+  private lastTime = 0;
   public entities: Entities;
   public state: GameState;
 
@@ -89,8 +90,19 @@ export class Game {
    * each entity, independently. If a system has no entities to act on, it is not run.
    */
   private tick(timestamp: number) {
-    const delta = timestamp - this.elapsed;
-    this.elapsed = timestamp;
+    if (this.state.isPaused) {
+      this.lastTime = timestamp;
+      requestAnimationFrame(this.tick.bind(this));
+      return;
+    }
+
+    /**
+     * We must handle time with an intermediate value, otherwise pausing the game would
+     * break things in fun ways as the timestamp kept ticking.
+     */
+    const delta = timestamp - this.lastTime;
+    this.elapsed += delta;
+    this.lastTime = timestamp;
 
     /**
      * Flag entities for deletion.

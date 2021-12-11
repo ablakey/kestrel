@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Team } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
-import useKeypress, { useGame } from "../utils";
+import { useGame, useKeypress } from "../utils";
 import { Dropdown } from "./Components/Dropdown";
 import { Modal } from "./Components/Modal";
 import { Slider } from "./Components/Slider";
@@ -10,8 +10,9 @@ export function DebugModal() {
   const game = useGame();
   const [selectedSpawn, setSelectedSpawn] = useState<ShipName>("Red");
 
-  useKeypress(["A", "CtrlB", "ShiftC"], (e) => {
-    console.log(e);
+  useKeypress(["Escape"], () => {
+    game.state.showDebug = false;
+    game.state.isPaused = false;
   });
 
   const spawnShipOptions = Object.entries(Ships).map(([name, ship]) => ({
