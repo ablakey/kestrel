@@ -67,9 +67,11 @@ export type Offensive = {
   // currentSecondaryWeapon
 };
 
-export type Damage = {
-  kind: "Damage";
+export type Ammo = {
+  kind: "Ammo";
   damage: number;
+  // force: number;
+  trackable: boolean;
   // damage type
   //
 };
@@ -127,7 +129,7 @@ export type Exploding = {
 export type Component =
   | Ai
   | Body
-  | Damage
+  | Ammo
   | Engine
   | Health
   | Inventory

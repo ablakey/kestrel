@@ -7,7 +7,7 @@ export function Minimap() {
         height: 250,
       }}
     >
-      Minimap
+      <div style={{ width: "100%", height: "100%" }} id="minimap" />
     </Panel>
   );
 }

@@ -16,7 +16,7 @@ const Inputs = {
   PreviousTarget: { key: "ShiftTab", asEvent: true },
 
   // UI
-  ToggleDebugModal: { key: "I", asEvent: true },
+  ShowDebug: { key: "I", asEvent: true },
 } as const;
 
 const keysInUse = new Set(Object.values(Inputs).map((k) => k.key));
@@ -99,9 +99,11 @@ export const InputSystem = (game: Game): System => {
           offensive.target = game.entities.getTarget(offensive.target, index);
           game.audio.playSound("Beep1");
           break;
-        case Inputs.ToggleDebugModal.key:
-          game.state.showDebug = !game.state.showDebug;
-          game.state.isPaused = !game.state.isPaused;
+        case Inputs.ShowDebug.key:
+          game.setState((draft) => {
+            draft.isPaused = true;
+            draft.showDebug = true;
+          });
           break;
       }
     });

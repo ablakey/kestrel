@@ -1,13 +1,15 @@
+import produce, { Draft } from "immer";
 import { Component } from "./components";
 import { Entities } from "./EntityManager";
 import { GameState, initialState } from "./gameState";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
-import { BulletSystem } from "./Systems/BulletSystem";
+import { AmmoSystem } from "./Systems/AmmoSystem";
 import { CleanupSystem } from "./Systems/CleanupSystem";
 import { CombatSystem } from "./Systems/CombatSystem";
 import { EngineSystem } from "./Systems/EngineSystem";
 import { InputSystem } from "./Systems/InputSystem";
+import { MinimapSystem } from "./Systems/MinimapSystem";
 import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
@@ -26,9 +28,10 @@ const SystemCreators = [
   EngineSystem,
   MovementSystem,
   CombatSystem,
-  BulletSystem,
+  AmmoSystem,
   StatsSystem,
   RenderSystem,
+  MinimapSystem,
   CleanupSystem,
 ];
 
@@ -79,6 +82,16 @@ export class Game {
     const player = this.entities.query(["Player"])[0];
     assert(player);
     return player as ShipEntity;
+  }
+
+  /**
+   * Set state by providing a function that mutates draft.
+   */
+  public setState(recipe: (draft: Draft<GameState>) => void) {
+    // Double-wrap recipe to ignore if users return a value (we ignore that value).
+    this.state = produce(this.state, (draft) => {
+      recipe(draft);
+    });
   }
 
   public start() {

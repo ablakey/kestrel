@@ -11,6 +11,7 @@ export type Weapon = Item & {
   type: "Primary" | "Secondary";
   accuracy: number; // 0-1 where 0 fires in any direction while 1 is always the correct direction.
   sound: SoundName;
+  trackable: boolean; // Can ammo be tracked on radar?
 };
 
 export type WeaponName = "LaserCannon" | "ProtonCannon";
@@ -27,6 +28,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     label: "Laser Cannon",
     type: "Primary",
     sound: "Laser",
+    trackable: false,
   },
   ProtonCannon: {
     label: "Proton Cannon",
@@ -39,5 +41,6 @@ export const Weapons: Record<WeaponName, Weapon> = {
     accuracy: 0.95,
     type: "Primary",
     sound: "Proton",
+    trackable: false,
   },
 };

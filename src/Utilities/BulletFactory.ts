@@ -19,9 +19,10 @@ export class BulletFactory extends BaseUtility {
           velocity: new Victor(1, 0).multiplyScalar(weaponType.speed).rotate(opts.yaw),
           angularVelocity: 0,
         },
-        damage: {
-          kind: "Damage",
+        ammo: {
+          kind: "Ammo",
           damage: weaponType.damage,
+          trackable: weaponType.trackable,
         },
         sprite: {
           kind: "Sprite",

@@ -11,8 +11,10 @@ export function DebugModal() {
   const [selectedSpawn, setSelectedSpawn] = useState<ShipName>("Red");
 
   useKeypress(["Escape"], () => {
-    game.state.showDebug = false;
-    game.state.isPaused = false;
+    game.setState((draft) => {
+      draft.isPaused = false;
+      draft.showDebug = false;
+    });
   });
 
   const spawnShipOptions = Object.entries(Ships).map(([name, ship]) => ({
@@ -37,7 +39,7 @@ export function DebugModal() {
           label="Volume"
           value={game.state.volume}
           onChange={(v) => {
-            game.state.volume = v;
+            game.setState((draft) => (draft.volume = v));
           }}
         />
       </div>
