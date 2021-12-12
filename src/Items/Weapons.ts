@@ -35,7 +35,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     speed: 1_200,
     fireRate: 1.5,
     sprite: "Proton",
-    damage: 5,
+    damage: 30,
     maxRange: 1_000,
     lifespan: 1_000,
     accuracy: 0.95,

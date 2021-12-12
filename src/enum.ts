@@ -1,26 +1,26 @@
 export enum Direction {
-  None,
-  Left,
-  Right,
+  None = "None",
+  Left = "Left",
+  Right = "Right",
 }
 
 export enum Thrust {
-  None,
-  Forward,
+  None = "None",
+  Forward = "Forward",
 }
 
 export enum MovementBehaviour {
-  None,
-  PointAt,
-  FlyThrough, // Fly straight through the nav target (eg. a missile)
-  FlyTo, // Attempt to stop on the nav target.
+  None = "None",
+  PointAt = "PointAt",
+  FlyThrough = "FlyThrough", // Fly straight through the nav target (eg. a missile)
+  FlyTo = "FlyTo", // Attempt to stop on the nav target.
 }
 
 export enum StrategyBehaviour {
-  None,
-  Attack,
-  Dock,
-  Board,
+  None = "None",
+  Attack = "Attack",
+  Dock = "Dock",
+  Board = "Board",
 }
 
 // TODO: we might need another Behaviour type that governs the overall movement + combat.  Behaviour trees?

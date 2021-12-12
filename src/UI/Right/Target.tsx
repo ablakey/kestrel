@@ -19,7 +19,7 @@ export function Target(props: { target: ShipEntity | null }) {
         padding: 6,
       }}
     >
-      <div>{target.components.description.label}</div>
+      <div>{`${target.components.description.label} (${target.id})`}</div>
       <div
         style={{
           display: "flex",

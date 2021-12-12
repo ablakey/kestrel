@@ -1,5 +1,5 @@
 import { Game, Entity, System } from "../game";
-import { MovementBehaviour, Thrust } from "../enum";
+import { Direction, MovementBehaviour, Thrust } from "../enum";
 import { assert } from "../utils";
 import { Body } from "../Components";
 
@@ -8,6 +8,9 @@ export const AIMovementSystem = (game: Game): System => {
     const { ai, offensive, body, engine } = entity.components;
 
     if (offensive.target === null) {
+      if ((ai.movementBehaviour = MovementBehaviour.None)) {
+        engine.direction = Direction.None;
+      }
       return;
     }
 

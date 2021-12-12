@@ -56,6 +56,7 @@ export class Entities {
    * Should only be used by Game.
    */
   public _delete(id: number) {
+    this.queryCache = {};
     this.entities.delete(id);
   }
 
