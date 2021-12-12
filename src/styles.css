@@ -33,7 +33,7 @@ body {
 }
 
 .modal {
-  border: 2px solid white;
+  border: 1px solid white;
   padding: 12px;
   background-color: black;
   position: fixed;

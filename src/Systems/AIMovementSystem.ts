@@ -1,7 +1,7 @@
 import { Game, Entity, System } from "../game";
 import { MovementBehaviour, Thrust } from "../enum";
 import { assert } from "../utils";
-import { Body } from "../components";
+import { Body } from "../Components";
 
 export const AIMovementSystem = (game: Game): System => {
   function update(entity: Entity<"Body" | "Ai" | "Offensive" | "Engine">) {
@@ -12,7 +12,7 @@ export const AIMovementSystem = (game: Game): System => {
     }
 
     const target = game.entities.get(offensive.target);
-    assert(target);
+    assert(target, `Ship: ${entity.id} is targeting ${offensive.target} but is not found.`);
     assert(target?.components.body);
 
     /**

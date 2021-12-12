@@ -23,6 +23,7 @@ export function Right() {
         display: "flex",
         flexDirection: "column",
         borderLeft: "1px solid white",
+        borderRight: "1px solid white",
       }}
     >
       <Minimap />

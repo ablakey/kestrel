@@ -34,7 +34,7 @@ export class ShipFactory extends BaseUtility {
       },
       politics: {
         kind: "Politics",
-        relations: this.game.state.instanceRelations,
+        relations: this.game.state.instanceRelations[opts.team],
         team: opts.team,
       },
       body: {

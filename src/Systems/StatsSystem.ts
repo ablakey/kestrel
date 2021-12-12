@@ -16,6 +16,7 @@ export const StatsSystem = (): System => {
      * Is destroyed?
      */
     if (health.hp <= 0 && !player) {
+      console.info(`Ship ${entity.id} destroyed.`);
       entity.destroyed = true;
     }
   }

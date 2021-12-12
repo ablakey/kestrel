@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Team } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
-import { useGame, useKeypress } from "../utils";
+import { pickRandom, useGame, useKeypress } from "../utils";
 import { Dropdown } from "./Components/Dropdown";
 import { Modal } from "./Components/Modal";
 import { Slider } from "./Components/Slider";
@@ -25,7 +25,7 @@ export function DebugModal() {
   function spawnShip() {
     game.shipFactory.create({
       shipName: selectedSpawn,
-      team: Team.Independent,
+      team: pickRandom([Team.Rebel, Team.Confederacy]),
       x: Math.random() * 1500 - 750,
       y: Math.random() * 1500 - 750,
       yaw: Math.random() * Math.PI,

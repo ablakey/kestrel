@@ -1,7 +1,7 @@
 import { Components, Game, Entity, Kind } from "./game";
 import { Team } from "./enum";
 import { assert } from "./utils";
-import { Component } from "./components";
+import { Component } from "./Components";
 
 export class Entities {
   /**

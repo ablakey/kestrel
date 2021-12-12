@@ -1,9 +1,10 @@
 import produce, { Draft } from "immer";
-import { Component } from "./components";
+import { Component } from "./Components";
 import { Entities } from "./EntityManager";
 import { GameState, initialState } from "./gameState";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
+import { AIStrategySystem } from "./Systems/AIStrategySystem";
 import { AmmoSystem } from "./Systems/AmmoSystem";
 import { CleanupSystem } from "./Systems/CleanupSystem";
 import { CombatSystem } from "./Systems/CombatSystem";
@@ -24,6 +25,7 @@ import { assert } from "./utils";
  */
 const SystemCreators = [
   InputSystem,
+  AIStrategySystem,
   AIMovementSystem,
   AICombatSystem,
   EngineSystem,
