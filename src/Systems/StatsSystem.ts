@@ -1,7 +1,8 @@
+import { Condition } from "../enum";
 import { Entity, System } from "../game";
 
 export const StatsSystem = (): System => {
-  function update(entity: Entity<"Health">) {
+  function update(entity: Entity<"Health">, delta: number) {
     const { health, player } = entity.components;
 
     /**
@@ -13,10 +14,19 @@ export const StatsSystem = (): System => {
     }
 
     /**
-     * Is destroyed?
+     * Is destroying?
      */
-    if (health.hp <= 0 && !player) {
-      console.info(`Ship ${entity.id} destroyed.`);
+    if (health.hp <= 0 && !player && health.condition === Condition.Alive) {
+      console.info(`Ship ${entity.id} is breaking up.`);
+      health.condition = Condition.Destroying;
+      health.timeToLive = 3000;
+    }
+
+    if (health.timeToLive) {
+      health.timeToLive -= delta;
+    }
+
+    if (health.timeToLive !== null && health.timeToLive <= 0) {
       entity.destroyed = true;
     }
   }

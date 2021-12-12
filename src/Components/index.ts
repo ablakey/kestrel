@@ -1,6 +1,13 @@
 import Victor from "victor";
 import { DamageEffect } from "../Effects";
-import { CombatBehaviour, Direction, MovementBehaviour, StrategyBehaviour, Thrust } from "../enum";
+import {
+  CombatBehaviour,
+  Condition,
+  Direction,
+  MovementBehaviour,
+  StrategyBehaviour,
+  Thrust,
+} from "../enum";
 import { WeaponInstance } from "../Items";
 import { SpriteName } from "../resources";
 import { Body } from "./Body";
@@ -47,7 +54,9 @@ export type Kinematics = {
 export type Health = {
   kind: "Health";
   hp: number;
+  condition: Condition;
   effects: DamageEffect[];
+  timeToLive: number | null;
 };
 
 export type Sprite = {
@@ -78,11 +87,6 @@ export type Description = {
   label: string;
 };
 
-export type Exploding = {
-  kind: "Exploding";
-  start: number;
-};
-
 export type Component =
   | Ai
   | Body
@@ -96,5 +100,4 @@ export type Component =
   | Player
   | Politics
   | Sprite
-  | Description
-  | Exploding;
+  | Description;

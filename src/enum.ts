@@ -36,3 +36,9 @@ export enum Team {
   Rebel = "Rebel",
   Confederacy = "Confederacy",
 }
+
+export enum Condition {
+  Alive = "Alive",
+  Disabled = "Disabled",
+  Destroying = "Destroying",
+}

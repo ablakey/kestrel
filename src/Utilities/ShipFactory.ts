@@ -2,6 +2,7 @@ import { cloneDeep } from "lodash";
 import Victor from "victor";
 import {
   CombatBehaviour,
+  Condition,
   Direction,
   MovementBehaviour,
   StrategyBehaviour,
@@ -61,6 +62,8 @@ export class ShipFactory extends BaseUtility {
         kind: "Health",
         hp: shipType.hp,
         effects: [],
+        timeToLive: null,
+        condition: Condition.Alive,
       },
       kinematics: {
         kind: "Kinematics",
