@@ -38,7 +38,7 @@ export const AICombatSystem = (game: Game): System => {
     assert(target);
     assert(target.components.body);
 
-    const facing = Body.isFacing(body, target.components.body, 0.1);
+    const facing = Body.isFacing(body, target.components.body);
     const distance = body.position.distance(target.components.body.position);
     const maxRanges = inventory.weapons.map((w) => Weapons[w.name].maxRange);
     const inRange = distance < maxRanges[0]; // TODO: filter by weapons that are available.

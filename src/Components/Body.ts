@@ -26,9 +26,9 @@ export class Body {
    * Given a source, target, and tolerance (to prevent constant jittering), return which direction (or
    * None) to turn towards.
    */
-  public static getTurnDirection(src: Body, target: Body, tolerance: number): Direction {
+  public static getTurnDirection(src: Body, target: Body, tolerance?: number): Direction {
     const angle = Body.getDeltaAngle(src, target);
-    if (Math.abs(angle) < tolerance) {
+    if (Math.abs(angle) < (tolerance ?? 0.05)) {
       return Direction.None;
     }
 
@@ -39,8 +39,8 @@ export class Body {
    * Return if a is facing b, within a tolerance in radians.
    * TODO: clean this up. Probably a better way to do it with vectors?
    */
-  public static isFacing(a: Body, b: Body, tolerance: number): boolean {
-    const isFacing = Math.abs(Body.getDeltaAngle(a, b)) < tolerance;
+  public static isFacing(a: Body, b: Body, tolerance?: number): boolean {
+    const isFacing = Math.abs(Body.getDeltaAngle(a, b)) < (tolerance ?? 0.05);
     return isFacing;
   }
 }

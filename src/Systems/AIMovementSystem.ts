@@ -22,7 +22,7 @@ export const AIMovementSystem = (game: Game): System => {
      * Point at a target.
      */
     if ([MovementBehaviour.PointAt, MovementBehaviour.FlyThrough].includes(ai.movementBehaviour)) {
-      const turnDirection = Body.getTurnDirection(body, target.components.body, 0.03);
+      const turnDirection = Body.getTurnDirection(body, target.components.body);
       engine.direction = turnDirection;
     }
 
@@ -30,7 +30,7 @@ export const AIMovementSystem = (game: Game): System => {
      * Fly towards a target.
      */
     if (ai.movementBehaviour === MovementBehaviour.FlyThrough) {
-      if (Body.getDeltaAngle(body, target.components.body) < 0.03) {
+      if (Body.getDeltaAngle(body, target.components.body) < 0.01) {
         engine.thrust = Thrust.Forward;
       } else {
         engine.thrust = Thrust.None;

@@ -14,6 +14,7 @@ const playerShip = game.shipFactory.create({
 });
 
 playerShip.components.player = { kind: "Player" };
+delete (playerShip.components as any).ai;
 
 game.start();
 

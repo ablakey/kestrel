@@ -15,8 +15,8 @@ export type GameState = {
 const initialRelations: AllRelations = {
   Player: { Independent: 20, Player: 100, Rebel: 0, Confederacy: 0 },
   Independent: { Independent: 20, Player: -1, Rebel: 50, Confederacy: 50 },
-  Rebel: { Independent: 20, Player: 20, Rebel: 100, Confederacy: -100 },
-  Confederacy: { Independent: 20, Player: 20, Rebel: -100, Confederacy: 100 },
+  Rebel: { Independent: 20, Player: -1, Rebel: 100, Confederacy: -100 },
+  Confederacy: { Independent: 20, Player: -1, Rebel: -100, Confederacy: 100 },
 };
 
 export const initialState: DeepReadonly<GameState> = {
