@@ -18,7 +18,7 @@ export type ShipName = "Blue" | "Red";
 export const Ships: Record<ShipName, Ship> = {
   Blue: {
     hp: 100,
-    sprite: "BlueShip",
+    sprite: "Explosion",
     label: "Blue Ship",
     radius: 60,
     maxSpeed: 500,

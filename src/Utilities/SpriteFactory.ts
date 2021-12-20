@@ -42,7 +42,9 @@ export class SpriteFactory extends BaseUtility {
     pixiSpritesheet.textures;
 
     // TODO: this probably does not guarantee in-order sprites.
-    const pixiSprite = new PIXI.AnimatedSprite(Object.values(pixiSpritesheet.textures));
+    const textures = Object.values(pixiSpritesheet.textures);
+    console.log(pixiSpritesheet, pixiTexture, sprite);
+    const pixiSprite = new PIXI.AnimatedSprite(textures);
     pixiSprite.animationSpeed = sprite.animationSpeed;
 
     return pixiSprite;
