@@ -9,7 +9,7 @@ import {
   Thrust,
 } from "../enum";
 import { WeaponInstance } from "../Items";
-import { SpriteName } from "../resources";
+import { SpriteName, SpritesheetName } from "../resources";
 import { Body } from "./Body";
 import { Politics } from "./Politics";
 
@@ -61,7 +61,8 @@ export type Health = {
 
 export type Sprite = {
   kind: "Sprite";
-  sprite: SpriteName;
+  sprite?: SpriteName;
+  spritesheet?: SpritesheetName;
   offsetX: number;
   offsetY: number;
 };

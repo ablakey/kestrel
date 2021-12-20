@@ -72,13 +72,19 @@ export class Game {
   public shipFactory: ShipFactory;
   public audio: Audio;
 
-  constructor() {
-    this.bulletFactory = new BulletFactory(this);
-    this.shipFactory = new ShipFactory(this);
-    this.audio = new Audio(this);
-    this.systems = SystemCreators.map((s) => s(this));
-    this.entities = new Entities(this);
-    this.state = initialState;
+  /**
+   * A replacement for a class constructor so that we can do async stuff on initialization.
+   */
+  public static async init() {
+    const game = new Game();
+    game.systems = await Promise.all(SystemCreators.map(async (s) => await s(game)));
+    game.bulletFactory = new BulletFactory(game);
+    game.shipFactory = new ShipFactory(game);
+    game.audio = new Audio(game);
+    game.entities = new Entities(game);
+    game.state = initialState;
+
+    return game;
   }
 
   public getPlayer() {

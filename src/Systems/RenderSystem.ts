@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 import bg from "../assets/sprites/spr_stars01.png";
 import bg2 from "../assets/sprites/spr_stars02.png";
 import { Game, Entity, System } from "../game";
-import { Sprites } from "../resources";
+import { Sprites, Spritesheets } from "../resources";
 import { assert } from "../utils";
 
 /**
@@ -50,12 +50,29 @@ const PARALLAX_MAGNIUDE = 0.5;
  */
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-export const RenderSystem = (game: Game): System => {
+async function preloadAssets() {
+  return new Promise((resolve, reject) => {
+    PIXI.Loader.shared.add("explosion").load((loader, resources) => {
+      for (const [name, resource] of Object.entries(resources)) {
+        if (resource.error) {
+          reject(`Failed to load resource: ${name}. Reason: ${resource.error}`);
+          return;
+        }
+      }
+      resolve(null);
+    });
+  });
+}
+
+export const RenderSystem = async (game: Game): Promise<System> => {
+  await preloadAssets();
+
   const renderedItems: Record<string, PIXI.Sprite> = {};
   let renderedReticle: { targetId: number; graphic: PIXI.Graphics } | undefined = undefined;
 
   const viewport = document.querySelector<HTMLElement>("#viewport")!;
   const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: viewport });
+
   viewport.appendChild(app.view);
 
   app.stage.x = app.renderer.width / 2;
@@ -104,19 +121,48 @@ export const RenderSystem = (game: Game): System => {
   container.position.set(app.renderer.screen.width / 2, app.renderer.screen.height / 2);
   app.stage.addChild(container);
 
-  function getOrCreateSprite(entity: Entity<"Sprite">): PIXI.Sprite {
+  function getOrCreateSprite(entity: Entity<"Sprite">): PIXI.Sprite | PIXI.AnimatedSprite {
     const { sprite } = entity.components;
+
+    // Already exists.
     if (renderedItems[entity.id]) {
       return renderedItems[entity.id];
-    } else {
-      const spriteFile = Sprites[sprite.sprite];
-      const newItem = PIXI.Sprite.from(spriteFile);
-      newItem.anchor.set(sprite.offsetX, sprite.offsetY);
-      container.addChild(newItem);
-      renderedItems[entity.id] = newItem;
-      return newItem;
     }
+
+    let newItem = undefined;
+
+    // Is a sprite.
+    if (sprite.sprite) {
+      const spriteFile = Sprites[sprite.sprite];
+      newItem = PIXI.Sprite.from(spriteFile);
+      newItem.anchor.set(sprite.offsetX, sprite.offsetY);
+    }
+
+    if (sprite.spritesheet) {
+      const spritesheet = Spritesheets[sprite.spritesheet];
+      const texture = PIXI.Texture.from(spritesheet.sheet);
+      const sheet = new PIXI.Spritesheet(texture, spritesheet.data);
+      const newItem = new PIXI.AnimatedSprite(sheet);
+      // TODO: anchor
+    }
+
+    if (newItem === undefined) {
+      throw new Error("Failed to create sprite.");
+    }
+
+    container.addChild(newItem);
+    renderedItems[entity.id] = newItem;
+    return newItem;
   }
+
+  // TODO
+  // TODO
+  // TODO
+  // TODO getOrCreateSprite should handle Spritesheets too. So it should return one of the two items.
+  // TODO
+  // TODO
+  // TODO
+  // TODO
 
   function update(entity: Entity<"Body" | "Sprite">) {
     const { player, body, offensive } = entity.components;
