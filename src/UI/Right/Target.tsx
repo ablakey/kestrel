@@ -28,7 +28,7 @@ export function Target(props: { target: ShipEntity | null }) {
         }}
       >
         <div>{`Health: ${target.components.health.hp}`}</div>
-        <div>{TeamLabel[target.components.politics.team]}</div>
+        {/* <div>{TeamLabel[target.components.politics.team]}</div> */}
       </div>
     </div>
   );

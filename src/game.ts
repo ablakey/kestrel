@@ -18,6 +18,7 @@ import { DeepReadonly } from "./types";
 import { Audio } from "./Utilities/Audio";
 import { BulletFactory } from "./Utilities/BulletFactory";
 import { ShipEntity, ShipFactory } from "./Utilities/ShipFactory";
+import { SpriteFactory } from "./Utilities/SpriteFactory";
 import { assert } from "./utils";
 
 /**
@@ -69,6 +70,7 @@ export class Game {
    * Helpers / utilities / factories.
    */
   public bulletFactory: BulletFactory;
+  public spriteFactory: SpriteFactory;
   public shipFactory: ShipFactory;
   public audio: Audio;
 
@@ -79,6 +81,7 @@ export class Game {
     const game = new Game();
     game.systems = await Promise.all(SystemCreators.map(async (s) => await s(game)));
     game.bulletFactory = new BulletFactory(game);
+    game.spriteFactory = new SpriteFactory(game);
     game.shipFactory = new ShipFactory(game);
     game.audio = new Audio(game);
     game.entities = new Entities(game);

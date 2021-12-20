@@ -1,6 +1,5 @@
 import { Item, WeaponInstance } from ".";
-
-import { SpriteName } from "../resources";
+import { SpriteName } from "../Utilities/SpriteFactory";
 
 export type Ship = Item & {
   hp: number;

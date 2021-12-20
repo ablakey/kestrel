@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js";
 import bg from "../assets/sprites/spr_stars01.png";
 import bg2 from "../assets/sprites/spr_stars02.png";
 import { Game, Entity, System } from "../game";
-import { Sprites, Spritesheets } from "../resources";
 import { assert } from "../utils";
 
 /**
@@ -129,30 +128,19 @@ export const RenderSystem = async (game: Game): Promise<System> => {
       return renderedItems[entity.id];
     }
 
-    let newItem = undefined;
+    const newSprite = game.spriteFactory.createSprite(sprite.name);
 
-    // Is a sprite.
-    if (sprite.sprite) {
-      const spriteFile = Sprites[sprite.sprite];
-      newItem = PIXI.Sprite.from(spriteFile);
-      newItem.anchor.set(sprite.offsetX, sprite.offsetY);
-    }
+    // if (sprite.spritesheet) {
+    //   const spritesheet = Spritesheets[sprite.spritesheet];
+    //   const texture = PIXI.Texture.from(spritesheet.sheet);
+    //   const sheet = new PIXI.Spritesheet(texture, spritesheet.data);
+    //   newItem = new PIXI.AnimatedSprite(sheet);
+    //   // TODO: anchor
+    // }
 
-    if (sprite.spritesheet) {
-      const spritesheet = Spritesheets[sprite.spritesheet];
-      const texture = PIXI.Texture.from(spritesheet.sheet);
-      const sheet = new PIXI.Spritesheet(texture, spritesheet.data);
-      const newItem = new PIXI.AnimatedSprite(sheet);
-      // TODO: anchor
-    }
-
-    if (newItem === undefined) {
-      throw new Error("Failed to create sprite.");
-    }
-
-    container.addChild(newItem);
-    renderedItems[entity.id] = newItem;
-    return newItem;
+    container.addChild(newSprite);
+    renderedItems[entity.id] = newSprite;
+    return newSprite;
   }
 
   // TODO

@@ -73,9 +73,7 @@ export class ShipFactory extends BaseUtility {
       },
       sprite: {
         kind: "Sprite",
-        sprite: shipType.sprite,
-        offsetX: shipType.offsetX,
-        offsetY: shipType.offsetY,
+        name: shipType.sprite,
       },
       ai: {
         kind: "Ai",

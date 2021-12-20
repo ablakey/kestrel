@@ -26,9 +26,7 @@ export class BulletFactory extends BaseUtility {
         },
         sprite: {
           kind: "Sprite",
-          sprite: weaponType.sprite,
-          offsetX: 0.5,
-          offsetY: 0.5,
+          name: weaponType.sprite,
         },
       },
       { lifespan: weaponType.lifespan }
