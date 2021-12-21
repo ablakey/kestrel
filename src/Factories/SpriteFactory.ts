@@ -26,8 +26,6 @@ const spritesheets = {
   },
 } as const;
 
-type SpritesheetName = keyof typeof spritesheets;
-
 const animatedSpriteData = {
   Explosion: {
     sheet: "explosion",
@@ -41,6 +39,7 @@ const animatedSpriteData = {
   },
 } as const;
 
+type SpritesheetName = keyof typeof spritesheets;
 type StaticSpriteName = keyof typeof staticSpriteData;
 type AnimatedSpriteName = keyof typeof animatedSpriteData;
 export type SpriteName = StaticSpriteName | AnimatedSpriteName;

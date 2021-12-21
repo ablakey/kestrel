@@ -22,7 +22,7 @@ const initialRelations: AllRelations = {
 export const initialState: DeepReadonly<GameState> = {
   showDebug: false,
   isPaused: false,
-  volume: 0,
+  volume: 1, // 0 - 1
   instanceRelations: initialRelations,
   globalRelations: initialRelations,
   // instanceRelations: these can change for a given starsystem instance. That way all ships of a class can respond.

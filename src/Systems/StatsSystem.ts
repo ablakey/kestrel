@@ -27,14 +27,13 @@ export const StatsSystem = (game: Game): System => {
     }
 
     if (health.condition === Condition.Destroying && Math.random() < 0.05) {
-      game.doodadFactory.createExplosion({
-        position: body.position.clone(),
-        size: "SmallExplosion",
-      });
+      game.doodadFactory.spawnSprite(body.position.clone(), "SmallExplosion");
+      game.soundFactory.playSound("ShipBreaksUp");
     }
 
     if (health.timeToLive !== null && health.timeToLive <= 0) {
-      game.doodadFactory.createExplosion({ position: body.position.clone(), size: "Explosion" });
+      game.doodadFactory.spawnSprite(body.position.clone(), "Explosion");
+      game.soundFactory.playSound("ShipExplodes");
       entity.destroyed = true;
     }
   }

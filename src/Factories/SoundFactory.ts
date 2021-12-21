@@ -1,17 +1,18 @@
 import { Howl } from "howler";
 import Victor from "victor";
 import { BaseFactory } from "./BaseFactory";
-import laserSound from "../assets/sounds/laser.mp3";
-import protonSound from "../assets/sounds/proton.mp3";
-import beepSound from "../assets/sounds/beep.mp3";
+
+import sounds from "../assets/sounds/*.mp3";
 
 const POSITION_SCALE = 0.1; // Adjust to affect how distance plays a role in sound.
 const GLOBAL_VOLUME_ADJUST = 0.1; // Volume at 1.0 is way too loud.
 
 export const Sounds = {
-  Laser: laserSound,
-  Proton: protonSound,
-  Beep1: beepSound,
+  Laser: sounds.laser,
+  Proton: sounds.proton,
+  Beep1: sounds.beep,
+  ShipBreaksUp: sounds.shipbreaksup,
+  ShipExplodes: sounds.shipexplodes,
 };
 
 export type SoundName = keyof typeof Sounds;

@@ -4,6 +4,6 @@ declare module "*.png" {
 }
 
 declare module "*.mp3" {
-  const value: string;
+  const value: Record<string, string>;
   export = value;
 }
