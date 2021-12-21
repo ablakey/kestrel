@@ -1,4 +1,4 @@
-import { ShipEntity } from "../../Utilities/ShipFactory";
+import { ShipEntity } from "../../Factories/ShipFactory";
 import { Panel } from "./Panel";
 
 export function Info(props: { player: ShipEntity; entityCount: number }) {

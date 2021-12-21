@@ -10,9 +10,9 @@ import {
   Thrust,
 } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
-import { BaseUtility } from "./BaseUtility";
+import { BaseFactory } from "./BaseFactory";
 
-export class ShipFactory extends BaseUtility {
+export class ShipFactory extends BaseFactory {
   create(opts: {
     x: number;
     y: number;

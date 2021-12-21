@@ -49,23 +49,7 @@ const PARALLAX_MAGNIUDE = 0.5;
  */
 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
-async function preloadAssets() {
-  return new Promise((resolve, reject) => {
-    PIXI.Loader.shared.add("explosion").load((loader, resources) => {
-      for (const [name, resource] of Object.entries(resources)) {
-        if (resource.error) {
-          reject(`Failed to load resource: ${name}. Reason: ${resource.error}`);
-          return;
-        }
-      }
-      resolve(null);
-    });
-  });
-}
-
 export const RenderSystem = async (game: Game): Promise<System> => {
-  await preloadAssets();
-
   const renderedItems: Record<string, PIXI.Sprite> = {};
   let renderedReticle: { targetId: number; graphic: PIXI.Graphics } | undefined = undefined;
 

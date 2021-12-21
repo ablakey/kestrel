@@ -1,14 +1,14 @@
 import Victor from "victor";
 import { WeaponName, Weapons } from "../Items/Weapons";
-import { BaseUtility } from "./BaseUtility";
+import { BaseFactory } from "./BaseFactory";
 
-export class BulletFactory extends BaseUtility {
+export class BulletFactory extends BaseFactory {
   create(opts: { x: number; y: number; yaw: number; weaponName: WeaponName }) {
     const weaponType = Weapons[opts.weaponName];
 
     const position = new Victor(opts.x, opts.y);
 
-    this.game.audio.playSound(weaponType.sound, { position: position });
+    this.game.soundFactory.playSound(weaponType.sound, { position: position });
 
     this.game.entities.add(
       {

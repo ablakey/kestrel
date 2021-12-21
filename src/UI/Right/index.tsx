@@ -1,4 +1,4 @@
-import { ShipEntity } from "../../Utilities/ShipFactory";
+import { ShipEntity } from "../../Factories/ShipFactory";
 import { useGame } from "../../utils";
 import { Info } from "./Info";
 import { Minimap } from "./Minimap";

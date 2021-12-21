@@ -9,7 +9,7 @@ import {
   Thrust,
 } from "../enum";
 import { WeaponInstance } from "../Items";
-import { SpriteName } from "../Utilities/SpriteFactory";
+import { SpriteName } from "../Factories/SpriteFactory";
 import { Body } from "./Body";
 import { Politics } from "./Politics";
 

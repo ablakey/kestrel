@@ -97,7 +97,7 @@ export const InputSystem = (game: Game): System => {
         case Inputs.PreviousTarget.key:
           const index = k === Inputs.NextTarget.key ? 1 : -1;
           offensive.target = game.entities.getTarget(offensive.target, index);
-          game.audio.playSound("Beep1");
+          game.soundFactory.playSound("Beep1");
           break;
         case Inputs.ShowDebug.key:
           game.setState((draft) => {

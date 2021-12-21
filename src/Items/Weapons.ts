@@ -1,6 +1,6 @@
 import { Item } from ".";
-import { SoundName } from "../resources";
-import { SpriteName } from "../Utilities/SpriteFactory";
+import { SoundName } from "../Factories/SoundFactory";
+import { SpriteName } from "../Factories/SpriteFactory";
 
 export type Weapon = Item & {
   speed: number;

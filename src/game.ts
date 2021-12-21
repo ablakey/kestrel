@@ -15,10 +15,10 @@ import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
 import { DeepReadonly } from "./types";
-import { Audio } from "./Utilities/Audio";
-import { BulletFactory } from "./Utilities/BulletFactory";
-import { ShipEntity, ShipFactory } from "./Utilities/ShipFactory";
-import { SpriteFactory } from "./Utilities/SpriteFactory";
+import { SoundFactory } from "./Factories/SoundFactory";
+import { BulletFactory } from "./Factories/BulletFactory";
+import { ShipEntity, ShipFactory } from "./Factories/ShipFactory";
+import { SpriteFactory } from "./Factories/SpriteFactory";
 import { assert } from "./utils";
 
 /**
@@ -72,7 +72,7 @@ export class Game {
   public bulletFactory: BulletFactory;
   public spriteFactory: SpriteFactory;
   public shipFactory: ShipFactory;
-  public audio: Audio;
+  public soundFactory: SoundFactory;
 
   /**
    * A replacement for a class constructor so that we can do async stuff on initialization.
@@ -83,7 +83,7 @@ export class Game {
     game.bulletFactory = new BulletFactory(game);
     game.spriteFactory = await SpriteFactory.init(game);
     game.shipFactory = new ShipFactory(game);
-    game.audio = new Audio(game);
+    game.soundFactory = new SoundFactory(game);
     game.entities = new Entities(game);
     game.state = initialState;
 

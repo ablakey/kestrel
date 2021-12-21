@@ -1,4 +1,4 @@
-import { BaseUtility } from "./BaseUtility";
+import { BaseFactory } from "./BaseFactory";
 import * as PIXI from "pixi.js";
 
 // Sprites
@@ -34,7 +34,7 @@ export type SpriteName = StaticSpriteName | AnimatedSpriteName;
 
 type Spritesheets = Record<AnimatedSpriteName, PIXI.Spritesheet>;
 
-export class SpriteFactory extends BaseUtility {
+export class SpriteFactory extends BaseFactory {
   private spritesheets: Spritesheets;
 
   public static async init(game: Game) {

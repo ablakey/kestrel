@@ -1,6 +1,6 @@
 import { Game } from "../game";
 
-export class BaseUtility {
+export class BaseFactory {
   protected game: Game;
 
   constructor(game: Game) {

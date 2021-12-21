@@ -1,5 +1,5 @@
 import { Item, WeaponInstance } from ".";
-import { SpriteName } from "../Utilities/SpriteFactory";
+import { SpriteName } from "../Factories/SpriteFactory";
 
 export type Ship = Item & {
   hp: number;
@@ -18,7 +18,7 @@ export type ShipName = "Blue" | "Red";
 export const Ships: Record<ShipName, Ship> = {
   Blue: {
     hp: 100,
-    sprite: "Explosion",
+    sprite: "BlueShip",
     label: "Blue Ship",
     radius: 60,
     maxSpeed: 500,

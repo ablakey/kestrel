@@ -1,7 +1,7 @@
 import Victor from "victor";
-import { BaseUtility } from "./BaseUtility";
+import { BaseFactory } from "./BaseFactory";
 
-export class DebrisFactory extends BaseUtility {
+export class DebrisFactory extends BaseFactory {
   create(opts: { x: number; y: number; yaw: number }) {
     const position = new Victor(opts.x, opts.y);
 

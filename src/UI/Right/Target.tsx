@@ -1,5 +1,5 @@
 import { TeamLabel } from "../../strings";
-import { ShipEntity } from "../../Utilities/ShipFactory";
+import { ShipEntity } from "../../Factories/ShipFactory";
 
 export function Target(props: { target: ShipEntity | null }) {
   const { target } = props;
