@@ -26,9 +26,6 @@ async function main() {
 
   window._game = game;
 
-  /**
-   * UI.
-   */
   function render() {
     ReactDOM.render(<Layout game={game} />, document.getElementById("ui"));
     requestAnimationFrame(render);

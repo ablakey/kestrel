@@ -81,7 +81,7 @@ export class Game {
     const game = new Game();
     game.systems = await Promise.all(SystemCreators.map(async (s) => await s(game)));
     game.bulletFactory = new BulletFactory(game);
-    game.spriteFactory = new SpriteFactory(game);
+    game.spriteFactory = await SpriteFactory.init(game);
     game.shipFactory = new ShipFactory(game);
     game.audio = new Audio(game);
     game.entities = new Entities(game);
