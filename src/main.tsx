@@ -1,4 +1,5 @@
 import ReactDOM from "react-dom";
+import Victor from "victor";
 import { Team } from "./enum";
 import { Game } from "./game";
 import { Layout } from "./UI/Layout";
@@ -12,8 +13,7 @@ declare global {
 async function main() {
   const game = await Game.init();
   const playerShip = game.shipFactory.create({
-    x: 0,
-    y: 0,
+    position: new Victor(0, 0),
     yaw: 0,
     shipName: "Blue",
     team: Team.Player,
@@ -21,8 +21,6 @@ async function main() {
 
   playerShip.components.player = { kind: "Player" };
   delete (playerShip.components as any).ai;
-
-  game.doodadFactory.createExplosion({ x: 200, y: 200, yaw: 0 });
 
   game.start();
 

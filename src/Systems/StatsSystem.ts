@@ -1,9 +1,9 @@
 import { Condition } from "../enum";
-import { Entity, System } from "../game";
+import { Entity, Game, System } from "../game";
 
-export const StatsSystem = (): System => {
-  function update(entity: Entity<"Health">, delta: number) {
-    const { health, player } = entity.components;
+export const StatsSystem = (game: Game): System => {
+  function update(entity: Entity<"Health" | "Body">, delta: number) {
+    const { health, player, body } = entity.components;
 
     /**
      * Apply damage.
@@ -27,9 +27,10 @@ export const StatsSystem = (): System => {
     }
 
     if (health.timeToLive !== null && health.timeToLive <= 0) {
+      game.doodadFactory.createExplosion({ position: body.position.clone() });
       entity.destroyed = true;
     }
   }
 
-  return { update, componentKinds: ["Health"] };
+  return { update, componentKinds: ["Health", "Body"] };
 };

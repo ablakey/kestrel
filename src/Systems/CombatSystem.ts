@@ -16,14 +16,15 @@ export const CombatSystem = (game: Game): System => {
         return;
       }
 
-      const bulletPos = body.position
+      const position = body.position
         .clone()
         .add(new Victor(offensive.bulletOffset, 0).rotate(body.yaw.angle()));
 
+      const yaw = body.yaw.angle() + Math.random() * (1 - weaponType.accuracy);
+
       game.bulletFactory.create({
-        x: bulletPos.x,
-        y: bulletPos.y,
-        yaw: body.yaw.angle() + Math.random() * (1 - weaponType.accuracy),
+        position,
+        yaw,
         weaponName: w.name,
       });
 

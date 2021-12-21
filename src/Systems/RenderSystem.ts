@@ -117,7 +117,6 @@ export const RenderSystem = async (game: Game): Promise<System> => {
     // Prime the entity to be destroyed once the animation completes.
     if (game.spriteFactory.isAnimated(sprite.name)) {
       (newSprite as PIXI.AnimatedSprite).onComplete = () => {
-        console.log("on complete");
         entity.destroyed = true;
       };
     }

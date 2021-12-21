@@ -13,14 +13,7 @@ import { ShipName, Ships } from "../Items/Ships";
 import { BaseFactory } from "./BaseFactory";
 
 export class ShipFactory extends BaseFactory {
-  create(opts: {
-    x: number;
-    y: number;
-    yaw: number;
-    shipName: ShipName;
-    team: Team;
-    runAi?: boolean;
-  }) {
+  create(opts: { position: Victor; yaw: number; shipName: ShipName; team: Team; runAi?: boolean }) {
     const shipType = Ships[opts.shipName];
 
     return this.game.entities.add({
@@ -40,7 +33,7 @@ export class ShipFactory extends BaseFactory {
       },
       body: {
         kind: "Body",
-        position: new Victor(opts.x, opts.y),
+        position: opts.position,
         yaw: new Victor(1, 0).rotate(opts.yaw),
         velocity: new Victor(0, 0),
         angularVelocity: 0,
