@@ -26,8 +26,15 @@ export const StatsSystem = (game: Game): System => {
       health.timeToLive -= delta;
     }
 
+    if (health.condition === Condition.Destroying && Math.random() < 0.05) {
+      game.doodadFactory.createExplosion({
+        position: body.position.clone(),
+        size: "SmallExplosion",
+      });
+    }
+
     if (health.timeToLive !== null && health.timeToLive <= 0) {
-      game.doodadFactory.createExplosion({ position: body.position.clone() });
+      game.doodadFactory.createExplosion({ position: body.position.clone(), size: "Explosion" });
       entity.destroyed = true;
     }
   }

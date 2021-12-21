@@ -19,12 +19,25 @@ const staticSpriteData = {
   RedShip: { image: redShipSprite },
 } as const;
 
-const animatedSpriteData = {
-  Explosion: {
+const spritesheets = {
+  explosion: {
     image: explosionSheet,
     data: explosionSheetData,
+  },
+} as const;
+
+type SpritesheetName = keyof typeof spritesheets;
+
+const animatedSpriteData = {
+  Explosion: {
+    sheet: "explosion",
     animationSpeed: 0.2,
     scale: 2,
+  },
+  SmallExplosion: {
+    sheet: "explosion",
+    animationSpeed: 0.2,
+    scale: 1,
   },
 } as const;
 
@@ -32,10 +45,10 @@ type StaticSpriteName = keyof typeof staticSpriteData;
 type AnimatedSpriteName = keyof typeof animatedSpriteData;
 export type SpriteName = StaticSpriteName | AnimatedSpriteName;
 
-type Spritesheets = Record<AnimatedSpriteName, PIXI.Spritesheet>;
+type PixiSpritesheets = Record<keyof typeof spritesheets, PIXI.Spritesheet>;
 
 export class SpriteFactory extends BaseFactory {
-  private spritesheets: Spritesheets;
+  private spritesheets: PixiSpritesheets;
 
   public static async init(game: Game) {
     const self = new SpriteFactory(game);
@@ -66,8 +79,8 @@ export class SpriteFactory extends BaseFactory {
   }
 
   private createAnimatedSprite(name: AnimatedSpriteName): PIXI.AnimatedSprite {
-    const { animationSpeed, scale } = animatedSpriteData[name];
-    const textures = Object.values(this.spritesheets[name].textures);
+    const { animationSpeed, scale, sheet } = animatedSpriteData[name];
+    const textures = Object.values(this.spritesheets[sheet].textures);
     const pixiSprite = new PIXI.AnimatedSprite(textures);
     pixiSprite.animationSpeed = animationSpeed;
     pixiSprite.anchor.set(0.5, 0.5);
@@ -77,18 +90,18 @@ export class SpriteFactory extends BaseFactory {
     return pixiSprite;
   }
 
-  private async prepareSpritesheets(): Promise<Spritesheets> {
+  private async prepareSpritesheets(): Promise<PixiSpritesheets> {
     return new Promise((res) => {
-      const spritesheets: Partial<Spritesheets> = {};
-      for (const [name, data] of Object.entries(animatedSpriteData)) {
+      const pixiSpritesheets: Partial<PixiSpritesheets> = {};
+      for (const [name, data] of Object.entries(spritesheets)) {
         const pixiTexture = PIXI.BaseTexture.from(data.image);
         const pixiSpritesheet = new PIXI.Spritesheet(pixiTexture, data.data);
         pixiSpritesheet.parse(() => {
-          spritesheets[name as AnimatedSpriteName] = pixiSpritesheet;
+          pixiSpritesheets[name as SpritesheetName] = pixiSpritesheet;
         });
       }
 
-      res(spritesheets as Spritesheets);
+      res(pixiSpritesheets as PixiSpritesheets);
     });
   }
 }
