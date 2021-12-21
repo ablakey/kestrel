@@ -1,27 +1,23 @@
 import { BaseFactory } from "./BaseFactory";
 import * as PIXI from "pixi.js";
 
-// Sprites
-import laserSprite from "../assets/sprites/pixel_laser_green.png";
-import protonSprite from "../assets/sprites/pixel_laser_blue.png";
-import blueShipSprite from "../assets/sprites/pixel_ship_blue.png";
-import redShipSprite from "../assets/sprites/pixel_ship_red.png";
+import spriteImages from "../assets/sprites/*.png";
 
 // Spritesheets
+import spritesheetImages from "../assets/spritesheets/*.png";
 import explosionSheetData from "../assets/spritesheets/explosion.json";
-import explosionSheet from "../assets/spritesheets/explosion.png";
 import { Game } from "../game";
 
 const staticSpriteData = {
-  Laser: { image: laserSprite },
-  Proton: { image: protonSprite },
-  BlueShip: { image: blueShipSprite },
-  RedShip: { image: redShipSprite },
+  Laser: { image: spriteImages.pixel_laser_green },
+  Proton: { image: spriteImages.pixel_laser_blue },
+  BlueShip: { image: spriteImages.pixel_ship_blue },
+  RedShip: { image: spriteImages.pixel_ship_red },
 } as const;
 
 const spritesheets = {
   explosion: {
-    image: explosionSheet,
+    image: spritesheetImages.explosion,
     data: explosionSheetData,
   },
 } as const;

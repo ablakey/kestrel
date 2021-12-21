@@ -1,5 +1,5 @@
 declare module "*.png" {
-  const value: string;
+  const value: Record<string, string>;
   export = value;
 }
 
