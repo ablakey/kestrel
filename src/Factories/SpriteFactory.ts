@@ -9,10 +9,11 @@ import explosionSheetData from "../assets/spritesheets/explosion.json";
 import { Game } from "../game";
 
 const staticSpriteData = {
-  Laser: { image: spriteImages.pixel_laser_green },
-  Proton: { image: spriteImages.pixel_laser_blue },
-  BlueShip: { image: spriteImages.pixel_ship_blue },
-  RedShip: { image: spriteImages.pixel_ship_red },
+  Laser: { image: spriteImages.pixel_laser_green, scale: 1 },
+  Proton: { image: spriteImages.pixel_laser_blue, scale: 1 },
+  BlueShip: { image: spriteImages.pixel_ship_blue, scale: 1 },
+  RedShip: { image: spriteImages.pixel_ship_red, scale: 1 },
+  GreenPlanet1: { image: spriteImages.planet_00, scale: 2 },
 } as const;
 
 const spritesheets = {
@@ -68,8 +69,10 @@ export class SpriteFactory extends BaseFactory {
   }
 
   private createStaticSprite(name: StaticSpriteName): PIXI.Sprite {
-    const pixiSprite = PIXI.Sprite.from(staticSpriteData[name].image);
+    const { image, scale } = staticSpriteData[name];
+    const pixiSprite = PIXI.Sprite.from(image);
     pixiSprite.anchor.set(0.5, 0.5);
+    pixiSprite.scale.set(scale, scale);
     return pixiSprite;
   }
 

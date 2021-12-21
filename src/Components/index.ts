@@ -12,6 +12,7 @@ import { WeaponInstance } from "../Items";
 import { SpriteName } from "../Factories/SpriteFactory";
 import { Body } from "./Body";
 import { Politics } from "./Politics";
+import { Navigable } from "./Navigable";
 
 export * from "./Body";
 export * from "./Politics";
@@ -68,11 +69,6 @@ export type Player = {
   kind: "Player";
 };
 
-export type Navigation = {
-  kind: "Navigation";
-  goal: Victor | null;
-};
-
 export type Ai = {
   kind: "Ai";
   strategy: StrategyBehaviour;
@@ -93,9 +89,9 @@ export type Component =
   | Health
   | Inventory
   | Kinematics
-  | Navigation
   | Offensive
   | Player
   | Politics
   | Sprite
-  | Description;
+  | Description
+  | Navigable;

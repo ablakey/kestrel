@@ -26,7 +26,7 @@ export function DebugModal() {
   function spawnShip() {
     game.shipFactory.create({
       shipName: selectedSpawn,
-      team: pickRandom([Team.Rebel, Team.Confederacy]),
+      team: pickRandom([Team.Rebellion, Team.Confederacy]),
       position: new Victor(Math.random() * 1500 - 750, Math.random() * 1500 - 750),
       yaw: Math.random() * Math.PI,
     });

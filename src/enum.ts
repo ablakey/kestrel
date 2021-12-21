@@ -33,7 +33,7 @@ export enum CombatBehaviour {
 export enum Team {
   Independent = "Independent",
   Player = "Player",
-  Rebel = "Rebel",
+  Rebellion = "Rebellion",
   Confederacy = "Confederacy",
 }
 

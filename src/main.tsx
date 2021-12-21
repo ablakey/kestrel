@@ -13,7 +13,7 @@ declare global {
 async function main() {
   const game = await Game.init();
   const playerShip = game.shipFactory.create({
-    position: new Victor(0, 0),
+    position: new Victor(500, -500),
     yaw: 0,
     shipName: "Blue",
     team: Team.Player,
@@ -21,6 +21,8 @@ async function main() {
 
   playerShip.components.player = { kind: "Player" };
   delete (playerShip.components as any).ai;
+
+  game.doodadFactory.spawnPlanet(new Victor(0, 0), "Levo");
 
   game.start();
 
