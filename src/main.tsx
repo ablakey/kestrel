@@ -22,6 +22,8 @@ async function main() {
   playerShip.components.player = { kind: "Player" };
   delete (playerShip.components as any).ai;
 
+  game.doodadFactory.createExplosion({ x: 200, y: 200, yaw: 0 });
+
   game.start();
 
   window._game = game;

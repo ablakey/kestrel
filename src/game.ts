@@ -20,6 +20,7 @@ import { BulletFactory } from "./Factories/BulletFactory";
 import { ShipEntity, ShipFactory } from "./Factories/ShipFactory";
 import { SpriteFactory } from "./Factories/SpriteFactory";
 import { assert } from "./utils";
+import { DoodadFactory } from "./Factories/DoodadFactory";
 
 /**
  * An ordered list of systems, invokved in the order described here.
@@ -73,6 +74,7 @@ export class Game {
   public spriteFactory: SpriteFactory;
   public shipFactory: ShipFactory;
   public soundFactory: SoundFactory;
+  public doodadFactory: DoodadFactory;
 
   /**
    * A replacement for a class constructor so that we can do async stuff on initialization.
@@ -84,6 +86,7 @@ export class Game {
     game.spriteFactory = await SpriteFactory.init(game);
     game.shipFactory = new ShipFactory(game);
     game.soundFactory = new SoundFactory(game);
+    game.doodadFactory = new DoodadFactory(game);
     game.entities = new Entities(game);
     game.state = initialState;
 

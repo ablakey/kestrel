@@ -43,6 +43,10 @@ export class SpriteFactory extends BaseFactory {
     return self;
   }
 
+  public isAnimated(name: SpriteName) {
+    return name in animatedSpriteData;
+  }
+
   public createSprite(name: SpriteName): PIXI.Sprite | PIXI.AnimatedSprite {
     if (name in staticSpriteData) {
       return this.createStaticSprite(name as StaticSpriteName);
@@ -68,6 +72,7 @@ export class SpriteFactory extends BaseFactory {
     pixiSprite.animationSpeed = animationSpeed;
     pixiSprite.anchor.set(0.5, 0.5);
     pixiSprite.scale.set(scale, scale);
+    pixiSprite.loop = false;
     pixiSprite.play();
     return pixiSprite;
   }

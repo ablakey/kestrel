@@ -114,27 +114,18 @@ export const RenderSystem = async (game: Game): Promise<System> => {
 
     const newSprite = game.spriteFactory.createSprite(sprite.name);
 
-    // if (sprite.spritesheet) {
-    //   const spritesheet = Spritesheets[sprite.spritesheet];
-    //   const texture = PIXI.Texture.from(spritesheet.sheet);
-    //   const sheet = new PIXI.Spritesheet(texture, spritesheet.data);
-    //   newItem = new PIXI.AnimatedSprite(sheet);
-    //   // TODO: anchor
-    // }
+    // Prime the entity to be destroyed once the animation completes.
+    if (game.spriteFactory.isAnimated(sprite.name)) {
+      (newSprite as PIXI.AnimatedSprite).onComplete = () => {
+        console.log("on complete");
+        entity.destroyed = true;
+      };
+    }
 
     container.addChild(newSprite);
     renderedItems[entity.id] = newSprite;
     return newSprite;
   }
-
-  // TODO
-  // TODO
-  // TODO
-  // TODO getOrCreateSprite should handle Spritesheets too. So it should return one of the two items.
-  // TODO
-  // TODO
-  // TODO
-  // TODO
 
   function update(entity: Entity<"Body" | "Sprite">) {
     const { player, body, offensive } = entity.components;
