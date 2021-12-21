@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom";
 import Victor from "victor";
+import { ZIndexes } from "./config";
 import { Team } from "./enum";
 import { Game } from "./game";
 import { Layout } from "./UI/Layout";
@@ -19,6 +20,7 @@ async function main() {
     team: Team.Player,
   });
 
+  playerShip.components.sprite.zIndex = ZIndexes.Player;
   playerShip.components.player = { kind: "Player" };
   delete (playerShip.components as any).ai;
 

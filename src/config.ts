@@ -1,15 +1,11 @@
-import { Team } from "./enum";
-import { DeepReadonly } from "./types";
+import { AllRelations, DeepReadonly, GameState } from "./types";
 
-export type Relations = Record<Team, number>;
-export type AllRelations = Record<Team, Relations>;
-
-export type GameState = {
-  showDebug: boolean;
-  volume: number;
-  isPaused: boolean;
-  instanceRelations: AllRelations;
-  globalRelations: AllRelations;
+export const ZIndexes = {
+  Bullet: 300,
+  Planet: 400,
+  Ship: 500,
+  Player: 600,
+  Explosion: 700,
 };
 
 const initialRelations: AllRelations = {
@@ -19,7 +15,7 @@ const initialRelations: AllRelations = {
   Confederacy: { Independent: 20, Player: -1, Rebellion: -100, Confederacy: 100 },
 };
 
-export const initialState: DeepReadonly<GameState> = {
+export const initialGameState: DeepReadonly<GameState> = {
   showDebug: false,
   isPaused: false,
   volume: 1, // 0 - 1

@@ -1,6 +1,5 @@
 import * as PIXI from "pixi.js";
-import bg from "../assets/sprites/spr_stars01.png";
-import bg2 from "../assets/sprites/spr_stars02.png";
+import images from "../assets/sprites/*.png";
 import { Game, Entity, System } from "../game";
 import { assert } from "../utils";
 
@@ -70,7 +69,7 @@ export const RenderSystem = async (game: Game): Promise<System> => {
   /**
    * Background.
    */
-  const bgTexture = PIXI.Texture.from(bg);
+  const bgTexture = PIXI.Texture.from(images.spr_stars01);
   bgTexture;
   const tilingSprite = new PIXI.TilingSprite(
     bgTexture,
@@ -83,7 +82,7 @@ export const RenderSystem = async (game: Game): Promise<System> => {
   tilingSprite.scale.y = 2;
   app.stage.addChild(tilingSprite);
 
-  const bgTexture2 = PIXI.Texture.from(bg2);
+  const bgTexture2 = PIXI.Texture.from(images.spr_stars02);
   bgTexture;
   const tilingSprite2 = new PIXI.TilingSprite(
     bgTexture2,
@@ -101,6 +100,7 @@ export const RenderSystem = async (game: Game): Promise<System> => {
    * It exists so that we can move it around, keeping the camera focused on a specific unit.
    */
   const container = new PIXI.Container();
+  container.sortableChildren = true;
   container.position.set(app.renderer.screen.width / 2, app.renderer.screen.height / 2);
   app.stage.addChild(container);
 
@@ -113,6 +113,7 @@ export const RenderSystem = async (game: Game): Promise<System> => {
     }
 
     const newSprite = game.spriteFactory.createSprite(sprite.name);
+    newSprite.zIndex = sprite.zIndex;
 
     // Prime the entity to be destroyed once the animation completes.
     if (game.spriteFactory.isAnimated(sprite.name)) {

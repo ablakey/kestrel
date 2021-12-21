@@ -1,6 +1,6 @@
 import { Team } from "../enum";
 import { Entity } from "../game";
-import { Relations } from "../gameState";
+import { Relations } from "../types";
 
 export interface Politics {
   kind: "Politics";

@@ -1,4 +1,3 @@
-import Victor from "victor";
 import { DamageEffect } from "../Effects";
 import {
   CombatBehaviour,
@@ -8,11 +7,11 @@ import {
   StrategyBehaviour,
   Thrust,
 } from "../enum";
-import { WeaponInstance } from "../Items";
 import { SpriteName } from "../Factories/SpriteFactory";
+import { WeaponInstance } from "../Items";
 import { Body } from "./Body";
-import { Politics } from "./Politics";
 import { Navigable } from "./Navigable";
+import { Politics } from "./Politics";
 
 export * from "./Body";
 export * from "./Politics";
@@ -63,6 +62,7 @@ export type Health = {
 export type Sprite = {
   kind: "Sprite";
   name: SpriteName;
+  zIndex: number;
 };
 
 export type Player = {

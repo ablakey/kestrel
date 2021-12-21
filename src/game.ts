@@ -1,7 +1,6 @@
 import produce, { Draft } from "immer";
 import { Component } from "./Components";
 import { Entities } from "./EntityManager";
-import { GameState, initialState } from "./gameState";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
 import { AIStrategySystem } from "./Systems/AIStrategySystem";
@@ -14,13 +13,14 @@ import { MinimapSystem } from "./Systems/MinimapSystem";
 import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
-import { DeepReadonly } from "./types";
+import { DeepReadonly, GameState } from "./types";
 import { SoundFactory } from "./Factories/SoundFactory";
 import { BulletFactory } from "./Factories/BulletFactory";
 import { ShipEntity, ShipFactory } from "./Factories/ShipFactory";
 import { SpriteFactory } from "./Factories/SpriteFactory";
 import { assert } from "./utils";
 import { DoodadFactory } from "./Factories/DoodadFactory";
+import { initialGameState } from "./config";
 
 /**
  * An ordered list of systems, invokved in the order described here.
@@ -88,7 +88,7 @@ export class Game {
     game.soundFactory = new SoundFactory(game);
     game.doodadFactory = new DoodadFactory(game);
     game.entities = new Entities(game);
-    game.state = initialState;
+    game.state = initialGameState;
 
     return game;
   }

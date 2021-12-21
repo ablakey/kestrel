@@ -1,4 +1,5 @@
 import Victor from "victor";
+import { ZIndexes } from "../config";
 import { PlanetName, Planets } from "../Items/Planets";
 import { BaseFactory } from "./BaseFactory";
 import { SpriteName } from "./SpriteFactory";
@@ -20,6 +21,7 @@ export class DoodadFactory extends BaseFactory {
       sprite: {
         kind: "Sprite",
         name,
+        zIndex: ZIndexes.Explosion,
       },
     });
   }
@@ -38,6 +40,7 @@ export class DoodadFactory extends BaseFactory {
       sprite: {
         kind: "Sprite",
         name: planet.sprite,
+        zIndex: ZIndexes.Planet,
       },
       navigable: {
         kind: "Navigable",

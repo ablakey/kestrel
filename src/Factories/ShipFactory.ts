@@ -1,5 +1,6 @@
 import { cloneDeep } from "lodash";
 import Victor from "victor";
+import { ZIndexes } from "../config";
 import {
   CombatBehaviour,
   Condition,
@@ -67,6 +68,7 @@ export class ShipFactory extends BaseFactory {
       sprite: {
         kind: "Sprite",
         name: shipType.sprite,
+        zIndex: ZIndexes.Ship,
       },
       ai: {
         kind: "Ai",

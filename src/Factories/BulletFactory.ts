@@ -1,4 +1,5 @@
 import Victor from "victor";
+import { ZIndexes } from "../config";
 import { WeaponName, Weapons } from "../Items/Weapons";
 import { BaseFactory } from "./BaseFactory";
 
@@ -26,6 +27,7 @@ export class BulletFactory extends BaseFactory {
         sprite: {
           kind: "Sprite",
           name: weaponType.sprite,
+          zIndex: ZIndexes.Bullet,
         },
       },
       { lifespan: weaponType.lifespan }
