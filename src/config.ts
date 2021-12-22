@@ -1,12 +1,14 @@
 import { AllRelations, DeepReadonly, GameState } from "./types";
 
 export const ZIndexes = {
-  Bullet: 300,
-  Planet: 400,
-  Ship: 500,
+  Planet: 300,
+  Ship: 400,
+  Bullet: 500,
   Player: 600,
   Explosion: 700,
 };
+
+export const MAP_ZOOM_LEVEL = 20;
 
 const initialRelations: AllRelations = {
   Player: { Independent: 20, Player: 100, Rebellion: 0, Confederacy: 0 },

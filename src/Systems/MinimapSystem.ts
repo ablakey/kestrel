@@ -1,4 +1,5 @@
 import * as PIXI from "pixi.js";
+import { MAP_ZOOM_LEVEL } from "../config";
 import { Entity, System } from "../game";
 
 export const MinimapSystem = (): System => {
@@ -11,7 +12,9 @@ export const MinimapSystem = (): System => {
     } else {
       const marker = new PIXI.Graphics();
       marker.beginFill(0xff0000);
-      marker.drawRect(0, 0, 40, 40);
+
+      // This needs to be inverse to  map scale.
+      marker.drawRect(0, 0, MAP_ZOOM_LEVEL * 4, MAP_ZOOM_LEVEL * 4);
       renderedMarkers[entity.id] = marker;
       container!.addChild(marker);
       return marker;
@@ -31,8 +34,8 @@ export const MinimapSystem = (): System => {
       element.appendChild(app.view);
       app.stage.x = app.renderer.width / 2;
       app.stage.y = app.renderer.height / 2;
-      app.stage.scale.x = 0.1;
-      app.stage.scale.y = 0.1;
+      app.stage.scale.x = 1 / MAP_ZOOM_LEVEL;
+      app.stage.scale.y = 1 / MAP_ZOOM_LEVEL;
 
       container = new PIXI.Container();
       container.position.set(app.renderer.screen.width / 2, app.renderer.screen.height / 2);
