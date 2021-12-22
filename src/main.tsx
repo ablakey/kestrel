@@ -4,6 +4,7 @@ import { ZIndexes } from "./config";
 import { Team } from "./enum";
 import { Game } from "./game";
 import { Layout } from "./UI/Layout";
+import { pickRandom } from "./utils";
 
 declare global {
   interface Window {
@@ -25,6 +26,15 @@ async function main() {
   delete (playerShip.components as any).ai;
 
   game.doodadFactory.spawnPlanet(new Victor(0, 0), "Levo");
+
+  for (let x = 0; x < 10; x++) {
+    game.shipFactory.create({
+      shipName: "Red",
+      team: pickRandom([Team.Rebellion, Team.Confederacy]),
+      position: new Victor(Math.random() * 1500 - 250, Math.random() * 1500 - 1250),
+      yaw: Math.random() * Math.PI,
+    });
+  }
 
   game.start();
 

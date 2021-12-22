@@ -13,7 +13,7 @@ export function Overlay() {
         justifyContent: "flexEnd",
       }}
     >
-      Overlay
+      Interact (keys, click) For Sound
     </div>
   );
 }
