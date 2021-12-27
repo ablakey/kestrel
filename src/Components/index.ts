@@ -29,17 +29,22 @@ export type Inventory = {
 
 export type Offensive = {
   kind: "Offensive";
-  primaryFire: boolean;
+  firePrimary: boolean;
+  fireSecondary: boolean;
   bulletOffset: number;
-  target: number | null; // Component ID
+  target: number | null; // ID of target it is tracking.
   // currentSecondaryWeapon
 };
 
-export type Ammo = {
-  kind: "Ammo";
+export type Navigation = {
+  kind: "Navigation";
+  target: number | null; // Component ID
+};
+
+export type Bullet = {
+  kind: "Bullet";
   damage: number;
   // force: number;
-  trackable: boolean;
   // damage type
   //
 };
@@ -84,7 +89,7 @@ export type Description = {
 export type Component =
   | Ai
   | Body
-  | Ammo
+  | Bullet
   | Engine
   | Health
   | Inventory
@@ -94,4 +99,5 @@ export type Component =
   | Politics
   | Sprite
   | Description
-  | Navigable;
+  | Navigable
+  | Navigation;

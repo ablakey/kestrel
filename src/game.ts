@@ -4,7 +4,7 @@ import { Entities } from "./EntityManager";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
 import { AIStrategySystem } from "./Systems/AIStrategySystem";
-import { AmmoSystem } from "./Systems/AmmoSystem";
+import { BulletSystem } from "./Systems/BulletSystem";
 import { CleanupSystem } from "./Systems/CleanupSystem";
 import { CombatSystem } from "./Systems/CombatSystem";
 import { EngineSystem } from "./Systems/EngineSystem";
@@ -33,7 +33,7 @@ const SystemCreators = [
   EngineSystem,
   MovementSystem,
   CombatSystem,
-  AmmoSystem,
+  BulletSystem,
   StatsSystem,
   RenderSystem,
   MinimapSystem,

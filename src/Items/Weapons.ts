@@ -12,10 +12,10 @@ export type Weapon = Item & {
   type: "Primary" | "Secondary";
   accuracy: number; // 0-1 where 0 fires in any direction while 1 is always the correct direction.
   sound: SoundName;
-  trackable: boolean; // Can ammo be tracked on radar?
+  turnRate?: number;
 };
 
-export type WeaponName = "LaserCannon" | "ProtonCannon";
+export type WeaponName = "LaserCannon" | "ProtonCannon" | "Missile";
 
 export const Weapons: Record<WeaponName, Weapon> = {
   LaserCannon: {
@@ -29,7 +29,6 @@ export const Weapons: Record<WeaponName, Weapon> = {
     label: "Laser Cannon",
     type: "Primary",
     sound: "Laser",
-    trackable: false,
   },
   ProtonCannon: {
     label: "Proton Cannon",
@@ -42,6 +41,18 @@ export const Weapons: Record<WeaponName, Weapon> = {
     accuracy: 0.95,
     type: "Primary",
     sound: "Proton",
-    trackable: false,
+  },
+  Missile: {
+    label: "Missile",
+    accuracy: 1.0,
+    damage: 50,
+    fireRate: 0.5,
+    lifespan: 20_000,
+    type: "Secondary",
+    maxRange: 10_000,
+    sound: "Missile",
+    sprite: "Missile",
+    speed: 600,
+    turnRate: 4,
   },
 };

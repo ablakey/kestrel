@@ -45,12 +45,17 @@ export class ShipFactory extends BaseFactory {
       },
       offensive: {
         kind: "Offensive",
-        primaryFire: false,
+        firePrimary: false,
+        fireSecondary: false,
         bulletOffset: shipType.radius, // TODO: remove this duplicate.
         target: null,
         // Ships need to contain an array of primaryWeapons and one currentPrimaryWeapon.
         // The weapon will define the speed, rate, and other properties about firing a bullet.
         // But the bullet itself will define what it looks like, its damage, etc.
+      },
+      navigation: {
+        kind: "Navigation",
+        target: null,
       },
       health: {
         kind: "Health",

@@ -17,9 +17,9 @@ export const AICombatSystem = (game: Game): System => {
      */
     if (offensive.target === null) {
       // If an entity has no target, stop firing.
-      if (offensive.primaryFire) {
+      if (offensive.firePrimary) {
         console.log(`Ship ${entity.id} stop firing.`);
-        offensive.primaryFire = false;
+        offensive.firePrimary = false;
       }
       return;
     }
@@ -44,7 +44,7 @@ export const AICombatSystem = (game: Game): System => {
     const inRange = distance < maxRanges[0]; // TODO: filter by weapons that are available.
     // TODO: we should only fire if at least one weapon is in range.
 
-    offensive.primaryFire = facing && inRange;
+    offensive.firePrimary = facing && inRange;
   }
   return { update, componentKinds: ["Offensive", "Body", "Inventory", "Ai"] };
 };

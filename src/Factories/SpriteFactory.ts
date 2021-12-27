@@ -1,27 +1,32 @@
 import { BaseFactory } from "./BaseFactory";
 import * as PIXI from "pixi.js";
 
-import spriteImages from "../assets/sprites/*.png";
+import pixelLaserGreen from "../assets/sprites/pixel_laser_green.png";
+import pixelLaserBlue from "../assets/sprites/pixel_laser_blue.png";
+import pixelShipBlue from "../assets/sprites/pixel_ship_blue.png";
+import pixelShipRed from "../assets/sprites/pixel_ship_red.png";
+import planet00 from "../assets/sprites/planet_00.png";
+import pixelLaserYellow from "../assets/sprites/pixel_laser_yellow.png";
 
-// Spritesheets
-import spritesheetImages from "../assets/spritesheets/*.png";
+import explosionSheet from "../assets/spritesheets/explosion.png";
 import explosionSheetData from "../assets/spritesheets/explosion.json";
 import { Game } from "../game";
 
 const staticSpriteData = {
-  Laser: { image: spriteImages.pixel_laser_green, scale: 1 },
-  Proton: { image: spriteImages.pixel_laser_blue, scale: 1 },
-  BlueShip: { image: spriteImages.pixel_ship_blue, scale: 1 },
-  RedShip: { image: spriteImages.pixel_ship_red, scale: 1 },
-  GreenPlanet1: { image: spriteImages.planet_00, scale: 2 },
-} as const;
+  Laser: { image: pixelLaserGreen, scale: 1 },
+  Proton: { image: pixelLaserBlue, scale: 1 },
+  Missile: { image: pixelLaserYellow, scale: 1 },
+  BlueShip: { image: pixelShipBlue, scale: 1 },
+  RedShip: { image: pixelShipRed, scale: 1 },
+  GreenPlanet1: { image: planet00, scale: 3 },
+};
 
 const spritesheets = {
   explosion: {
-    image: spritesheetImages.explosion,
+    image: explosionSheet,
     data: explosionSheetData,
   },
-} as const;
+};
 
 const animatedSpriteData = {
   Explosion: {

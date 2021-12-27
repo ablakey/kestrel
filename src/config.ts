@@ -1,5 +1,30 @@
 import { AllRelations, DeepReadonly, GameState } from "./types";
 
+export const MAP_ZOOM_LEVEL = 20;
+
+export const MenuInputs = {
+  Close: { key: "Escape" },
+};
+
+export const GameInputs = {
+  // Movement.
+  Thrust: { key: "W" },
+  RotateLeft: { key: "A" },
+  RotateRight: { key: "D" },
+
+  // Attack.
+  FirePrimary: { key: "Space" },
+  FireSecondary: { key: "MetaLeft" },
+
+  // Targeting.
+  NextTarget: { key: "Tab", asEvent: true },
+  // PreviousTarget: { key: "ShiftTab", asEvent: true },
+
+  // UI
+  ShowDebug: { key: "O", asEvent: true },
+  showAbout: { key: "I", asEvent: true },
+} as const;
+
 export const ZIndexes = {
   Planet: 300,
   Ship: 400,
@@ -7,8 +32,6 @@ export const ZIndexes = {
   Player: 600,
   Explosion: 700,
 };
-
-export const MAP_ZOOM_LEVEL = 20;
 
 const initialRelations: AllRelations = {
   Player: { Independent: 20, Player: 100, Rebellion: 0, Confederacy: 0 },
@@ -19,6 +42,7 @@ const initialRelations: AllRelations = {
 
 export const initialGameState: DeepReadonly<GameState> = {
   showDebug: false,
+  showAbout: false,
   isPaused: false,
   volume: 1, // 0 - 1
   instanceRelations: initialRelations,

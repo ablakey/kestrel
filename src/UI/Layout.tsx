@@ -1,6 +1,7 @@
 import React from "react";
 import { Game } from "../game";
 import { GameContext } from "../utils";
+import { AboutModal } from "./AboutModal";
 import { DebugModal } from "./DebugModal";
 import { Overlay } from "./Overlay";
 import { Right } from "./Right";
@@ -16,6 +17,7 @@ export function Layout(props: { game: Game }) {
         <Overlay />
         <Right />
         {props.game.state.showDebug && <DebugModal />}
+        {props.game.state.showAbout && <AboutModal />}
       </GameContext.Provider>
     </>
   );

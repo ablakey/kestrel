@@ -4,8 +4,8 @@ import { Entity, Game, System } from "../game";
 import { pickRandom } from "../utils";
 
 export const AIStrategySystem = (game: Game): System => {
-  function update(entity: Entity<"Body" | "Ai" | "Politics" | "Offensive">) {
-    const { ai, offensive, body } = entity.components;
+  function update(entity: Entity<"Body" | "Ai" | "Politics" | "Offensive" | "Navigation">) {
+    const { ai, offensive, body, navigation } = entity.components;
 
     // // If ship already has a target, don't do any strategy.  TODO: this should be more complex.
     // if (entity.components.offensive.target) {
@@ -28,6 +28,7 @@ export const AIStrategySystem = (game: Game): System => {
           const target = pickRandom(worstEnemies).id;
           console.log(`Ship ${entity.id} become hostile towards Ship ${target}`);
           offensive.target = target;
+          navigation.target = target;
         }
       }
     }
@@ -60,5 +61,5 @@ export const AIStrategySystem = (game: Game): System => {
       ai.movementBehaviour = MovementBehaviour.None;
     }
   }
-  return { update, componentKinds: ["Body", "Ai", "Politics"] };
+  return { update, componentKinds: ["Body", "Ai", "Politics", "Offensive", "Navigation"] };
 };

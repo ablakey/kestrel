@@ -9,6 +9,7 @@ export type AllRelations = Record<Team, Relations>;
 
 export type GameState = {
   showDebug: boolean;
+  showAbout: boolean;
   volume: number;
   isPaused: boolean;
   instanceRelations: AllRelations;

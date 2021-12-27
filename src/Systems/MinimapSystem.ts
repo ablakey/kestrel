@@ -42,12 +42,12 @@ export const MinimapSystem = (): System => {
       app.stage.addChild(container);
     }
 
-    const { body, ammo, player } = entity.components;
+    const { body, bullet, player } = entity.components;
 
     /**
-     * Do not render non-trackable ammo on the minimap.
+     * Do not render bullets.
      */
-    if (ammo && !ammo.trackable) {
+    if (bullet) {
       return;
     }
 

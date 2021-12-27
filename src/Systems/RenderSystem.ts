@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
-import images from "../assets/sprites/*.png";
+import stars01 from "../assets/sprites/spr_stars01.png";
+import stars02 from "../assets/sprites/spr_stars02.png";
 import { Game, Entity, System } from "../game";
 import { assert } from "../utils";
 
@@ -69,7 +70,7 @@ export const RenderSystem = async (game: Game): Promise<System> => {
   /**
    * Background.
    */
-  const bgTexture = PIXI.Texture.from(images.spr_stars01);
+  const bgTexture = PIXI.Texture.from(stars01);
   bgTexture;
   const tilingSprite = new PIXI.TilingSprite(
     bgTexture,
@@ -82,7 +83,7 @@ export const RenderSystem = async (game: Game): Promise<System> => {
   tilingSprite.scale.y = 2;
   app.stage.addChild(tilingSprite);
 
-  const bgTexture2 = PIXI.Texture.from(images.spr_stars02);
+  const bgTexture2 = PIXI.Texture.from(stars02);
   bgTexture;
   const tilingSprite2 = new PIXI.TilingSprite(
     bgTexture2,

@@ -13,9 +13,15 @@ export function useGame() {
   return useContext(GameContext);
 }
 
+/**
+ * Stringify a full key with modifiers.
+ * NOTE: Disabled for now. We don't support modifier keys. This is because when you hold down space,
+ * then shift, then left go of space, it doesn't register keyup Space but keyup ShiftSpace.
+ */
 export function stringifyFullKey(e: KeyboardEvent): string {
   const code = e.code.replace("Key", "");
-  return `${e.altKey ? "Alt" : ""}${e.ctrlKey ? "Ctrl" : ""}${e.shiftKey ? "Shift" : ""}${code}`;
+  return code;
+  // return `${e.altKey ? "Alt" : ""}${e.ctrlKey ? "Ctrl" : ""}${e.shiftKey ? "Shift" : ""}${code}`;
 }
 
 export function useKeypress<T extends string>(keys: T[], action: (key: T) => void) {

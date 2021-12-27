@@ -4,18 +4,18 @@ import { assert } from "../utils";
 import { Body } from "../Components";
 
 export const AIMovementSystem = (game: Game): System => {
-  function update(entity: Entity<"Body" | "Ai" | "Offensive" | "Engine">) {
-    const { ai, offensive, body, engine } = entity.components;
+  function update(entity: Entity<"Body" | "Ai" | "Engine" | "Navigation">) {
+    const { ai, body, engine, navigation } = entity.components;
 
-    if (offensive.target === null) {
+    if (navigation.target === null) {
       if ((ai.movementBehaviour = MovementBehaviour.None)) {
         engine.direction = Direction.None;
       }
       return;
     }
 
-    const target = game.entities.get(offensive.target);
-    assert(target, `Ship: ${entity.id} is targeting ${offensive.target} but is not found.`);
+    const target = game.entities.get(navigation.target);
+    assert(target, `Ship: ${entity.id} is targeting ${navigation.target} but is not found.`);
     assert(target?.components.body);
 
     /**

@@ -1,10 +1,33 @@
 # Snakefood
 
-## Why is Game so tightly bound to the game?
+
+## TODO
+
+### Systems
+- Commodities
+- Missions
+- Outfit
+- Shipyard
+
+### UI
+ - Button
+
+#### Screens
+ - Planet
+ - Outfit Ship
+ - Mission Computer
+ - Commodity Exchange
+ - Galaxy Map
+
+ ## FAQ
+
+ ### Technical
+
+#### Why is Game so tightly bound to the game?
 It's not a library and I didn't want to add extra verbosity in many places by making it generic.
 There's many better Game libraries anyway.
 
-## Systems are closures?
+#### Systems are closures?
 
 I fought with this for a while. I don't think I have the best solution here, but it works well enough, even if the ergonomics are weird:
 
@@ -58,8 +81,8 @@ If a ship is hostile to a team:
 
 ## Weapons AI
 - Can we shoot primary at target?
- - No: primaryFire = false
-   Yes: primaryFire = true
+ - No: firePrimary = false
+   Yes: firePrimary = true
 
 - Can we shoot
 

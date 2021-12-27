@@ -41,6 +41,7 @@ export const Ships: Record<ShipName, Ship> = {
     weapons: [
       { name: "LaserCannon", count: 1, lastUsed: 0 },
       { name: "ProtonCannon", lastUsed: 0, count: 1 },
+      { name: "Missile", lastUsed: 0, count: 3 },
     ],
   },
 };

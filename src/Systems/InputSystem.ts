@@ -1,27 +1,11 @@
 import { Game, Entity, System } from "../game";
 import { Direction, Thrust } from "../enum";
 import { stringifyFullKey } from "../utils";
+import { GameInputs } from "../config";
 
-const Inputs = {
-  // Movement.
-  Thrust: { key: "W" },
-  RotateLeft: { key: "A" },
-  RotateRight: { key: "D" },
+const keysInUse = new Set(Object.values(GameInputs).map((k) => k.key));
 
-  // Attack.
-  FirePrimary: { key: "Space" },
-
-  // Targeting.
-  NextTarget: { key: "Tab", asEvent: true },
-  PreviousTarget: { key: "ShiftTab", asEvent: true },
-
-  // UI
-  ShowDebug: { key: "I", asEvent: true },
-} as const;
-
-const keysInUse = new Set(Object.values(Inputs).map((k) => k.key));
-
-const inputsByKey = Object.entries(Inputs).reduce((acc, [input, config]) => {
+const inputsByKey = Object.entries(GameInputs).reduce((acc, [input, config]) => {
   acc[config.key] = { ...config, input };
   return acc;
 }, {} as Record<string, { input: string; asEvent?: boolean; key: string }>);
@@ -71,19 +55,20 @@ export const InputSystem = (game: Game): System => {
     const { engine, offensive } = entity.components;
 
     // Rotate
-    if (keyState[Inputs.RotateLeft.key]) {
+    if (keyState[GameInputs.RotateLeft.key]) {
       engine.direction = Direction.Left;
-    } else if (keyState[Inputs.RotateRight.key]) {
+    } else if (keyState[GameInputs.RotateRight.key]) {
       engine.direction = Direction.Right;
     } else {
       engine.direction = Direction.None;
     }
 
     // Thruster
-    engine.thrust = keyState[Inputs.Thrust.key] ? Thrust.Forward : Thrust.None;
+    engine.thrust = keyState[GameInputs.Thrust.key] ? Thrust.Forward : Thrust.None;
 
     // Armament
-    offensive.primaryFire = keyState[Inputs.FirePrimary.key] ?? false;
+    offensive.firePrimary = keyState[GameInputs.FirePrimary.key] ?? false;
+    offensive.fireSecondary = keyState[GameInputs.FireSecondary.key] ?? false;
 
     /**
      * Handle event keys.
@@ -93,16 +78,21 @@ export const InputSystem = (game: Game): System => {
       inputQueue.delete(k);
 
       switch (k) {
-        case Inputs.NextTarget.key:
-        case Inputs.PreviousTarget.key:
-          const index = k === Inputs.NextTarget.key ? 1 : -1;
+        case GameInputs.NextTarget.key:
+          const index = k === GameInputs.NextTarget.key ? 1 : -1;
           offensive.target = game.entities.getTarget(offensive.target, index);
           game.soundFactory.playSound("Beep1");
           break;
-        case Inputs.ShowDebug.key:
+        case GameInputs.ShowDebug.key:
           game.setState((draft) => {
             draft.isPaused = true;
             draft.showDebug = true;
+          });
+          break;
+        case GameInputs.showAbout.key:
+          game.setState((draft) => {
+            draft.isPaused = true;
+            draft.showAbout = true;
           });
           break;
       }

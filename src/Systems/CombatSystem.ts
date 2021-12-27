@@ -8,9 +8,12 @@ export const CombatSystem = (game: Game): System => {
 
     inventory.weapons.forEach((w) => {
       const weaponType = Weapons[w.name];
-
-      const isFiring = weaponType.type === "Primary" ? offensive.primaryFire : false; // TODO secondary.
       const fireDelay = 1000 / (weaponType.fireRate * w.count); // delay between shots in ms.
+
+      const isFiring =
+        weaponType.type == "Primary" ? offensive.firePrimary : offensive.fireSecondary;
+
+      // console.log({ isFiring, name: w.name });
 
       if (!isFiring || w.lastUsed + fireDelay > game.elapsed) {
         return;
@@ -22,11 +25,7 @@ export const CombatSystem = (game: Game): System => {
 
       const yaw = body.yaw.angle() + Math.random() * (1 - weaponType.accuracy);
 
-      game.bulletFactory.create({
-        position,
-        yaw,
-        weaponName: w.name,
-      });
+      game.bulletFactory.create(position, yaw, w.name);
 
       w.lastUsed = game.elapsed;
     });
