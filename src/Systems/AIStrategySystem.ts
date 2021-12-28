@@ -51,13 +51,13 @@ export const AIStrategySystem = (game: Game): System => {
     /**
      * No AI strategy determined. Reset AI.
      */
-    if (
-      offensive.target === null &&
-      (ai.combatBehaviour !== CombatBehaviour.None ||
-        ai.movementBehaviour !== MovementBehaviour.None)
-    ) {
-      console.log(`Ship ${entity.id} stop AI.`);
+    if (offensive.target === null && ai.combatBehaviour !== CombatBehaviour.None) {
+      console.log(`Entity ${entity.id} stop combat AI.`);
       ai.combatBehaviour = CombatBehaviour.None;
+    }
+
+    if (navigation.target === null && ai.movementBehaviour !== MovementBehaviour.None) {
+      console.log(`Entity ${entity.id} stop movement AI.`);
       ai.movementBehaviour = MovementBehaviour.None;
     }
   }

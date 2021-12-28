@@ -38,5 +38,5 @@ export const AIMovementSystem = (game: Game): System => {
     }
   }
 
-  return { update, componentKinds: ["Body", "Ai", "Offensive", "Engine"] };
+  return { update, componentKinds: ["Body", "Ai", "Navigation", "Engine"] };
 };

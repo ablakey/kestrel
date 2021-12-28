@@ -1,7 +1,7 @@
 import Victor from "victor";
 import { ZIndexes } from "../config";
+import { CombatBehaviour, Direction, MovementBehaviour, StrategyBehaviour, Thrust } from "../enum";
 import { Weapon, WeaponName, Weapons } from "../Items/Weapons";
-import { assert } from "../utils";
 import { BaseFactory } from "./BaseFactory";
 
 export class BulletFactory extends BaseFactory {
@@ -13,12 +13,11 @@ export class BulletFactory extends BaseFactory {
     if (weaponType.turnRate === undefined) {
       this.createDumbfire(position, yaw, weaponType);
     } else {
-      assert(target);
       this.createSeeking(position, yaw, weaponType, target);
     }
   }
 
-  private createSeeking(position: Victor, yaw: number, weaponType: Weapon, target: number) {
+  private createSeeking(position: Victor, yaw: number, weaponType: Weapon, target?: number) {
     this.game.entities.add(
       {
         body: {
@@ -36,6 +35,21 @@ export class BulletFactory extends BaseFactory {
           kind: "Sprite",
           name: weaponType.sprite,
           zIndex: ZIndexes.Bullet,
+        },
+        engine: {
+          kind: "Engine",
+          direction: Direction.None,
+          thrust: Thrust.None, // Weapons do not have additional thrust beyond what they began with.
+        },
+        ai: {
+          kind: "Ai",
+          movementBehaviour: MovementBehaviour.PointAt,
+          combatBehaviour: CombatBehaviour.None,
+          strategy: StrategyBehaviour.None,
+        },
+        navigation: {
+          kind: "Navigation",
+          target: target ?? null,
         },
       },
       { lifespan: weaponType.lifespan }
