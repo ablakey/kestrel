@@ -85,7 +85,7 @@ export class Game {
     game.bulletFactory = new BulletFactory(game);
     game.spriteFactory = await SpriteFactory.init(game);
     game.shipFactory = new ShipFactory(game);
-    game.soundFactory = new SoundFactory(game);
+    game.soundFactory = await SoundFactory.init(game);
     game.doodadFactory = new DoodadFactory(game);
     game.entities = new Entities(game);
     game.state = initialGameState;

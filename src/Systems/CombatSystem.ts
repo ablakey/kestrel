@@ -26,6 +26,7 @@ export const CombatSystem = (game: Game): System => {
       const yaw = body.yaw.angle() + Math.random() * (1 - weaponType.accuracy);
 
       game.bulletFactory.create(position, yaw, w.name, offensive.target ?? undefined);
+      game.soundFactory.playSound(weaponType.sound, { position: body.position });
 
       w.lastUsed = game.elapsed;
     });

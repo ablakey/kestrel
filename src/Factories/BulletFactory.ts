@@ -8,8 +8,6 @@ export class BulletFactory extends BaseFactory {
   create(position: Victor, yaw: number, weaponName: WeaponName, target?: number) {
     const weaponType = Weapons[weaponName];
 
-    this.game.soundFactory.playSound(weaponType.sound, { position });
-
     if (weaponType.turnRate === undefined) {
       this.createDumbfire(position, yaw, weaponType);
     } else {
