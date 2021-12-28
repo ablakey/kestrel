@@ -52,7 +52,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     maxRange: 10_000,
     sound: "Missile",
     sprite: "Missile",
-    speed: 600,
-    turnRate: 4,
+    speed: 700,
+    turnRate: 2,
   },
 };

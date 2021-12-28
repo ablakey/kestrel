@@ -44,6 +44,8 @@ export type Navigation = {
 export type Bullet = {
   kind: "Bullet";
   damage: number;
+  target?: number; // ID of entity bullet is trying to hit (will collide with nothing else)
+  turnRate?: number; // Some weapons will turn towards the target.
   // force: number;
   // damage type
   //

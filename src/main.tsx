@@ -27,7 +27,7 @@ async function main() {
 
   game.doodadFactory.spawnPlanet(new Victor(0, 0), "Levo");
 
-  const DEBUG_SHIP_COUNT = 0;
+  const DEBUG_SHIP_COUNT = 1;
 
   for (let x = 0; x < DEBUG_SHIP_COUNT; x++) {
     game.shipFactory.create({

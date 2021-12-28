@@ -38,3 +38,8 @@ export function useKeypress<T extends string>(keys: T[], action: (key: T) => voi
 export function pickRandom<T>(elements: T[]): T {
   return elements[Math.floor(Math.random() * elements.length)];
 }
+
+export function randomSign(value: number): number {
+  const plusOrMinus = Math.random() < 0.5 ? -1 : 1;
+  return value * plusOrMinus;
+}

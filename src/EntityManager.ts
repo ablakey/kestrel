@@ -14,7 +14,7 @@ export class Entities {
    */
   private queryCache: Record<string, Entity<any>[] | undefined> = {};
   private entities: Map<number, Entity> = new Map();
-  private nextId = 0;
+  private nextId = 1; // Begin at 1 so that entity IDs are always truthy.
   private game: Game;
 
   constructor(game: Game) {
@@ -72,12 +72,12 @@ export class Entities {
    * Convenience wrapper around `this.entities.get` to handle null input ids rather than switching on those at the call
    * site.
    */
-  public get(id: number | null): Entity | null {
+  public get<T extends Entity>(id: number | null): T | null {
     if (id === null) {
       return null;
     }
 
-    return this.entities.get(id) ?? null;
+    return (this.entities.get(id) as T) ?? null;
   }
 
   public query<K extends Kind>(componentKinds: K[]): Entity<K>[] {
