@@ -17,7 +17,7 @@ export class ShipFactory extends BaseFactory {
   create(opts: { position: Victor; yaw: number; shipName: ShipName; team: Team; runAi?: boolean }) {
     const shipType = Ships[opts.shipName];
 
-    const x = this.game.entities.add({
+    return this.game.entities.add({
       description: {
         kind: "Description",
         label: shipType.label,
@@ -82,8 +82,6 @@ export class ShipFactory extends BaseFactory {
         movementBehaviour: opts.runAi ? MovementBehaviour.PointAt : MovementBehaviour.None,
       },
     });
-
-    return x;
   }
 }
 

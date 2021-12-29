@@ -1,7 +1,7 @@
-import { Components, Game, Entity, Kind } from "./game";
-import { Team } from "./enum";
-import { assert } from "./utils";
 import { Component } from "./Components";
+import { Team } from "./enum";
+import { Entity, Game, Kind } from "./game";
+import { assert } from "./utils";
 
 export class Entities {
   /**
@@ -29,12 +29,12 @@ export class Entities {
     return this.entities.forEach(iterFn);
   }
 
-  public add<T extends Kind>(
-    components: Partial<Components<T>>,
+  public add<T extends Record<string, { kind: Kind }>>(
+    components: T,
     options?: {
       lifespan?: number;
     }
-  ): Entity<T> {
+  ): Entity<T[keyof T]["kind"]> {
     this.queryCache = {};
 
     const entity = {
@@ -48,7 +48,7 @@ export class Entities {
     this.entities.set(this.nextId, entity);
     this.nextId++;
 
-    return entity as Entity<T>;
+    return entity as unknown as Entity<T[keyof T]["kind"]>;
   }
 
   /**

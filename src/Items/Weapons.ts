@@ -1,6 +1,7 @@
 import { Item } from ".";
 import { SoundName } from "../Factories/SoundFactory";
 import { SpriteName } from "../Factories/SpriteFactory";
+import { AmmoName } from "./Ammos";
 
 export type Weapon = Item & {
   speed: number;
@@ -13,9 +14,10 @@ export type Weapon = Item & {
   accuracy: number; // 0-1 where 0 fires in any direction while 1 is always the correct direction.
   sound: SoundName;
   turnRate?: number;
+  ammo: AmmoName | null;
 };
 
-export type WeaponName = "LaserCannon" | "ProtonCannon" | "Missile";
+export type WeaponName = "LaserCannon" | "ProtonCannon" | "MissileRack";
 
 export const Weapons: Record<WeaponName, Weapon> = {
   LaserCannon: {
@@ -29,6 +31,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     label: "Laser Cannon",
     type: "Primary",
     sound: "Laser",
+    ammo: null,
   },
   ProtonCannon: {
     label: "Proton Cannon",
@@ -41,9 +44,10 @@ export const Weapons: Record<WeaponName, Weapon> = {
     accuracy: 0.95,
     type: "Primary",
     sound: "Proton",
+    ammo: null,
   },
-  Missile: {
-    label: "Missile",
+  MissileRack: {
+    label: "Missile Rack",
     accuracy: 1.0,
     damage: 50,
     fireRate: 0.5,
@@ -54,5 +58,6 @@ export const Weapons: Record<WeaponName, Weapon> = {
     sprite: "Missile",
     speed: 700,
     turnRate: 2,
+    ammo: "Missile",
   },
 };

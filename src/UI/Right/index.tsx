@@ -2,9 +2,10 @@ import { ShipEntity } from "../../Factories/ShipFactory";
 import { useGame } from "../../utils";
 import { Info } from "./Info";
 import { Minimap } from "./Minimap";
-import { Panel } from "./Panel";
+import { Nav } from "./Nav";
 import { Stats } from "./Stats";
 import { Target } from "./Target";
+import { Weapon } from "./Weapon";
 
 export function Right() {
   const game = useGame();
@@ -28,9 +29,9 @@ export function Right() {
     >
       <Minimap />
       <Stats hp={player.components.health.hp} />
-      <Panel style={{ height: 200 }}>
-        <Target target={target} />
-      </Panel>
+      <Nav />
+      <Weapon />
+      <Target target={target} />
       <Info entityCount={game.entities.length} player={player} />
     </div>
   );
