@@ -1,6 +1,12 @@
 import produce, { Draft } from "immer";
 import { Component } from "./Components";
+import { initialGameState } from "./config";
 import { Entities } from "./EntityManager";
+import { BulletFactory } from "./Factories/BulletFactory";
+import { DoodadFactory } from "./Factories/DoodadFactory";
+import { ShipFactory } from "./Factories/ShipFactory";
+import { SoundFactory } from "./Factories/SoundFactory";
+import { SpriteFactory } from "./Factories/SpriteFactory";
 import { AICombatSystem } from "./Systems/AICombatSystem";
 import { AIMovementSystem } from "./Systems/AIMovementSystem";
 import { AIStrategySystem } from "./Systems/AIStrategySystem";
@@ -14,13 +20,6 @@ import { MovementSystem } from "./Systems/MovementSystem";
 import { RenderSystem } from "./Systems/RenderSystem";
 import { StatsSystem } from "./Systems/StatsSystem";
 import { DeepReadonly, GameState } from "./types";
-import { SoundFactory } from "./Factories/SoundFactory";
-import { BulletFactory } from "./Factories/BulletFactory";
-import { ShipEntity, ShipFactory } from "./Factories/ShipFactory";
-import { SpriteFactory } from "./Factories/SpriteFactory";
-import { assert } from "./utils";
-import { DoodadFactory } from "./Factories/DoodadFactory";
-import { initialGameState } from "./config";
 
 /**
  * An ordered list of systems, invokved in the order described here.
@@ -91,12 +90,6 @@ export class Game {
     game.state = initialGameState;
 
     return game;
-  }
-
-  public getPlayer() {
-    const player = this.entities.query(["Player"])[0];
-    assert(player);
-    return player as ShipEntity;
   }
 
   /**

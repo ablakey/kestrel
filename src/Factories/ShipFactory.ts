@@ -10,14 +10,45 @@ import {
   Team,
   Thrust,
 } from "../enum";
+import { Components, Entity } from "../game";
 import { ShipName, Ships } from "../Items/Ships";
 import { BaseFactory } from "./BaseFactory";
 
+/**
+ * Tried to implcitly type based on the return type of entities.add() but it broke because of the
+ * uppercase/lowercase shenanigans.  This explicitly defines the components found in a ship, so that
+ * we can both verify that the factory is creating a valid ship, and that ShipEntity can be
+ * defined.
+ *
+ * It's possible we could extract just the required keys from the returned Entity type.
+ */
+export type ShipComponents = Components<
+  | "Description"
+  | "Engine"
+  | "Politics"
+  | "Body"
+  | "Inventory"
+  | "Offensive"
+  | "Navigation"
+  | "Health"
+  | "Kinematics"
+  | "Sprite"
+  | "Ai"
+>;
+
+export type ShipEntity = Entity<ShipComponents[keyof ShipComponents]["kind"]>;
+
 export class ShipFactory extends BaseFactory {
-  create(opts: { position: Victor; yaw: number; shipName: ShipName; team: Team; runAi?: boolean }) {
+  create(opts: {
+    position: Victor;
+    yaw: number;
+    shipName: ShipName;
+    team: Team;
+    runAi?: boolean;
+  }): void {
     const shipType = Ships[opts.shipName];
 
-    return this.game.entities.add({
+    const shipComponents: ShipComponents = {
       description: {
         kind: "Description",
         label: shipType.label,
@@ -42,6 +73,7 @@ export class ShipFactory extends BaseFactory {
       inventory: {
         kind: "Inventory",
         weapons: cloneDeep(shipType.weapons),
+        ammos: cloneDeep(shipType.ammos),
       },
       offensive: {
         kind: "Offensive",
@@ -49,6 +81,7 @@ export class ShipFactory extends BaseFactory {
         fireSecondary: false,
         bulletOffset: shipType.radius, // TODO: remove this duplicate.
         target: null,
+        selectedSecondary: null,
         // Ships need to contain an array of primaryWeapons and one currentPrimaryWeapon.
         // The weapon will define the speed, rate, and other properties about firing a bullet.
         // But the bullet itself will define what it looks like, its damage, etc.
@@ -81,8 +114,8 @@ export class ShipFactory extends BaseFactory {
         combatBehaviour: opts.runAi ? CombatBehaviour.Aggressive : CombatBehaviour.None,
         movementBehaviour: opts.runAi ? MovementBehaviour.PointAt : MovementBehaviour.None,
       },
-    });
+    };
+
+    this.game.entities.add(shipComponents);
   }
 }
-
-export type ShipEntity = ReturnType<ShipFactory["create"]>;

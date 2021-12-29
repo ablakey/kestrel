@@ -11,3 +11,4 @@ export const Items: Record<ItemName, Item> = { ...Weapons, ...Ships, ...Planets,
 
 export type ItemInstance = { name: ItemName; count: number };
 export type WeaponInstance = ItemInstance & { name: WeaponName; lastUsed: number };
+export type AmmosInstance = ItemInstance;

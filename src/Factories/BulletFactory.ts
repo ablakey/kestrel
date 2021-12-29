@@ -1,11 +1,10 @@
 import Victor from "victor";
 import { ZIndexes } from "../config";
-import { WeaponName, Weapons } from "../Items/Weapons";
+import { Weapon } from "../Items/Weapons";
 import { BaseFactory } from "./BaseFactory";
 
 export class BulletFactory extends BaseFactory {
-  public create(position: Victor, yaw: number, weaponName: WeaponName, target?: number) {
-    const weaponType = Weapons[weaponName];
+  public create(position: Victor, yaw: number, weaponType: Weapon, target?: number) {
     this.game.entities.add(
       {
         body: {

@@ -8,7 +8,8 @@ import {
   Thrust,
 } from "../enum";
 import { SpriteName } from "../Factories/SpriteFactory";
-import { WeaponInstance } from "../Items";
+import { AmmosInstance, WeaponInstance } from "../Items";
+import { WeaponName } from "../Items/Weapons";
 import { Body } from "./Body";
 import { Navigable } from "./Navigable";
 import { Politics } from "./Politics";
@@ -25,6 +26,7 @@ export type Engine = {
 export type Inventory = {
   kind: "Inventory";
   weapons: WeaponInstance[];
+  ammos: AmmosInstance[];
 };
 
 export type Offensive = {
@@ -33,7 +35,7 @@ export type Offensive = {
   fireSecondary: boolean;
   bulletOffset: number;
   target: number | null; // ID of target it is tracking.
-  // currentSecondaryWeapon
+  selectedSecondary: WeaponName | null;
 };
 
 export type Navigation = {

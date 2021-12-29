@@ -2,9 +2,10 @@ import ReactDOM from "react-dom";
 import Victor from "victor";
 import { ZIndexes } from "./config";
 import { Team } from "./enum";
+import { ShipEntity } from "./Factories/ShipFactory";
 import { Game } from "./game";
 import { Layout } from "./UI/Layout";
-import { pickRandom } from "./utils";
+import { assert, pickRandom } from "./utils";
 
 declare global {
   interface Window {
@@ -14,13 +15,21 @@ declare global {
 
 async function main() {
   const game = await Game.init();
-  const playerShip = game.shipFactory.create({
+  game.shipFactory.create({
     position: new Victor(500, -500),
     yaw: 0,
     shipName: "Blue",
     team: Team.Player,
   });
 
+  /**
+   * Player ship is a veery special case so we do weird stuff here to get it, make it the player ship, and scrub
+   * AI from it.
+   */
+  const playerShip = game.entities.find((e) => e.components.politics?.team === Team.Player) as
+    | ShipEntity
+    | undefined;
+  assert(playerShip, "Player Ship was not found.");
   playerShip.components.sprite.zIndex = ZIndexes.Player;
   playerShip.components.player = { kind: "Player" };
   delete (playerShip.components as any).ai;

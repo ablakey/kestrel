@@ -10,9 +10,10 @@ import { Weapon } from "./Weapon";
 export function Right() {
   const game = useGame();
 
-  const player = game.getPlayer();
+  const player = game.entities.getPlayer();
+  const { offensive, inventory, health } = player.components;
 
-  const target = game.entities.get(player.components.offensive.target) as ShipEntity;
+  const target = game.entities.get(offensive.target) as ShipEntity;
 
   return (
     <div
@@ -28,9 +29,9 @@ export function Right() {
       }}
     >
       <Minimap />
-      <Stats hp={player.components.health.hp} />
+      <Stats hp={health.hp} />
       <Nav />
-      <Weapon />
+      <Weapon instance={inventory.weapons.find((w) => w.name === offensive.selectedSecondary)} />
       <Target target={target} />
       <Info entityCount={game.entities.length} player={player} />
     </div>

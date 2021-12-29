@@ -1,6 +1,7 @@
 import { Component } from "./Components";
 import { Team } from "./enum";
-import { Entity, Game, Kind } from "./game";
+import { ShipEntity } from "./Factories/ShipFactory";
+import { Components, Entity, Game, Kind } from "./game";
 import { assert } from "./utils";
 
 export class Entities {
@@ -25,16 +26,32 @@ export class Entities {
     return this.entities.size;
   }
 
+  public getPlayer() {
+    const player = this.query(["Player"])[0];
+    assert(player);
+    return player as ShipEntity;
+  }
+
   public forEach(iterFn: (e: Entity) => void) {
     return this.entities.forEach(iterFn);
   }
 
-  public add<T extends Record<string, { kind: Kind }>>(
-    components: T,
+  public find(iterFn: (e: Entity) => boolean): Entity | undefined {
+    Array.prototype.find;
+    for (const e of this.entities.values()) {
+      if (iterFn(e)) {
+        return e;
+      }
+    }
+    return undefined;
+  }
+
+  public add<T extends Kind>(
+    components: Partial<Components<T>>,
     options?: {
       lifespan?: number;
     }
-  ): Entity<T[keyof T]["kind"]> {
+  ): void {
     this.queryCache = {};
 
     const entity = {
@@ -47,8 +64,6 @@ export class Entities {
 
     this.entities.set(this.nextId, entity);
     this.nextId++;
-
-    return entity as unknown as Entity<T[keyof T]["kind"]>;
   }
 
   /**
