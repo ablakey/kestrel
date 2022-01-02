@@ -141,7 +141,7 @@ export class Entities {
   /**
    * TODO make public. Accept an optional  "teams" array to filter by?
    */
-  private getTargets() {
+  private getNextTargets() {
     return this.query(["Politics"]).filter((e) => e.components.politics.team !== Team.Player);
   }
 
@@ -149,8 +149,8 @@ export class Entities {
    * From all possible targets, get the next one by indexing one beyond previousTarget.
    * This depends on game.query returning stable results.
    */
-  public getTarget(currentTarget: number | null, offsetIndex?: number): number | null {
-    const targets = this.getTargets();
+  public getNextTarget(currentTarget: number | null, offsetIndex?: number): number | null {
+    const targets = this.getNextTargets();
 
     if (!targets.length) {
       return null;

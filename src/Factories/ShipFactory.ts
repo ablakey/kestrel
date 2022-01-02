@@ -36,8 +36,7 @@ type ShipComponents = Components<
   | "Ai"
 >;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface ShipEntity extends Entity<ShipComponents[keyof ShipComponents]["kind"]> {}
+export type ShipEntity = Entity<ShipComponents[keyof ShipComponents]["kind"]>;
 
 export class ShipFactory extends BaseFactory {
   create(opts: {
@@ -118,14 +117,5 @@ export class ShipFactory extends BaseFactory {
     };
 
     this.game.entities.add(shipComponents, { archetype: "ShipEntity" });
-  }
-}
-
-export class ShipEntity {
-  /**
-   * A number of things will govern if a ship's thrusters work.
-   */
-  public static thrustEnabled(ship: ShipEntity): boolean {
-    return ship.components.health.condition !== Condition.Destroying;
   }
 }

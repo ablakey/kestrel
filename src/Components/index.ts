@@ -1,27 +1,15 @@
 import { DamageEffect } from "../Effects";
-import {
-  CombatBehaviour,
-  Condition,
-  Direction,
-  MovementBehaviour,
-  StrategyBehaviour,
-  Thrust,
-} from "../enum";
+import { CombatBehaviour, Condition, MovementBehaviour, StrategyBehaviour } from "../enum";
 import { SpriteName } from "../Factories/SpriteFactory";
 import { AmmosInstance, WeaponInstance } from "../Items";
 import { WeaponName } from "../Items/Weapons";
 import { Body } from "./Body";
+import { Engine } from "./Engine";
 import { Navigable } from "./Navigable";
 import { Politics } from "./Politics";
 
 export * from "./Body";
 export * from "./Politics";
-
-export type Engine = {
-  kind: "Engine";
-  direction: Direction;
-  thrust: Thrust;
-};
 
 export type Inventory = {
   kind: "Inventory";

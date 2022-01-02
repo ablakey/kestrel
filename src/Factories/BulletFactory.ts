@@ -6,8 +6,7 @@ import { BaseFactory } from "./BaseFactory";
 
 type BulletComponents = Components<"Body" | "Bullet" | "Sprite">;
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface BulletEntity extends Entity<BulletComponents[keyof BulletComponents]["kind"]> {}
+export type BulletEntity = Entity<BulletComponents[keyof BulletComponents]["kind"]>;
 
 export class BulletFactory extends BaseFactory {
   public create(position: Victor, yaw: number, weaponType: Weapon, target?: number) {

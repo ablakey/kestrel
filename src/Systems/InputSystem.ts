@@ -1,7 +1,9 @@
-import { Game, Entity, System } from "../game";
-import { Direction, Thrust } from "../enum";
-import { stringifyFullKey } from "../utils";
+import { Body } from "../Components";
 import { GameInputs } from "../config";
+import { Direction, Thrust } from "../enum";
+import { ShipEntity } from "../Factories/ShipFactory";
+import { Game, System } from "../game";
+import { assert, stringifyFullKey } from "../utils";
 
 const keysInUse = new Set(Object.values(GameInputs).map((k) => k.key));
 
@@ -46,19 +48,23 @@ export const InputSystem = (game: Game): System => {
     e.preventDefault();
   });
 
-  function update(entity: Entity<"Engine" | "Offensive" | "Player">) {
+  function update(entity: ShipEntity) {
     if (game.state.isPaused) {
       inputQueue.clear();
       return;
     }
 
-    const { engine, offensive } = entity.components;
+    const { engine, offensive, body } = entity.components;
 
     // Rotate
     if (keyState[GameInputs.RotateLeft.key]) {
       engine.direction = Direction.Left;
     } else if (keyState[GameInputs.RotateRight.key]) {
       engine.direction = Direction.Right;
+    } else if (keyState[GameInputs.RotateTowards.key] && offensive.target) {
+      const target = game.entities.get(offensive.target) as ShipEntity;
+      assert(target);
+      engine.direction = Body.getTurnDirection(body, target.components.body);
     } else {
       engine.direction = Direction.None;
     }
@@ -66,7 +72,7 @@ export const InputSystem = (game: Game): System => {
     // Thruster
     engine.thrust = keyState[GameInputs.Thrust.key] ? Thrust.Forward : Thrust.None;
 
-    // Armament
+    // Weapons
     offensive.firePrimary = keyState[GameInputs.FirePrimary.key] ?? false;
     offensive.fireSecondary = keyState[GameInputs.FireSecondary.key] ?? false;
 
@@ -80,7 +86,7 @@ export const InputSystem = (game: Game): System => {
       switch (k) {
         case GameInputs.NextTarget.key:
           const index = k === GameInputs.NextTarget.key ? 1 : -1;
-          offensive.target = game.entities.getTarget(offensive.target, index);
+          offensive.target = game.entities.getNextTarget(offensive.target, index);
           game.soundFactory.playSound("Beep1");
           break;
         case GameInputs.ShowDebug.key:

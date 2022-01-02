@@ -8,9 +8,10 @@ export const MenuInputs = {
 
 export const GameInputs = {
   // Movement.
-  Thrust: { key: "W" },
-  RotateLeft: { key: "A" },
-  RotateRight: { key: "D" },
+  Thrust: { key: "ArrowUp" },
+  RotateLeft: { key: "ArrowLeft" },
+  RotateRight: { key: "ArrowRight" },
+  RotateTowards: { key: "ArrowDown" }, // Like autopilot, always point towards target.
 
   // Attack.
   FirePrimary: { key: "Space" },
