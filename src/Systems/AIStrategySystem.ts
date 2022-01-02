@@ -61,5 +61,5 @@ export const AIStrategySystem = (game: Game): System => {
       ai.movementBehaviour = MovementBehaviour.None;
     }
   }
-  return { update, componentKinds: ["Body", "Ai", "Politics", "Offensive", "Navigation"] };
+  return { update, kindsOrArchetype: ["Body", "Ai", "Politics", "Offensive", "Navigation"] };
 };

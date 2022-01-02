@@ -1,10 +1,11 @@
 import Victor from "victor";
-import { Entity, System } from "../game";
 import { Direction, Thrust } from "../enum";
+import { ShipEntity } from "../Factories/ShipFactory";
+import { System } from "../game";
 
 export const EngineSystem = (): System => {
-  function update(entity: Entity<"Engine" | "Body" | "Kinematics">) {
-    const { body, engine, kinematics } = entity.components;
+  function update(ship: ShipEntity) {
+    const { body, engine, kinematics } = ship.components;
 
     // Update direction
     if (engine.direction === Direction.Left) {
@@ -15,8 +16,7 @@ export const EngineSystem = (): System => {
       body.angularVelocity = 0;
     }
 
-    // Update the ship's velocity.
-    if (engine.thrust === Thrust.Forward) {
+    if (engine.thrust === Thrust.Forward && ShipEntity.thrustEnabled(ship)) {
       const p = new Victor(4, 0).rotate(body.yaw.angle());
       body.velocity.add(p);
 
@@ -26,5 +26,5 @@ export const EngineSystem = (): System => {
     }
   }
 
-  return { componentKinds: ["Engine", "Body", "Kinematics"], update };
+  return { kindsOrArchetype: "ShipEntity", update };
 };

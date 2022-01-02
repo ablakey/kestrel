@@ -22,7 +22,7 @@ import { BaseFactory } from "./BaseFactory";
  *
  * It's possible we could extract just the required keys from the returned Entity type.
  */
-export type ShipComponents = Components<
+type ShipComponents = Components<
   | "Description"
   | "Engine"
   | "Politics"
@@ -36,7 +36,8 @@ export type ShipComponents = Components<
   | "Ai"
 >;
 
-export type ShipEntity = Entity<ShipComponents[keyof ShipComponents]["kind"]>;
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface ShipEntity extends Entity<ShipComponents[keyof ShipComponents]["kind"]> {}
 
 export class ShipFactory extends BaseFactory {
   create(opts: {
@@ -116,6 +117,15 @@ export class ShipFactory extends BaseFactory {
       },
     };
 
-    this.game.entities.add(shipComponents);
+    this.game.entities.add(shipComponents, { archetype: "ShipEntity" });
+  }
+}
+
+export class ShipEntity {
+  /**
+   * A number of things will govern if a ship's thrusters work.
+   */
+  public static thrustEnabled(ship: ShipEntity): boolean {
+    return ship.components.health.condition !== Condition.Destroying;
   }
 }

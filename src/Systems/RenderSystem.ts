@@ -195,5 +195,5 @@ export const RenderSystem = async (game: Game): Promise<System> => {
     item.rotation = 0 - body.yaw.angle() + Math.PI / 2;
   }
 
-  return { update, componentKinds: ["Body", "Sprite"] };
+  return { update, kindsOrArchetype: ["Body", "Sprite"] };
 };

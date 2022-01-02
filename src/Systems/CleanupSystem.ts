@@ -19,5 +19,5 @@ export const CleanupSystem = (game: Game): System => {
       bullet.target = undefined;
     }
   }
-  return { update, componentKinds: ["Offensive"] };
+  return { update, kindsOrArchetype: ["Offensive"] };
 };

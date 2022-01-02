@@ -60,5 +60,5 @@ export const CombatSystem = (game: Game): System => {
       }
     }
   }
-  return { update, componentKinds: ["Offensive", "Body", "Inventory"] };
+  return { update, kindsOrArchetype: ["Offensive", "Body", "Inventory"] };
 };

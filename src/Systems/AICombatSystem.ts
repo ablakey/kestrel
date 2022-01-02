@@ -46,5 +46,5 @@ export const AICombatSystem = (game: Game): System => {
 
     offensive.firePrimary = facing && inRange;
   }
-  return { update, componentKinds: ["Offensive", "Body", "Inventory", "Ai"] };
+  return { update, kindsOrArchetype: ["Offensive", "Body", "Inventory", "Ai"] };
 };

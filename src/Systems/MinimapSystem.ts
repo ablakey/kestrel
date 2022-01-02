@@ -76,5 +76,5 @@ export const MinimapSystem = (): System => {
     marker.y = -body.position.y;
   }
 
-  return { update, componentKinds: ["Body"] };
+  return { update, kindsOrArchetype: ["Body"] };
 };

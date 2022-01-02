@@ -99,5 +99,5 @@ export const InputSystem = (game: Game): System => {
     });
   }
 
-  return { componentKinds: ["Engine", "Offensive", "Player"], update };
+  return { kindsOrArchetype: ["Engine", "Offensive", "Player"], update };
 };

@@ -1,7 +1,7 @@
 import { Component } from "./Components";
 import { Team } from "./enum";
 import { ShipEntity } from "./Factories/ShipFactory";
-import { Components, Entity, Game, Kind } from "./game";
+import { Archetype, Components, Entity, Game, Kind } from "./game";
 import { assert } from "./utils";
 
 export class Entities {
@@ -50,6 +50,7 @@ export class Entities {
     components: Partial<Components<T>>,
     options?: {
       lifespan?: number;
+      archetype?: Archetype;
     }
   ): void {
     this.queryCache = {};
@@ -60,6 +61,7 @@ export class Entities {
       components,
       lifespan: options?.lifespan,
       destroyed: false,
+      archetype: options?.archetype,
     };
 
     this.entities.set(this.nextId, entity);
@@ -95,15 +97,15 @@ export class Entities {
     return (this.entities.get(id) as T) ?? null;
   }
 
-  public query<K extends Kind>(componentKinds: K[]): Entity<K>[] {
-    const hash = componentKinds.join("");
+  public query<K extends Kind>(kindsOrArchetype: K[]): Entity<K>[] {
+    const hash = kindsOrArchetype.join("");
 
     if (this.queryCache[hash]) {
       return this.queryCache[hash] as Entity<K>[];
     }
 
     const hits = Array.from(this.entities.values()).filter((e) =>
-      this.isMatch(e, componentKinds)
+      this.isMatch(e, kindsOrArchetype)
     ) as Entity<K>[];
 
     this.queryCache[hash] = hits;
@@ -112,23 +114,28 @@ export class Entities {
   }
 
   /**
-   * Return if this entity matches the provided componentKinds. It must include ALL kinds.
-   * If componentKinds is false, then it handles no entities.
+   * Return if this entity matches the provided kindsOrArchetype. It must include ALL kinds.
+   * If kindsOrArchetype is false, then it handles no entities.
    */
-  public isMatch(entity: Entity, componentKinds: Kind[]): boolean {
-    if (!componentKinds.length) {
+  public isMatch(entity: Entity, kindsOrArchetype: Kind[] | Archetype): boolean {
+    if (!kindsOrArchetype.length) {
       return false;
     }
 
-    const kinds = Object.values(entity.components)
-      .filter((c) => c !== undefined)
-      .map((c) => c.kind);
-    for (const c of componentKinds) {
-      if (!kinds.includes(c)) {
-        return false;
+    // if matches a list of component kinds.
+    if (Array.isArray(kindsOrArchetype)) {
+      const kinds = Object.values(entity.components)
+        .filter((c) => c !== undefined)
+        .map((c) => c.kind);
+      for (const c of kindsOrArchetype) {
+        if (!kinds.includes(c)) {
+          return false;
+        }
       }
+      return true;
+    } else {
+      return entity.archetype === kindsOrArchetype;
     }
-    return true;
   }
 
   /**

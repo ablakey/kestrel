@@ -1,32 +1,40 @@
 import Victor from "victor";
 import { ZIndexes } from "../config";
+import { Components, Entity } from "../game";
 import { Weapon } from "../Items/Weapons";
 import { BaseFactory } from "./BaseFactory";
 
+type BulletComponents = Components<"Body" | "Bullet" | "Sprite">;
+
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface BulletEntity extends Entity<BulletComponents[keyof BulletComponents]["kind"]> {}
+
 export class BulletFactory extends BaseFactory {
   public create(position: Victor, yaw: number, weaponType: Weapon, target?: number) {
-    this.game.entities.add(
-      {
-        body: {
-          kind: "Body",
-          position,
-          yaw: new Victor(1, 0).rotate(yaw ?? 0),
-          velocity: new Victor(1, 0).multiplyScalar(weaponType.speed).rotate(yaw ?? 0),
-          angularVelocity: 0,
-        },
-        bullet: {
-          kind: "Bullet",
-          damage: weaponType.damage,
-          target,
-          turnRate: weaponType.turnRate,
-        },
-        sprite: {
-          kind: "Sprite",
-          name: weaponType.sprite,
-          zIndex: ZIndexes.Bullet,
-        },
+    const bulletComponents: BulletComponents = {
+      body: {
+        kind: "Body",
+        position,
+        yaw: new Victor(1, 0).rotate(yaw ?? 0),
+        velocity: new Victor(1, 0).multiplyScalar(weaponType.speed).rotate(yaw ?? 0),
+        angularVelocity: 0,
       },
-      { lifespan: weaponType.lifespan }
-    );
+      bullet: {
+        kind: "Bullet",
+        damage: weaponType.damage,
+        target,
+        turnRate: weaponType.turnRate,
+      },
+      sprite: {
+        kind: "Sprite",
+        name: weaponType.sprite,
+        zIndex: ZIndexes.Bullet,
+      },
+    };
+
+    this.game.entities.add(bulletComponents, {
+      lifespan: weaponType.lifespan,
+      archetype: "BulletEntity",
+    });
   }
 }

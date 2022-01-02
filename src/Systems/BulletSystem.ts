@@ -48,5 +48,5 @@ export const BulletSystem = (game: Game): System => {
     }
   }
 
-  return { update, componentKinds: ["Bullet", "Body"] };
+  return { update, kindsOrArchetype: ["Bullet", "Body"] };
 };

@@ -12,5 +12,5 @@ export const MovementSystem = (): System => {
     body.yaw.rotate(body.angularVelocity * deltaSeconds);
   }
 
-  return { componentKinds: ["Body"], update };
+  return { kindsOrArchetype: ["Body"], update };
 };

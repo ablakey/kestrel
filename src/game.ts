@@ -41,8 +41,10 @@ const SystemCreators = [
 
 export type Kind = Component["kind"];
 
+export type Archetype = "ShipEntity" | "BulletEntity";
+
 export interface System {
-  componentKinds: Kind[];
+  kindsOrArchetype: Kind[] | Archetype; // List of kinds or an archetype.
   onTick?: (delta: number) => void;
   update?: (entity: Entity<Kind>, delta: number) => void;
 }
@@ -57,6 +59,7 @@ export type Entity<T extends Kind = Exclude<Kind, Kind>> = {
   components: Required<Components<T>> & Partial<Components<Exclude<Kind, T>>>;
   lifespan?: number;
   destroyed: boolean;
+  archetype?: Archetype;
 };
 
 export class Game {
@@ -149,7 +152,7 @@ export class Game {
      */
     this.systems.forEach((sys) => {
       this.entities.forEach((e) => {
-        if (this.entities.isMatch(e, sys.componentKinds)) {
+        if (this.entities.isMatch(e, sys.kindsOrArchetype)) {
           sys.update?.(e as Entity<Kind>, delta);
         }
       });

@@ -38,5 +38,5 @@ export const StatsSystem = (game: Game): System => {
     }
   }
 
-  return { update, componentKinds: ["Health", "Body"] };
+  return { update, kindsOrArchetype: ["Health", "Body"] };
 };
