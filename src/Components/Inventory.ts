@@ -9,8 +9,25 @@ export interface Inventory {
 }
 
 export class Inventory {
-  public static getAmmo(entity: Entity<"Inventory">, weaponName: WeaponName): AmmosInstance | null {
-    return null;
+  /**
+   * Return this entity's selected secondary weapon.
+   */
+  public static getSelectedSecondary(
+    entity: Entity<"Inventory" | "Offensive">
+  ): WeaponInstance | null {
+    const selected = entity.components.offensive.selectedSecondary;
+    return entity.components.inventory.weapons.find((w) => w.name === selected) ?? null;
+  }
+
+  public static getSelectedAmmo(entity: Entity<"Inventory" | "Offensive">): AmmosInstance | null {
+    const selectedSecondary = entity.components.offensive.selectedSecondary;
+
+    if (selectedSecondary === null) {
+      return null;
+    }
+
+    const weaponType = Weapons[selectedSecondary];
+    return entity.components.inventory.ammos.find((a) => a.name === weaponType.ammo) ?? null;
   }
 
   /**

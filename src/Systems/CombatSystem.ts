@@ -1,5 +1,6 @@
 import Victor from "victor";
 import { Body, Offensive } from "../Components";
+import { Inventory } from "../Components/Inventory";
 import { Entity, Game, System } from "../game";
 import { Weapon, Weapons } from "../Items/Weapons";
 import { randomSign } from "../utils";
@@ -41,16 +42,14 @@ export const CombatSystem = (game: Game): System => {
      * TODO: some secondary weapons might not have an ammo count.
      */
     if (offensive.fireSecondary && offensive.selectedSecondary) {
-      const secondaryInstance = inventory.weapons.find(
-        (w) => w.name === offensive.selectedSecondary
-      );
+      const secondaryInstance = Inventory.getSelectedSecondary(entity);
 
       // It's selected but doesn't actually exist in inventory.
       if (!secondaryInstance) {
         offensive.selectedSecondary = null;
       } else {
         const weaponType = Weapons[offensive.selectedSecondary];
-
+        const ammoInstance = Inventory.getSelectedAmmo(entity);
         const cooldown = 1000 / (weaponType.fireRate * secondaryInstance.count);
         if (secondaryInstance.lastUsed + cooldown < game.elapsed && ammoInstance?.count) {
           fireWeapon(body, offensive, weaponType);
