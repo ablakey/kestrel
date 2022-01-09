@@ -3,9 +3,9 @@ import Victor from "victor";
 import { Team } from "../enum";
 import { ShipName, Ships } from "../Items/Ships";
 import { pickRandom, useGame, useKeypress } from "../utils";
-import { Dropdown } from "./Components/Dropdown";
-import { Modal } from "./Components/Modal";
-import { Slider } from "./Components/Slider";
+import { Dropdown } from "./Widgets/Dropdown";
+import { Modal } from "./Widgets/Modal";
+import { Slider } from "./Widgets/Slider";
 
 const spawnShipOptions = Object.entries(Ships).map(([name, ship]) => ({
   label: ship.label,

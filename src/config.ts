@@ -16,6 +16,7 @@ export const GameInputs = {
   // Attack.
   FirePrimary: { key: "Space" },
   FireSecondary: { key: "ShiftLeft" },
+  SelectSecondary: { key: "W", asEvent: true },
 
   // Targeting.
   NextTarget: { key: "Tab", asEvent: true },

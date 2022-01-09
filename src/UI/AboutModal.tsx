@@ -1,8 +1,8 @@
 import { MenuInputs } from "../config";
 import { useGame, useKeypress } from "../utils";
-import { Modal } from "./Components/Modal";
+import { Modal } from "./Widgets/Modal";
 import splashScreenImage from "../assets/images/splash_screen.png";
-import { Button } from "./Components/Button";
+import { Button } from "./Widgets/Button";
 
 export function AboutModal() {
   const game = useGame();

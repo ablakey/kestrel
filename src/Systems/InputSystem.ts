@@ -1,4 +1,5 @@
 import { Body } from "../Components";
+import { Inventory } from "../Components/Inventory";
 import { GameInputs } from "../config";
 import { Direction, Thrust } from "../enum";
 import { ShipEntity } from "../Factories/ShipFactory";
@@ -86,8 +87,14 @@ export const InputSystem = (game: Game): System => {
       switch (k) {
         case GameInputs.NextTarget.key:
           const index = k === GameInputs.NextTarget.key ? 1 : -1;
-          offensive.target = game.entities.getNextTarget(offensive.target, index);
+          offensive.target = game.entities.getNextPlayerTarget(offensive.target, index);
           game.soundFactory.playSound("Beep1");
+          break;
+        case GameInputs.SelectSecondary.key:
+          offensive.selectedSecondary = Inventory.getNextSecondaryWeapon(
+            entity,
+            offensive.selectedSecondary
+          );
           break;
         case GameInputs.ShowDebug.key:
           game.setState((draft) => {

@@ -38,7 +38,7 @@ export const CombatSystem = (game: Game): System => {
     /**
      * Fire secondary weapon, decrementing ammo count.
      *
-     * TODO: some secondary weapons might not have an ammo count.a
+     * TODO: some secondary weapons might not have an ammo count.
      */
     if (offensive.fireSecondary && offensive.selectedSecondary) {
       const secondaryInstance = inventory.weapons.find(
@@ -50,12 +50,12 @@ export const CombatSystem = (game: Game): System => {
         offensive.selectedSecondary = null;
       } else {
         const weaponType = Weapons[offensive.selectedSecondary];
-        const ammoInstance = inventory.ammos.find((a) => a.name === weaponType.ammo);
+
         const cooldown = 1000 / (weaponType.fireRate * secondaryInstance.count);
         if (secondaryInstance.lastUsed + cooldown < game.elapsed && ammoInstance?.count) {
           fireWeapon(body, offensive, weaponType);
           secondaryInstance.lastUsed = game.elapsed;
-          secondaryInstance.count -= 1;
+          ammoInstance.count -= 1;
         }
       }
     }

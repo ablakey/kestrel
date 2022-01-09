@@ -5,17 +5,12 @@ import { AmmosInstance, WeaponInstance } from "../Items";
 import { WeaponName } from "../Items/Weapons";
 import { Body } from "./Body";
 import { Engine } from "./Engine";
+import { Inventory } from "./Inventory";
 import { Navigable } from "./Navigable";
 import { Politics } from "./Politics";
 
 export * from "./Body";
 export * from "./Politics";
-
-export type Inventory = {
-  kind: "Inventory";
-  weapons: WeaponInstance[];
-  ammos: AmmosInstance[];
-};
 
 export type Offensive = {
   kind: "Offensive";
