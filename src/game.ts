@@ -4,6 +4,7 @@ import { initialGameState } from "./config";
 import { Entities } from "./EntityManager";
 import { BulletFactory } from "./Factories/BulletFactory";
 import { DoodadFactory } from "./Factories/DoodadFactory";
+import { PlanetFactory } from "./Factories/PlanetFactory";
 import { ShipFactory } from "./Factories/ShipFactory";
 import { SoundFactory } from "./Factories/SoundFactory";
 import { SpriteFactory } from "./Factories/SpriteFactory";
@@ -77,6 +78,7 @@ export class Game {
   public shipFactory: ShipFactory;
   public soundFactory: SoundFactory;
   public doodadFactory: DoodadFactory;
+  public planetFactory: PlanetFactory;
 
   /**
    * A replacement for a class constructor so that we can do async stuff on initialization.
@@ -89,6 +91,7 @@ export class Game {
     game.shipFactory = new ShipFactory(game);
     game.soundFactory = await SoundFactory.init(game);
     game.doodadFactory = new DoodadFactory(game);
+    game.planetFactory = new PlanetFactory(game);
     game.entities = new Entities(game);
     game.state = initialGameState;
 

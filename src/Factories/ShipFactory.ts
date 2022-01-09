@@ -11,7 +11,7 @@ import {
   Thrust,
 } from "../enum";
 import { Components, Entity } from "../game";
-import { ShipName, Ships } from "../Items/Ships";
+import { ShipName, Ships } from "../Inventory/Ships";
 import { BaseFactory } from "./BaseFactory";
 
 /**

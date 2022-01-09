@@ -8,6 +8,7 @@ import beep from "../assets/sounds/beep.mp3";
 import shipbreaksup from "../assets/sounds/shipbreaksup.mp3";
 import shipexplodes from "../assets/sounds/shipexplodes.mp3";
 import missile from "../assets/sounds/missile.mp3";
+import medexplosion from "../assets/sounds/medexplosion.mp3";
 import { Game } from "../game";
 
 const POSITION_SCALE = 0.1; // Adjust to affect how distance plays a role in sound.
@@ -20,6 +21,7 @@ const soundUrls = {
   ShipBreaksUp: shipbreaksup,
   ShipExplodes: shipexplodes,
   Missile: missile,
+  MediumExplosion: medexplosion,
 };
 
 export type SoundName = keyof typeof soundUrls;

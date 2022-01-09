@@ -1,6 +1,6 @@
 import { Game, Entity, System } from "../game";
 import { CombatBehaviour } from "../enum";
-import { Weapons } from "../Items/Weapons";
+import { Weapons } from "../Inventory/Weapons";
 import { assert } from "../utils";
 import { Body } from "../Components";
 

@@ -1,8 +1,8 @@
-import { AmmosInstance } from "../../Items";
-import { Ammos } from "../../Items/Ammos";
+import { AmmoInstance } from "../../Inventory";
+import { Ammos } from "../../Inventory/Ammos";
 import { Panel } from "./Panel";
 
-export function Weapon(props: { ammoInstance: AmmosInstance | null }) {
+export function Weapon(props: { ammoInstance: AmmoInstance | null }) {
   const { ammoInstance } = props;
 
   const weaponString = ammoInstance

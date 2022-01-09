@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Victor from "victor";
 import { Team } from "../enum";
-import { ShipName, Ships } from "../Items/Ships";
+import { ShipName, Ships } from "../Inventory/Ships";
 import { pickRandom, useGame, useKeypress } from "../utils";
 import { Dropdown } from "./Widgets/Dropdown";
 import { Modal } from "./Widgets/Modal";

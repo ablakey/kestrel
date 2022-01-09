@@ -34,7 +34,7 @@ async function main() {
   playerShip.components.player = { kind: "Player" };
   delete (playerShip.components as any).ai;
 
-  game.doodadFactory.spawnPlanet(new Victor(0, 0), "Levo");
+  game.planetFactory.create(new Victor(0, 0), "Levo");
 
   const DEBUG_SHIP_COUNT = 1;
 

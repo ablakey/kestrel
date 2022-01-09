@@ -1,7 +1,7 @@
 import Victor from "victor";
 import { ZIndexes } from "../config";
 import { Components, Entity } from "../game";
-import { Weapon } from "../Items/Weapons";
+import { WeaponName, Weapons } from "../Inventory/Weapons";
 import { BaseFactory } from "./BaseFactory";
 
 type BulletComponents = Components<"Body" | "Bullet" | "Sprite">;
@@ -9,7 +9,9 @@ type BulletComponents = Components<"Body" | "Bullet" | "Sprite">;
 export type BulletEntity = Entity<BulletComponents[keyof BulletComponents]["kind"]>;
 
 export class BulletFactory extends BaseFactory {
-  public create(position: Victor, yaw: number, weaponType: Weapon, target?: number) {
+  public create(position: Victor, yaw: number, weaponName: WeaponName, target?: number) {
+    const weaponType = Weapons[weaponName];
+
     const bulletComponents: BulletComponents = {
       body: {
         kind: "Body",
@@ -23,6 +25,7 @@ export class BulletFactory extends BaseFactory {
         damage: weaponType.damage,
         target: target ?? null,
         turnRate: weaponType.turnRate ?? null,
+        hitSound: weaponType.hitSound,
       },
       sprite: {
         kind: "Sprite",

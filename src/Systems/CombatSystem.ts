@@ -2,11 +2,12 @@ import Victor from "victor";
 import { Body, Offensive } from "../Components";
 import { Inventory } from "../Components/Inventory";
 import { Entity, Game, System } from "../game";
-import { Weapon, Weapons } from "../Items/Weapons";
+import { WeaponName, Weapons } from "../Inventory/Weapons";
 import { randomBetween } from "../utils";
 
 export const CombatSystem = (game: Game): System => {
-  function fireWeapon(body: Body, offensive: Offensive, weaponType: Weapon) {
+  function fireWeapon(body: Body, offensive: Offensive, weaponName: WeaponName) {
+    const weaponType = Weapons[weaponName];
     const position = body.position
       .clone()
       .add(new Victor(offensive.bulletOffset, 0).rotate(body.yaw.angle()));
@@ -14,7 +15,7 @@ export const CombatSystem = (game: Game): System => {
     const weaponError = 1 - weaponType.accuracy;
     const yaw = body.yaw.angle() + randomBetween(-weaponError, weaponError);
 
-    game.bulletFactory.create(position, yaw, weaponType, offensive.target ?? undefined);
+    game.bulletFactory.create(position, yaw, weaponName, offensive.target ?? undefined);
     game.soundFactory.playSound(weaponType.sound, { position: body.position });
   }
 
@@ -32,7 +33,7 @@ export const CombatSystem = (game: Game): System => {
           const weaponType = Weapons[w.name];
           const cooldown = 1000 / (weaponType.fireRate * w.count);
           if (w.lastUsed + cooldown < game.elapsed) {
-            fireWeapon(body, offensive, weaponType);
+            fireWeapon(body, offensive, w.name);
             w.lastUsed = game.elapsed;
           }
         });
@@ -54,7 +55,7 @@ export const CombatSystem = (game: Game): System => {
         const ammoInstance = Inventory.getSelectedAmmo(entity);
         const cooldown = 1000 / (weaponType.fireRate * secondaryInstance.count);
         if (secondaryInstance.lastUsed + cooldown < game.elapsed && ammoInstance?.count) {
-          fireWeapon(body, offensive, weaponType);
+          fireWeapon(body, offensive, offensive.selectedSecondary);
           secondaryInstance.lastUsed = game.elapsed;
           ammoInstance.count -= 1;
         }

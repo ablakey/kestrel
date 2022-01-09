@@ -1,7 +1,8 @@
 import { DamageEffect } from "../Effects";
 import { CombatBehaviour, Condition, MovementBehaviour, StrategyBehaviour } from "../enum";
+import { SoundName } from "../Factories/SoundFactory";
 import { SpriteName } from "../Factories/SpriteFactory";
-import { WeaponName } from "../Items/Weapons";
+import { WeaponName } from "../Inventory/Weapons";
 import { Body } from "./Body";
 import { Engine } from "./Engine";
 import { Inventory } from "./Inventory";
@@ -30,6 +31,7 @@ export type Bullet = {
   damage: number;
   target: number | null; // ID of entity bullet is trying to hit (will collide with nothing else)
   turnRate: number | null; // Some weapons will turn towards the target.
+  hitSound: SoundName | null;
   // force: number;
   // damage type
   //

@@ -1,11 +1,11 @@
 import { Entity } from "../game";
-import { AmmosInstance, WeaponInstance } from "../Items";
-import { WeaponName, Weapons } from "../Items/Weapons";
+import { AmmoInstance, WeaponInstance } from "../Inventory";
+import { WeaponName, Weapons } from "../Inventory/Weapons";
 
 export interface Inventory {
   kind: "Inventory";
   weapons: WeaponInstance[];
-  ammos: AmmosInstance[];
+  ammos: AmmoInstance[];
 }
 
 export class Inventory {
@@ -19,7 +19,7 @@ export class Inventory {
     return entity.components.inventory.weapons.find((w) => w.name === selected) ?? null;
   }
 
-  public static getSelectedAmmo(entity: Entity<"Inventory" | "Offensive">): AmmosInstance | null {
+  public static getSelectedAmmo(entity: Entity<"Inventory" | "Offensive">): AmmoInstance | null {
     const selectedSecondary = entity.components.offensive.selectedSecondary;
 
     if (selectedSecondary === null) {
