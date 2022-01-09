@@ -1,5 +1,8 @@
 import { Condition } from "../enum";
 import { Entity, Game, System } from "../game";
+import { getRandomPosition } from "../utils";
+
+const EXPLOSION_SPREAD = 40;
 
 export const StatsSystem = (game: Game): System => {
   function update(entity: Entity<"Health" | "Body">, delta: number) {
@@ -27,7 +30,10 @@ export const StatsSystem = (game: Game): System => {
     }
 
     if (health.condition === Condition.Destroying && Math.random() < 0.05) {
-      game.doodadFactory.spawnSprite(body.position.clone(), "SmallExplosion");
+      // Calculate a random position
+      const exposionPosition = getRandomPosition(body.position, EXPLOSION_SPREAD);
+
+      game.doodadFactory.spawnSprite(exposionPosition, "SmallExplosion");
       game.soundFactory.playSound("ShipBreaksUp");
     }
 

@@ -3,7 +3,7 @@ import { Body, Offensive } from "../Components";
 import { Inventory } from "../Components/Inventory";
 import { Entity, Game, System } from "../game";
 import { Weapon, Weapons } from "../Items/Weapons";
-import { randomSign } from "../utils";
+import { randomBetween } from "../utils";
 
 export const CombatSystem = (game: Game): System => {
   function fireWeapon(body: Body, offensive: Offensive, weaponType: Weapon) {
@@ -11,7 +11,9 @@ export const CombatSystem = (game: Game): System => {
       .clone()
       .add(new Victor(offensive.bulletOffset, 0).rotate(body.yaw.angle()));
 
-    const yaw = body.yaw.angle() + Math.random() * randomSign(1 - weaponType.accuracy);
+    const weaponError = 1 - weaponType.accuracy;
+    const yaw = body.yaw.angle() + randomBetween(-weaponError, weaponError);
+
     game.bulletFactory.create(position, yaw, weaponType, offensive.target ?? undefined);
     game.soundFactory.playSound(weaponType.sound, { position: body.position });
   }

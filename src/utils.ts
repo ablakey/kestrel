@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from "react";
+import Victor from "victor";
 import { Game } from "./game";
 
 export const GameContext = React.createContext(undefined as unknown as Game); // TODO: a better default.
@@ -39,7 +40,15 @@ export function pickRandom<T>(elements: T[]): T {
   return elements[Math.floor(Math.random() * elements.length)];
 }
 
-export function randomSign(value: number): number {
-  const plusOrMinus = Math.random() < 0.5 ? -1 : 1;
-  return value * plusOrMinus;
+export function randomBetween(min: number, max: number): number {
+  const delta = max - min;
+  return Math.random() * delta + min;
+}
+
+export function getRandomPosition(position: Victor, maxDistance: number) {
+  return position
+    .clone()
+    .add(
+      new Victor(randomBetween(-maxDistance, maxDistance), randomBetween(-maxDistance, maxDistance))
+    );
 }

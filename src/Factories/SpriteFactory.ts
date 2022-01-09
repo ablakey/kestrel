@@ -32,12 +32,12 @@ const animatedSpriteData = {
   Explosion: {
     sheet: "explosion",
     animationSpeed: 0.2,
-    scale: 2,
+    scale: 2.5,
   },
   SmallExplosion: {
     sheet: "explosion",
     animationSpeed: 0.2,
-    scale: 1,
+    scale: 1.5,
   },
 } as const;
 

@@ -16,7 +16,7 @@ export const CleanupSystem = (game: Game): System => {
     }
 
     if (bullet && bullet.target && game.entities.isDestroyed(bullet.target)) {
-      bullet.target = undefined;
+      bullet.target = null;
     }
   }
   return { update, kindsOrArchetype: ["Offensive"] };

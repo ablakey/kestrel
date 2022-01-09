@@ -1,14 +1,12 @@
-import { AmmosInstance, WeaponInstance } from "../../Items";
+import { AmmosInstance } from "../../Items";
+import { Ammos } from "../../Items/Ammos";
 import { Panel } from "./Panel";
 
-export function Weapon(props: {
-  weaponInstance: WeaponInstance | null;
-  ammoInstance: AmmosInstance | null;
-}) {
-  const { weaponInstance, ammoInstance } = props;
+export function Weapon(props: { ammoInstance: AmmosInstance | null }) {
+  const { ammoInstance } = props;
 
-  const weaponString = weaponInstance
-    ? `${weaponInstance.name} (${ammoInstance?.count ?? 0})`
+  const weaponString = ammoInstance
+    ? `${Ammos[ammoInstance.name].label}s: ${ammoInstance?.count ?? 0}`
     : "No Weapon Selected";
 
   return (

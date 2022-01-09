@@ -1,24 +1,6 @@
 # Snakefood
 
 
-## TODO
-
-### Systems
-- Commodities
-- Missions
-- Outfit
-- Shipyard
-
-### UI
- - Button
-
-#### Screens
- - Planet
- - Outfit Ship
- - Mission Computer
- - Commodity Exchange
- - Galaxy Map
-
  ## FAQ
 
  ### Technical

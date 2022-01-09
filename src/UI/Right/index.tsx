@@ -32,10 +32,7 @@ export function Right() {
       <Minimap />
       <Stats hp={health.hp} />
       <Nav />
-      <Weapon
-        weaponInstance={Inventory.getSelectedSecondary(player)}
-        ammoInstance={Inventory.getSelectedAmmo(player)}
-      />
+      <Weapon ammoInstance={Inventory.getSelectedAmmo(player)} />
       <Target target={target} />
       <Info entityCount={game.entities.length} player={player} />
     </div>

@@ -1,7 +1,6 @@
 import { DamageEffect } from "../Effects";
 import { CombatBehaviour, Condition, MovementBehaviour, StrategyBehaviour } from "../enum";
 import { SpriteName } from "../Factories/SpriteFactory";
-import { AmmosInstance, WeaponInstance } from "../Items";
 import { WeaponName } from "../Items/Weapons";
 import { Body } from "./Body";
 import { Engine } from "./Engine";
@@ -29,8 +28,8 @@ export type Navigation = {
 export type Bullet = {
   kind: "Bullet";
   damage: number;
-  target?: number; // ID of entity bullet is trying to hit (will collide with nothing else)
-  turnRate?: number; // Some weapons will turn towards the target.
+  target: number | null; // ID of entity bullet is trying to hit (will collide with nothing else)
+  turnRate: number | null; // Some weapons will turn towards the target.
   // force: number;
   // damage type
   //

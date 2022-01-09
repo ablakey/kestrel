@@ -21,8 +21,8 @@ export class BulletFactory extends BaseFactory {
       bullet: {
         kind: "Bullet",
         damage: weaponType.damage,
-        target,
-        turnRate: weaponType.turnRate,
+        target: target ?? null,
+        turnRate: weaponType.turnRate ?? null,
       },
       sprite: {
         kind: "Sprite",
