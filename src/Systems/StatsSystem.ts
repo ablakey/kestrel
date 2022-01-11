@@ -34,12 +34,12 @@ export const StatsSystem = (game: Game): System => {
       const exposionPosition = getRandomPosition(body.position, EXPLOSION_SPREAD);
 
       game.doodadFactory.spawnSprite(exposionPosition, "SmallExplosion");
-      game.soundFactory.playSound("ShipBreaksUp");
+      game.soundFactory.playSound("ShipBreaksUp", { position: body.position });
     }
 
     if (health.timeToLive !== null && health.timeToLive <= 0) {
       game.doodadFactory.spawnSprite(body.position.clone(), "Explosion");
-      game.soundFactory.playSound("ShipExplodes");
+      game.soundFactory.playSound("ShipExplodes", { position: body.position });
       entity.destroyed = true;
     }
   }

@@ -26,6 +26,11 @@ export const BulletSystem = (game: Game): System => {
       if (distance < 50) {
         entity.destroyed = true;
         e.components.health.effects.push({ damage: bullet.damage });
+        if (bullet.hitSound) {
+          game.soundFactory.playSound(bullet.hitSound, {
+            position: e.components.body.position,
+          });
+        }
       }
     });
 
