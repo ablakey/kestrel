@@ -6,7 +6,8 @@ import pixelLaserBlue from "../assets/sprites/pixel_laser_blue.png";
 import pixelShipBlue from "../assets/sprites/pixel_ship_blue.png";
 import pixelShipRed from "../assets/sprites/pixel_ship_red.png";
 import planet00 from "../assets/sprites/planet_00.png";
-import pixelLaserYellow from "../assets/sprites/pixel_laser_yellow.png";
+
+import missile from "../assets/svg/missile.svg";
 
 import explosionSheet from "../assets/spritesheets/explosion.png";
 import explosionSheetData from "../assets/spritesheets/explosion.json";
@@ -15,7 +16,7 @@ import { Game } from "../game";
 const staticSpriteData = {
   Laser: { image: pixelLaserGreen, scale: 1 },
   Proton: { image: pixelLaserBlue, scale: 1 },
-  Missile: { image: pixelLaserYellow, scale: 1 },
+  Missile: { image: missile, scale: 0.4 },
   BlueShip: { image: pixelShipBlue, scale: 1 },
   RedShip: { image: pixelShipRed, scale: 1 },
   GreenPlanet1: { image: planet00, scale: 3 },
