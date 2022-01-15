@@ -135,3 +135,56 @@ I think the way we handle it might be:
   - A bunch of keys always get listened to
   - Some only when game is running
 - Maybe we don't have to track state, but rather just track when game is paused or not.
+
+
+## Scripted Behaviour
+
+I probabl want a much more detailed AI system, but I'm intentionally starting off with basic if statements and growing organically, for learning.
+
+I think I need a ScriptedBehaviour system where I can give it a series of things to do.  eg. wait, aim at, move to, etc.
+
+when a behaviour is set thats all ai does.
+
+ai only ever runs a behavior? ie there is no other kind.
+
+ai strategy system decides what behaviour to pick.
+
+
+MovementBehaviour (PointAt, FlyThrough, FlyStraight, Stop, PointBackwards)
+
+### Example behaviours
+
+- SmallShipCombat (external state: target)
+  - MovementBehaviour = Turn Towards
+  - Wait n seconds (state: countdown)
+  - CombatBehaviour = attack
+  - begin pursuit
+    - MovementBehaviour = Movetowards
+
+
+- JumpToSystem (external state: system target)
+  - MovementB: turn towards AI.navtarget (which is either a Victor or an entity id)
+  - wait n seconds (state: countdown)
+  - MovementB: Movetowards (Ai.navtarget)
+
+
+(how to close loop on adjustments?)
+- Move to (static?) position
+  - movementB: turn towards navtarget
+  - movementb: fly towards
+  - keep doing math on when to turn
+  -  movementB: Stop
+
+
+
+### How to implement
+
+- behaviours are functions called by the AIbehaviourSystem.
+
+- when AIStrategy changes behaviour, it should update all the shared state (like timer, target, etc.)
+
+- clear out AIbehaviour. It won't do a thing other than, for now, decide to turn on one of these behaviours.
+
+- later we will add logic for AIBehaviour to decide which behaviours to set.
+
+- TODO: cheat a little: if a ship is moving VERY slow, just set it to 0.
