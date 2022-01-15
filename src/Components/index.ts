@@ -1,5 +1,6 @@
+import { BehaviourName } from "../Behaviours";
 import { DamageEffect } from "../Effects";
-import { CombatBehaviour, Condition, MovementBehaviour, StrategyBehaviour } from "../enum";
+import { Condition } from "../enum";
 import { SoundName } from "../Factories/SoundFactory";
 import { SpriteName } from "../Factories/SpriteFactory";
 import { WeaponName } from "../Inventory/Weapons";
@@ -64,9 +65,9 @@ export type Player = {
 
 export type Ai = {
   kind: "Ai";
-  strategy: StrategyBehaviour;
-  combatBehaviour: CombatBehaviour;
-  movementBehaviour: MovementBehaviour;
+  behaviour: BehaviourName;
+  combatAction: CombatAction;
+  movementAction: MovementAction;
 };
 
 export type Description = {
