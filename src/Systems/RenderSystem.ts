@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import stars01 from "../assets/sprites/spr_stars01.png";
 import stars02 from "../assets/sprites/spr_stars02.png";
+import { ZIndexes } from "../config";
 import { Team } from "../enum";
 import { Game, Entity, System } from "../game";
 import { assert } from "../utils";
@@ -38,6 +39,8 @@ function createReticle(size: number) {
   graphics.moveTo(min + 20, max);
   graphics.lineTo(min, max);
   graphics.lineTo(min, max - 20);
+
+  graphics.zIndex = ZIndexes.Hud;
 
   return graphics;
 }

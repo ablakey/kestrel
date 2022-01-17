@@ -33,6 +33,7 @@ export const ZIndexes = {
   Bullet: 500,
   Player: 600,
   Explosion: 700,
+  Hud: 800,
 };
 
 const initialRelations: AllRelations = {
