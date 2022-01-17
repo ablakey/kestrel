@@ -1,15 +1,8 @@
 import { cloneDeep } from "lodash";
 import Victor from "victor";
+import { initialBehaviourStates } from "../Behaviours";
 import { ZIndexes } from "../config";
-import {
-  CombatBehaviour,
-  Condition,
-  Direction,
-  MovementBehaviour,
-  StrategyBehaviour,
-  Team,
-  Thrust,
-} from "../enum";
+import { Condition, Direction, Team, Thrust } from "../enum";
 import { Components, Entity } from "../game";
 import { ShipName, Ships } from "../Inventory/Ships";
 import { BaseFactory } from "./BaseFactory";
@@ -110,9 +103,9 @@ export class ShipFactory extends BaseFactory {
       },
       ai: {
         kind: "Ai",
-        strategy: StrategyBehaviour.None,
-        combatBehaviour: opts.runAi ? CombatBehaviour.Aggressive : CombatBehaviour.None,
-        movementBehaviour: opts.runAi ? MovementBehaviour.PointAt : MovementBehaviour.None,
+        behaviour: initialBehaviourStates.None,
+        combatAction: "None",
+        movementAction: "None",
       },
     };
 

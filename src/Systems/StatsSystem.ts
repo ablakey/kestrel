@@ -6,7 +6,7 @@ const EXPLOSION_SPREAD = 40;
 
 export const StatsSystem = (game: Game): System => {
   function update(entity: Entity<"Health" | "Body">, delta: number) {
-    const { health, player, body } = entity.components;
+    const { health, body } = entity.components;
 
     /**
      * Apply damage.
@@ -19,7 +19,7 @@ export const StatsSystem = (game: Game): System => {
     /**
      * Is destroying?
      */
-    if (health.hp <= 0 && !player && health.condition === Condition.Alive) {
+    if (health.hp <= 0 && health.condition === Condition.Alive) {
       console.info(`Ship ${entity.id} is breaking up.`);
       health.condition = Condition.Destroying;
       health.timeToLive = 3000;

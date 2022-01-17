@@ -27,13 +27,21 @@ export class Entities {
   }
 
   public getPlayer() {
-    const player = this.query(["Player"])[0];
+    const player = this.query(["Politics"]).find((e) => e.components.politics.team === Team.Player);
     assert(player);
     return player as ShipEntity;
   }
 
+  public getShips() {
+    return this.queryArchetype("ShipEntity") as ShipEntity[];
+  }
+
   public forEach(iterFn: (e: Entity) => void) {
     return this.entities.forEach(iterFn);
+  }
+
+  public filter(iterFn: (e: Entity) => boolean) {
+    return Array.from(this.entities.values()).filter(iterFn);
   }
 
   public find(iterFn: (e: Entity) => boolean): Entity | undefined {
@@ -97,15 +105,19 @@ export class Entities {
     return (this.entities.get(id) as T) ?? null;
   }
 
-  public query<K extends Kind>(kindsOrArchetype: K[]): Entity<K>[] {
-    const hash = kindsOrArchetype.join("");
+  public queryArchetype(archetype: Archetype) {
+    return this.filter((e) => e.archetype === archetype);
+  }
+
+  public query<K extends Kind>(kinds: K[]): Entity<K>[] {
+    const hash = kinds.join("");
 
     if (this.queryCache[hash]) {
       return this.queryCache[hash] as Entity<K>[];
     }
 
     const hits = Array.from(this.entities.values()).filter((e) =>
-      this.isMatch(e, kindsOrArchetype)
+      this.isMatch(e, kinds)
     ) as Entity<K>[];
 
     this.queryCache[hash] = hits;

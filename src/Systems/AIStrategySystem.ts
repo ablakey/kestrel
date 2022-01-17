@@ -1,65 +1,111 @@
-import { Body, Politics } from "../Components";
-import { CombatBehaviour, MovementBehaviour } from "../enum";
-import { Entity, Game, System } from "../game";
-import { pickRandom } from "../utils";
+import { BehaviourName, Behaviours, initialBehaviourStates } from "../Behaviours";
+import { Team } from "../enum";
+import { ShipEntity } from "../Factories/ShipFactory";
+import { Game, System } from "../game";
+
+function getNextBehaviour(game: Game, entity: ShipEntity): BehaviourName {
+  const { offensive } = entity.components;
+
+  /**
+   * A ship will look for a combat target if the ship is combat effective.
+   */
+  // TODO: is combat effective?
+  if (!offensive.target) {
+    return "FindTarget";
+  }
+
+  /**
+   * If a ship has a target, pick a combat style.
+   * To begin with, this is just based on the kind of ship it is. But later it may be that
+   * ships have many combat styles to pick from either randomly or for some reason.
+   */
+  if (offensive.target) {
+    return "SmallShipAggressive";
+  }
+
+  return "None";
+}
 
 export const AIStrategySystem = (game: Game): System => {
-  function update(entity: Entity<"Body" | "Ai" | "Politics" | "Offensive" | "Navigation">) {
-    const { ai, offensive, body, navigation } = entity.components;
+  function update(entity: ShipEntity, delta: number) {
+    const { ai, politics } = entity.components;
 
-    // // If ship already has a target, don't do any strategy.  TODO: this should be more complex.
-    // if (entity.components.offensive.target) {
-    //   return;
-    // }
-
-    const hostileTeams = Politics.getHostileTeams(entity);
-
-    const ships = game.entities.query(["Politics", "Body"]);
-
-    const target = game.entities.get(offensive.target);
-    /**
-     * Pick a hostile target?
-     * If there's something to fight, do that first.
-     */
-    if (!target) {
-      for (const team of hostileTeams) {
-        const worstEnemies = ships.filter((s) => s.components.politics.team === team);
-        if (worstEnemies.length) {
-          const target = pickRandom(worstEnemies).id;
-          console.log(`Ship ${entity.id} become hostile towards Ship ${target}`);
-          offensive.target = target;
-          navigation.target = target;
-        }
-      }
+    // Don't apply a strategy for the player.
+    if (politics.team === Team.Player) {
+      return;
     }
 
-    /**
-     * Point towards?
-     */
-    if (target) {
-      ai.combatBehaviour = CombatBehaviour.Aggressive;
-      ai.movementBehaviour = MovementBehaviour.PointAt;
+    const currentName = ai.behaviour.name;
+
+    const newName = getNextBehaviour(game, entity);
+
+    // If changed, update it.
+    if (currentName !== newName) {
+      console.log(`Ship ${entity.id} behaviour changed from ${currentName} to ${newName}.`);
+
+      ai.behaviour = initialBehaviourStates[newName];
     }
 
-    /**
-     * Fly at?
-     */
-    if (target && Body.isFacing(body, target.components.body!)) {
-      ai.movementBehaviour = MovementBehaviour.FlyThrough;
-    }
-
-    /**
-     * No AI strategy determined. Reset AI.
-     */
-    if (offensive.target === null && ai.combatBehaviour !== CombatBehaviour.None) {
-      console.log(`Entity ${entity.id} stop combat AI.`);
-      ai.combatBehaviour = CombatBehaviour.None;
-    }
-
-    if (navigation.target === null && ai.movementBehaviour !== MovementBehaviour.None) {
-      console.log(`Entity ${entity.id} stop movement AI.`);
-      ai.movementBehaviour = MovementBehaviour.None;
+    // Invoke behaviour.
+    if (newName !== "None") {
+      Behaviours[newName](game, entity, delta);
     }
   }
-  return { update, kindsOrArchetype: ["Body", "Ai", "Politics", "Offensive", "Navigation"] };
+
+  // const { ai, offensive, body, navigation } = entity.components;
+  //   // // If ship already has a target, don't do any strategy.  TODO: this should be more complex.
+  //   // if (entity.components.offensive.target) {
+  //   //   return;
+  //   // }
+
+  //   const hostileTeams = Politics.getHostileTeams(entity);
+
+  //   const ships = game.entities.query(["Politics", "Body"]);
+
+  //   const target = game.entities.get(offensive.target);
+  //   /**
+  //    * Pick a hostile target?
+  //    * If there's something to fight, do that first.
+  //    */
+  //   if (!target) {
+  //     for (const team of hostileTeams) {
+  //       const worstEnemies = ships.filter((s) => s.components.politics.team === team);
+  //       if (worstEnemies.length) {
+  //         const target = pickRandom(worstEnemies).id;
+  //         console.log(`Ship ${entity.id} become hostile towards Ship ${target}`);
+  //         offensive.target = target;
+  //         navigation.target = target;
+  //       }
+  //     }
+  //   }
+
+  //   /**
+  //    * Point towards?
+  //    */
+  //   if (target) {
+  //     ai.combatBehaviour = CombatBehaviour.Aggressive;
+  //     ai.movementBehaviour = MovementBehaviour.PointAt;
+  //   }
+
+  //   /**
+  //    * Fly at?
+  //    */
+  //   if (target && Body.isFacing(body, target.components.body!)) {
+  //     ai.movementBehaviour = MovementBehaviour.FlyThrough;
+  //   }
+
+  //   /**
+  //    * No AI strategy determined. Reset AI.
+  //    */
+  //   if (offensive.target === null && ai.combatBehaviour !== CombatBehaviour.None) {
+  //     console.log(`Entity ${entity.id} stop combat AI.`);
+  //     ai.combatBehaviour = CombatBehaviour.None;
+  //   }
+
+  //   if (navigation.target === null && ai.movementBehaviour !== MovementBehaviour.None) {
+  //     console.log(`Entity ${entity.id} stop movement AI.`);
+  //     ai.movementBehaviour = MovementBehaviour.None;
+  //   }
+  // }
+  return { update, kindsOrArchetype: "ShipEntity" };
 };

@@ -1,7 +1,7 @@
 import { Body } from "../Components";
 import { Inventory } from "../Components/Inventory";
 import { GameInputs } from "../config";
-import { Direction, Thrust } from "../enum";
+import { Direction, Team, Thrust } from "../enum";
 import { ShipEntity } from "../Factories/ShipFactory";
 import { Game, System } from "../game";
 import { assert, stringifyFullKey } from "../utils";
@@ -55,7 +55,11 @@ export const InputSystem = (game: Game): System => {
       return;
     }
 
-    const { engine, offensive, body } = entity.components;
+    const { engine, offensive, body, politics } = entity.components;
+
+    if (politics.team !== Team.Player) {
+      return;
+    }
 
     // Rotate
     if (keyState[GameInputs.RotateLeft.key]) {
@@ -112,5 +116,5 @@ export const InputSystem = (game: Game): System => {
     });
   }
 
-  return { kindsOrArchetype: ["Engine", "Offensive", "Player"], update };
+  return { kindsOrArchetype: ["Engine", "Offensive", "Politics"], update };
 };

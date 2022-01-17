@@ -1,5 +1,6 @@
 import * as PIXI from "pixi.js";
 import { MAP_ZOOM_LEVEL } from "../config";
+import { Team } from "../enum";
 import { Entity, System } from "../game";
 
 export const MinimapSystem = (): System => {
@@ -42,7 +43,7 @@ export const MinimapSystem = (): System => {
       app.stage.addChild(container);
     }
 
-    const { body, bullet, player } = entity.components;
+    const { body, bullet, politics } = entity.components;
 
     /**
      * Do not render bullets.
@@ -53,7 +54,7 @@ export const MinimapSystem = (): System => {
 
     const marker = getOrCreateMarker(entity);
 
-    if (player) {
+    if (politics.team === Team.Player) {
       /**
        * Camera follow player.
        */
@@ -76,5 +77,5 @@ export const MinimapSystem = (): System => {
     marker.y = -body.position.y;
   }
 
-  return { update, kindsOrArchetype: ["Body"] };
+  return { update, kindsOrArchetype: ["Body", "Politics"] };
 };

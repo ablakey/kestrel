@@ -1,5 +1,4 @@
 import { Game, Entity, System } from "../game";
-import { CombatBehaviour } from "../enum";
 import { Weapons } from "../Inventory/Weapons";
 import { assert } from "../utils";
 import { Body } from "../Components";
@@ -12,22 +11,22 @@ export const AICombatSystem = (game: Game): System => {
   function update(entity: Entity<"Offensive" | "Body" | "Inventory" | "Ai">) {
     const { offensive, ai, body, inventory } = entity.components;
 
-    /**
-     * Stop firing if there is no target.
-     */
-    if (offensive.target === null) {
-      // If an entity has no target, stop firing.
-      if (offensive.firePrimary) {
-        console.log(`Ship ${entity.id} stop firing.`);
-        offensive.firePrimary = false;
-      }
-      return;
-    }
+    // /**
+    //  * Stop firing if there is no target.
+    //  */
+    // if (offensive.target === null) {
+    //   // If an entity has no target, stop firing.
+    //   if (offensive.firePrimary) {
+    //     console.log(`Ship ${entity.id} stop firing.`);
+    //     offensive.firePrimary = false;
+    //   }
+    //   return;
+    // }
 
     /**
      * Do no combat AI if the CombatBehaviour is None.
      */
-    if (ai.combatBehaviour === CombatBehaviour.None) {
+    if (ai.combatAction === "None") {
       return;
     }
 

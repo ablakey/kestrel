@@ -1,4 +1,4 @@
-import { BehaviourName } from "../Behaviours";
+import { BehaviourState, CombatAction, MovementAction } from "../Behaviours";
 import { DamageEffect } from "../Effects";
 import { Condition } from "../enum";
 import { SoundName } from "../Factories/SoundFactory";
@@ -59,15 +59,11 @@ export type Sprite = {
   zIndex: number;
 };
 
-export type Player = {
-  kind: "Player";
-};
-
 export type Ai = {
   kind: "Ai";
-  behaviour: BehaviourName;
   combatAction: CombatAction;
   movementAction: MovementAction;
+  behaviour: BehaviourState;
 };
 
 export type Description = {
@@ -84,7 +80,6 @@ export type Component =
   | Inventory
   | Kinematics
   | Offensive
-  | Player
   | Politics
   | Sprite
   | Description

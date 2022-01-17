@@ -31,8 +31,6 @@ async function main() {
     | undefined;
   assert(playerShip, "Player Ship was not found.");
   playerShip.components.sprite.zIndex = ZIndexes.Player;
-  playerShip.components.player = { kind: "Player" };
-  delete (playerShip.components as any).ai;
 
   game.planetFactory.create(new Victor(0, 0), "Levo");
 

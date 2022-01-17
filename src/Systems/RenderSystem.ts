@@ -1,6 +1,7 @@
 import * as PIXI from "pixi.js";
 import stars01 from "../assets/sprites/spr_stars01.png";
 import stars02 from "../assets/sprites/spr_stars02.png";
+import { Team } from "../enum";
 import { Game, Entity, System } from "../game";
 import { assert } from "../utils";
 
@@ -129,13 +130,13 @@ export const RenderSystem = async (game: Game): Promise<System> => {
   }
 
   function update(entity: Entity<"Body" | "Sprite">) {
-    const { player, body, offensive } = entity.components;
+    const { politics, body, offensive } = entity.components;
     const item = getOrCreateSprite(entity);
 
     /**
      * Player-specific updates.
      */
-    if (player) {
+    if (politics?.team === Team.Player) {
       assert(offensive); // Player always has an offensive component.
 
       /**
