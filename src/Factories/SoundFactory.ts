@@ -1,15 +1,14 @@
 import { Howl } from "howler";
 import Victor from "victor";
-import { BaseFactory } from "./BaseFactory";
-
-import laser from "../assets/sounds/laser.mp3";
-import proton from "../assets/sounds/proton.mp3";
 import beep from "../assets/sounds/beep.mp3";
+import laser from "../assets/sounds/laser.mp3";
+import medexplosion from "../assets/sounds/medexplosion.mp3";
+import missile from "../assets/sounds/missile.mp3";
+import proton from "../assets/sounds/proton.mp3";
 import shipbreaksup from "../assets/sounds/shipbreaksup.mp3";
 import shipexplodes from "../assets/sounds/shipexplodes.mp3";
-import missile from "../assets/sounds/missile.mp3";
-import medexplosion from "../assets/sounds/medexplosion.mp3";
 import { Game } from "../game";
+import { BaseFactory } from "./BaseFactory";
 
 const POSITION_SCALE = 0.1; // Adjust to affect how distance plays a role in sound.
 const GLOBAL_VOLUME_ADJUST = 0.1; // Volume at 1.0 is way too loud.

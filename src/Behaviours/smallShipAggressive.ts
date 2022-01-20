@@ -15,7 +15,7 @@ export const smallShipAggressiveInitialState: SmallShipAggressiveState = {
   stage: "None",
 };
 
-const WAIT_TIME = 2_000;
+const WAIT_TIME = 1_000;
 
 export function smallShipAggressive(game: Game, entity: ShipEntity, delta: number) {
   const { ai, body, offensive } = entity.components;
@@ -40,7 +40,8 @@ export function smallShipAggressive(game: Game, entity: ShipEntity, delta: numbe
     nextStage = "Aiming";
   } else if (previousStage === "Aiming" && isFacingTarget) {
     nextStage = "Waiting";
-  } else if (previousStage === "Aiming" && behaviour.timer !== null && behaviour.timer <= 0) {
+  } else if (previousStage === "Waiting" && behaviour.timer !== null && behaviour.timer <= 0) {
+    console.log("pursuing.");
     nextStage = "Pursuing";
   } else {
     nextStage = behaviour.stage;

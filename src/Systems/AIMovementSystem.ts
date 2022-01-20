@@ -27,7 +27,7 @@ export const AIMovementSystem = (game: Game): System => {
      * Fly towards a target.
      */
     if (ai.movementAction === "FlyThrough") {
-      if (Body.getDeltaAngle(body, target.components.body) < 0.01) {
+      if (Body.isFacing(body, target.components.body)) {
         engine.thrust = Thrust.Forward;
       } else {
         engine.thrust = Thrust.None;
