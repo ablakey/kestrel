@@ -10,4 +10,5 @@ export type StopState = {
  */
 export function stopBehaviour(game: Game, entity: ShipEntity) {
   entity.components.ai.movementAction = "Stop";
+  entity.components.ai.combatAction = "None";
 }

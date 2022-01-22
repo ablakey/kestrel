@@ -25,6 +25,16 @@ export const Behaviours: Record<
   Stop: stopBehaviour,
 };
 
+console.warn(
+  "I should probably make these classes. And each class as an update function, a start, function, and an end function."
+);
+
+console.warn(
+  "Idea being that entering or leaving a behaviour should allow for startup or cleanup."
+);
+
+console.warn("the class can also contain its initialized state.");
+
 const initialBehaviourStates: Record<BehaviourName, BehaviourState> = {
   SmallShipAggressive: {
     name: "SmallShipAggressive",

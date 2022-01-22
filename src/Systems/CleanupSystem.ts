@@ -8,7 +8,6 @@ export const CleanupSystem = (game: Game): System => {
      * Clear targets if the target doesn't exist anymore.
      */
     if (offensive && offensive.target && game.entities.isDestroyed(offensive.target)) {
-      console.log("SET null", entity.id);
       offensive.target = null;
     }
 
