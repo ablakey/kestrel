@@ -1,4 +1,3 @@
-import { Condition } from "../enum";
 import { Entity, Game, System } from "../game";
 import { getRandomPosition } from "../utils";
 
@@ -19,9 +18,9 @@ export const StatsSystem = (game: Game): System => {
     /**
      * Is destroying?
      */
-    if (health.hp <= 0 && health.condition === Condition.Alive) {
+    if (health.hp <= 0 && health.condition === "Alive") {
       console.info(`Ship ${entity.id} is breaking up.`);
-      health.condition = Condition.Destroying;
+      health.condition = "Destroying";
       health.timeToLive = 3000;
     }
 
@@ -29,7 +28,7 @@ export const StatsSystem = (game: Game): System => {
       health.timeToLive -= delta;
     }
 
-    if (health.condition === Condition.Destroying && Math.random() < 0.05) {
+    if (health.condition === "Destroying" && Math.random() < 0.05) {
       // Calculate a random position
       const exposionPosition = getRandomPosition(body.position, EXPLOSION_SPREAD);
 

@@ -1,7 +1,6 @@
 import { Body } from "../Components";
 import { Inventory } from "../Components/Inventory";
 import { GameInputs } from "../config";
-import { Direction, Team, Thrust } from "../enum";
 import { ShipEntity } from "../Factories/ShipFactory";
 import { Game, System } from "../game";
 import { assert, stringifyFullKey } from "../utils";
@@ -57,25 +56,25 @@ export const InputSystem = (game: Game): System => {
 
     const { engine, offensive, body, politics } = entity.components;
 
-    if (politics.team !== Team.Player) {
+    if (politics.team !== "Player") {
       return;
     }
 
     // Rotate
     if (keyState[GameInputs.RotateLeft.key]) {
-      engine.direction = Direction.Left;
+      engine.direction = "Left";
     } else if (keyState[GameInputs.RotateRight.key]) {
-      engine.direction = Direction.Right;
+      engine.direction = "Right";
     } else if (keyState[GameInputs.RotateTowards.key] && offensive.target) {
       const target = game.entities.get(offensive.target) as ShipEntity;
       assert(target);
       engine.direction = Body.getTurnDirection(body, target.components.body);
     } else {
-      engine.direction = Direction.None;
+      engine.direction = "None";
     }
 
     // Thruster
-    engine.thrust = keyState[GameInputs.Thrust.key] ? Thrust.Forward : Thrust.None;
+    engine.thrust = keyState[GameInputs.Thrust.key] ? "Forward" : "None";
 
     // Weapons
     offensive.firePrimary = keyState[GameInputs.FirePrimary.key] ?? false;

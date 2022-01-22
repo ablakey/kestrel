@@ -1,5 +1,4 @@
 import { Component } from "./Components";
-import { Team } from "./enum";
 import { ShipEntity } from "./Factories/ShipFactory";
 import { Archetype, Components, Entity, Game, Kind } from "./game";
 import { assert } from "./utils";
@@ -27,7 +26,7 @@ export class Entities {
   }
 
   public getPlayer() {
-    const player = this.query(["Politics"]).find((e) => e.components.politics.team === Team.Player);
+    const player = this.query(["Politics"]).find((e) => e.components.politics.team === "Player");
     assert(player);
     return player as ShipEntity;
   }
@@ -154,7 +153,7 @@ export class Entities {
    * TODO make public. Accept an optional  "teams" array to filter by?
    */
   private getPlayerTargets() {
-    return this.query(["Politics"]).filter((e) => e.components.politics.team !== Team.Player);
+    return this.query(["Politics"]).filter((e) => e.components.politics.team !== "Player");
   }
 
   /**

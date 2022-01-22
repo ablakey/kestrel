@@ -1,8 +1,8 @@
 import { cloneDeep } from "lodash";
 import Victor from "victor";
 import { initialBehaviourStates } from "../Behaviours";
+import { Politics } from "../Components";
 import { ZIndexes } from "../config";
-import { Condition, Direction, Team, Thrust } from "../enum";
 import { Components, Entity } from "../game";
 import { ShipName, Ships } from "../Inventory/Ships";
 import { BaseFactory } from "./BaseFactory";
@@ -36,7 +36,7 @@ export class ShipFactory extends BaseFactory {
     position: Victor;
     yaw: number;
     shipName: ShipName;
-    team: Team;
+    team: Politics["team"];
     runAi?: boolean;
   }): void {
     const shipType = Ships[opts.shipName];
@@ -48,8 +48,8 @@ export class ShipFactory extends BaseFactory {
       },
       engine: {
         kind: "Engine",
-        direction: Direction.None,
-        thrust: Thrust.None,
+        direction: "None",
+        thrust: "None",
       },
       politics: {
         kind: "Politics",
@@ -88,7 +88,7 @@ export class ShipFactory extends BaseFactory {
         hp: shipType.hp,
         effects: [],
         timeToLive: null,
-        condition: Condition.Alive,
+        condition: "Alive",
       },
       kinematics: {
         kind: "Kinematics",

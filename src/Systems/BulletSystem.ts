@@ -1,6 +1,5 @@
 import Victor from "victor";
 import { Body } from "../Components";
-import { Direction } from "../enum";
 import { ShipEntity } from "../Factories/ShipFactory";
 import { Entity, Game, System } from "../game";
 
@@ -41,10 +40,8 @@ export const BulletSystem = (game: Game): System => {
       const target = game.entities.get<ShipEntity>(bullet.target);
       if (target) {
         const turnDirection = Body.getTurnDirection(body, target.components.body);
-        if (turnDirection !== Direction.None) {
-          body.yaw.rotate(
-            bullet.turnRate * deltaSeconds * (turnDirection === Direction.Left ? 1 : -1)
-          );
+        if (turnDirection !== "None") {
+          body.yaw.rotate(bullet.turnRate * deltaSeconds * (turnDirection === "Left" ? 1 : -1));
           body.velocity = new Victor(1, 0)
             .multiplyScalar(body.velocity.magnitude())
             .rotate(body.yaw.angle());

@@ -1,5 +1,4 @@
 import { BehaviourName, Behaviours, initialBehaviourStates } from "../Behaviours";
-import { Team } from "../enum";
 import { ShipEntity } from "../Factories/ShipFactory";
 import { Game, System } from "../game";
 
@@ -31,7 +30,7 @@ export const AIStrategySystem = (game: Game): System => {
     const { ai, politics } = entity.components;
 
     // Don't apply a strategy for the player.
-    if (politics.team === Team.Player) {
+    if (politics.team === "Player") {
       return;
     }
 

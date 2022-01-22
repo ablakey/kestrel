@@ -1,8 +1,8 @@
-import { Team } from "./enum";
+import { Politics } from "./Components";
 
-export const TeamLabel: Record<Team, string> = {
-  [Team.Independent]: "Independent",
-  [Team.Player]: "Player",
-  [Team.Confederacy]: "Confederacy",
-  [Team.Rebellion]: "Rebel",
+export const TeamLabel: Record<Politics["team"], string> = {
+  Independent: "Independent",
+  Player: "Player",
+  Confederacy: "Confederacy",
+  Rebellion: "Rebel",
 };

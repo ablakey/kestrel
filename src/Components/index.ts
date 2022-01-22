@@ -1,6 +1,5 @@
-import { BehaviourState, CombatAction, MovementAction } from "../Behaviours";
+import { BehaviourState } from "../Behaviours";
 import { DamageEffect } from "../Effects";
-import { Condition } from "../enum";
 import { SoundName } from "../Factories/SoundFactory";
 import { SpriteName } from "../Factories/SpriteFactory";
 import { WeaponName } from "../Inventory/Weapons";
@@ -48,7 +47,7 @@ export type Kinematics = {
 export type Health = {
   kind: "Health";
   hp: number;
-  condition: Condition;
+  condition: "Alive" | "Disabled" | "Destroying";
   effects: DamageEffect[];
   timeToLive: number | null;
 };
@@ -61,8 +60,8 @@ export type Sprite = {
 
 export type Ai = {
   kind: "Ai";
-  combatAction: CombatAction;
-  movementAction: MovementAction;
+  combatAction: "Aggressive" | "Defensive" | "None";
+  movementAction: "PointAt" | "FlyThrough" | "Stop" | "None";
   behaviour: BehaviourState;
 };
 

@@ -1,5 +1,5 @@
 import Victor from "victor";
-import { Direction } from "../enum";
+import { Engine } from "./Engine";
 
 export interface Body {
   kind: "Body";
@@ -26,13 +26,13 @@ export class Body {
    * Given a source, target, and tolerance (to prevent constant jittering), return which direction (or
    * None) to turn towards.
    */
-  public static getTurnDirection(src: Body, target: Body, tolerance?: number): Direction {
+  public static getTurnDirection(src: Body, target: Body, tolerance?: number): Engine["direction"] {
     const angle = Body.getDeltaAngle(src, target);
     if (Math.abs(angle) < (tolerance ?? 0.05)) {
-      return Direction.None;
+      return "None";
     }
 
-    return angle > 0 ? Direction.Left : Direction.Right;
+    return angle > 0 ? "Left" : "Right";
   }
 
   /**

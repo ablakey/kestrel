@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Victor from "victor";
-import { Team } from "../enum";
 import { ShipName, Ships } from "../Inventory/Ships";
 import { pickRandom, useGame, useKeypress } from "../utils";
 import { Dropdown } from "./Widgets/Dropdown";
@@ -26,7 +25,7 @@ export function DebugModal() {
   function spawnShip() {
     game.shipFactory.create({
       shipName: selectedSpawn,
-      team: pickRandom([Team.Rebellion, Team.Confederacy]),
+      team: pickRandom(["Rebellion", "Confederacy"]),
       position: new Victor(Math.random() * 1500 - 750, Math.random() * 1500 - 750),
       yaw: Math.random() * Math.PI,
     });

@@ -1,5 +1,4 @@
 import { Body } from "../Components";
-import { Thrust } from "../enum";
 import { Entity, Game, System } from "../game";
 import { assert } from "../utils";
 
@@ -28,10 +27,13 @@ export const AIMovementSystem = (game: Game): System => {
      */
     if (ai.movementAction === "FlyThrough") {
       if (Body.isFacing(body, target.components.body)) {
-        engine.thrust = Thrust.Forward;
+        engine.thrust = "Forward";
       } else {
-        engine.thrust = Thrust.None;
+        engine.thrust = "None";
       }
+    }
+
+    if (ai.movementAction === "Stop") {
     }
   }
 

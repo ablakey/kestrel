@@ -1,7 +1,6 @@
 import ReactDOM from "react-dom";
 import Victor from "victor";
 import { ZIndexes } from "./config";
-import { Team } from "./enum";
 import { ShipEntity } from "./Factories/ShipFactory";
 import { Game } from "./game";
 import { Layout } from "./UI/Layout";
@@ -19,14 +18,14 @@ async function main() {
     position: new Victor(500, -500),
     yaw: 0,
     shipName: "Blue",
-    team: Team.Player,
+    team: "Player",
   });
 
   /**
    * Player ship is a veery special case so we do weird stuff here to get it, make it the player ship, and scrub
    * AI from it.
    */
-  const playerShip = game.entities.find((e) => e.components.politics?.team === Team.Player) as
+  const playerShip = game.entities.find((e) => e.components.politics?.team === "Player") as
     | ShipEntity
     | undefined;
   assert(playerShip, "Player Ship was not found.");
@@ -39,7 +38,7 @@ async function main() {
   for (let x = 0; x < DEBUG_SHIP_COUNT; x++) {
     game.shipFactory.create({
       shipName: "Red",
-      team: pickRandom([Team.Rebellion, Team.Confederacy]),
+      team: pickRandom(["Rebellion", "Confederacy"]),
       position: new Victor(Math.random() * 1500 - 250, Math.random() * 1500 - 1250),
       yaw: Math.random() * Math.PI,
     });

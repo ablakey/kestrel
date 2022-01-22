@@ -7,10 +7,6 @@ import {
   SmallShipAggressiveState,
 } from "./smallShipAggressive";
 
-export type CombatAction = "Aggressive" | "Defensive" | "None";
-
-export type MovementAction = "PointAt" | "FlyThrough" | "None";
-
 export type BehaviourState = SmallShipAggressiveState | FindTargetState | NoneState;
 
 export type FindTargetState = {

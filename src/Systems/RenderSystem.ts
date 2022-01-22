@@ -2,7 +2,6 @@ import * as PIXI from "pixi.js";
 import stars01 from "../assets/sprites/spr_stars01.png";
 import stars02 from "../assets/sprites/spr_stars02.png";
 import { ZIndexes } from "../config";
-import { Team } from "../enum";
 import { Game, Entity, System } from "../game";
 import { assert } from "../utils";
 
@@ -139,7 +138,7 @@ export const RenderSystem = async (game: Game): Promise<System> => {
     /**
      * Player-specific updates.
      */
-    if (politics?.team === Team.Player) {
+    if (politics?.team === "Player") {
       assert(offensive); // Player always has an offensive component.
 
       /**

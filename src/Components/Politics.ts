@@ -1,12 +1,10 @@
-import { Team } from "../enum";
-import { ShipEntity } from "../Factories/ShipFactory";
 import { Entity } from "../game";
 import { Relations } from "../types";
 import { pickRandom } from "../utils";
 
 export interface Politics {
   kind: "Politics";
-  team: Team;
+  team: "Independent" | "Player" | "Rebellion" | "Confederacy";
   relations: Relations;
 }
 
@@ -14,11 +12,11 @@ export class Politics {
   /**
    * Get a list of hostile teams, sorted by most to least hostile.
    */
-  public static getHostileTeams(entity: Entity<"Politics">): Team[] {
+  public static getHostileTeams(entity: Entity<"Politics">): Politics["team"][] {
     return Object.entries(entity.components.politics.relations)
       .sort(([, reputationA], [, reputationB]) => reputationB - reputationA)
       .filter(([, reputation]) => reputation < 0)
-      .map(([team]) => team as Team);
+      .map(([team]) => team as Politics["team"]);
   }
 
   /**

@@ -1,6 +1,5 @@
 import * as PIXI from "pixi.js";
 import { MAP_ZOOM_LEVEL } from "../config";
-import { Team } from "../enum";
 import { Entity, System } from "../game";
 
 export const MinimapSystem = (): System => {
@@ -54,7 +53,7 @@ export const MinimapSystem = (): System => {
 
     const marker = getOrCreateMarker(entity);
 
-    if (politics.team === Team.Player) {
+    if (politics.team === "Player") {
       /**
        * Camera follow player.
        */
