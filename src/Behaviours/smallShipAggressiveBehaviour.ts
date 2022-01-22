@@ -17,7 +17,7 @@ export const smallShipAggressiveInitialState: SmallShipAggressiveState = {
 
 const WAIT_TIME = 1_000;
 
-export function smallShipAggressive(game: Game, entity: ShipEntity, delta: number) {
+export function smallShipAggressiveBehaviour(game: Game, entity: ShipEntity, delta: number) {
   const { ai, body, offensive } = entity.components;
   const behaviour = ai.behaviour as SmallShipAggressiveState;
   const previousStage = behaviour.stage;

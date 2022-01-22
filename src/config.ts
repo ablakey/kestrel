@@ -38,9 +38,9 @@ export const ZIndexes = {
 
 const initialRelations: AllRelations = {
   Player: { Independent: 20, Player: 100, Rebellion: 0, Confederacy: 0 },
-  Independent: { Independent: 20, Player: -1, Rebellion: 50, Confederacy: 50 },
-  Rebellion: { Independent: 20, Player: -1, Rebellion: 100, Confederacy: -100 },
-  Confederacy: { Independent: 20, Player: -1, Rebellion: -100, Confederacy: 100 },
+  Independent: { Independent: 20, Player: 1, Rebellion: 50, Confederacy: 50 },
+  Rebellion: { Independent: -1, Player: 1, Rebellion: 100, Confederacy: -100 },
+  Confederacy: { Independent: 20, Player: 1, Rebellion: -100, Confederacy: 100 },
 };
 
 export const initialGameState: DeepReadonly<GameState> = {

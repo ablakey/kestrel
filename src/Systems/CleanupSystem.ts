@@ -12,6 +12,7 @@ export const CleanupSystem = (game: Game): System => {
     }
 
     if (navigation && navigation.target && game.entities.isDestroyed(navigation.target)) {
+      console.log(`set nav target for ${entity.id} to null.`);
       navigation.target = null;
     }
 

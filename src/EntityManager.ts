@@ -26,7 +26,7 @@ export class Entities {
   }
 
   public getPlayer() {
-    const player = this.query(["Politics"]).find((e) => e.components.politics.team === "Player");
+    const player = this.query(["Politics"]).find(Entity.isPlayer);
     assert(player);
     return player as ShipEntity;
   }

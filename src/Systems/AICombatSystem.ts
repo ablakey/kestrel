@@ -27,6 +27,10 @@ export const AICombatSystem = (game: Game): System => {
      * Do no combat AI if the CombatBehaviour is None.
      */
     if (ai.combatAction === "None") {
+      if (!Entity.isPlayer(entity) && (offensive.firePrimary || offensive.fireSecondary)) {
+        offensive.firePrimary = false;
+        offensive.fireSecondary = false;
+      }
       return;
     }
 

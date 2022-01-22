@@ -54,14 +54,20 @@ export type Components<T extends Kind> = {
   [key in Lowercase<T>]: Extract<Component, { kind: Capitalize<key> }>;
 };
 
-export type Entity<T extends Kind = Exclude<Kind, Kind>> = {
+export interface Entity<T extends Kind = Exclude<Kind, Kind>> {
   id: number;
   spawned: number;
   components: Required<Components<T>> & Partial<Components<Exclude<Kind, T>>>;
   lifespan?: number;
   destroyed: boolean;
   archetype?: Archetype;
-};
+}
+
+export class Entity {
+  public static isPlayer(entity: Entity) {
+    return entity.components.politics?.team === "Player";
+  }
+}
 
 export class Game {
   private systems: System[];

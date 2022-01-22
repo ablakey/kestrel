@@ -25,7 +25,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     speed: 1_100,
     fireRate: 2,
     sprite: "Laser",
-    damage: 1,
+    damage: 5,
     maxRange: 1_000,
     lifespan: 1_000,
     accuracy: 0.95,

@@ -42,7 +42,7 @@ export const MinimapSystem = (): System => {
       app.stage.addChild(container);
     }
 
-    const { body, bullet, politics } = entity.components;
+    const { body, bullet } = entity.components;
 
     /**
      * Do not render bullets.
@@ -53,7 +53,7 @@ export const MinimapSystem = (): System => {
 
     const marker = getOrCreateMarker(entity);
 
-    if (politics.team === "Player") {
+    if (Entity.isPlayer(entity)) {
       /**
        * Camera follow player.
        */

@@ -7,4 +7,4 @@ import { Game } from "../game";
  * Go super fast for x seconds.
  * Trigger loading a new region.
  */
-export function jumpToSystem(game: Game, ship: ShipEntity) {}
+export function jumpToSystemBehaviour(game: Game, ship: ShipEntity) {}

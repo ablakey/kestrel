@@ -33,7 +33,15 @@ export const AIMovementSystem = (game: Game): System => {
       }
     }
 
+    /**
+     * Turn around and stop.
+     */
     if (ai.movementAction === "Stop") {
+      if (body.velocity.angle() - body.yaw.angle() > 0.5) {
+        console.log("not facing away.");
+      } else {
+        console.log("Yay!");
+      }
     }
   }
 

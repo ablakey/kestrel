@@ -1,15 +1,16 @@
-import { BehaviourName, Behaviours, initialBehaviourStates } from "../Behaviours";
+import { BehaviourName, Behaviours, getInitialBehaviourState } from "../Behaviours";
+import { Politics } from "../Components";
 import { ShipEntity } from "../Factories/ShipFactory";
-import { Game, System } from "../game";
+import { Entity, Game, System } from "../game";
 
 function getNextBehaviour(game: Game, entity: ShipEntity): BehaviourName {
   const { offensive } = entity.components;
 
   /**
-   * A ship will look for a combat target if the ship is combat effective.
+   * A ship will look for a combat target if the ship is combat effective and there are targets.
    */
   // TODO: is combat effective?
-  if (!offensive.target) {
+  if (!offensive.target && Politics.getMostHostileTarget(entity, game.entities.getShips())) {
     return "FindTarget";
   }
 
@@ -27,10 +28,10 @@ function getNextBehaviour(game: Game, entity: ShipEntity): BehaviourName {
 
 export const AIStrategySystem = (game: Game): System => {
   function update(entity: ShipEntity, delta: number) {
-    const { ai, politics } = entity.components;
+    const { ai } = entity.components;
 
     // Don't apply a strategy for the player.
-    if (politics.team === "Player") {
+    if (Entity.isPlayer(entity)) {
       return;
     }
 
@@ -42,13 +43,11 @@ export const AIStrategySystem = (game: Game): System => {
     if (currentName !== newName) {
       console.log(`Ship ${entity.id} behaviour changed from ${currentName} to ${newName}.`);
 
-      ai.behaviour = initialBehaviourStates[newName];
+      ai.behaviour = getInitialBehaviourState(newName);
     }
 
     // Invoke behaviour.
-    if (newName !== "None") {
-      Behaviours[newName](game, entity, delta);
-    }
+    Behaviours[newName](game, entity, delta);
   }
 
   // const { ai, offensive, body, navigation } = entity.components;

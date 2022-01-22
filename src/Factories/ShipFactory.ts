@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 import Victor from "victor";
-import { initialBehaviourStates } from "../Behaviours";
+import { getInitialBehaviourState } from "../Behaviours";
 import { Politics } from "../Components";
 import { ZIndexes } from "../config";
 import { Components, Entity } from "../game";
@@ -103,7 +103,7 @@ export class ShipFactory extends BaseFactory {
       },
       ai: {
         kind: "Ai",
-        behaviour: initialBehaviourStates.None,
+        behaviour: getInitialBehaviourState("None"),
         combatAction: "None",
         movementAction: "None",
       },
