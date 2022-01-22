@@ -68,7 +68,9 @@ export const InputSystem = (game: Game): System => {
     } else if (keyState[GameInputs.RotateTowards.key] && offensive.target) {
       const target = game.entities.get(offensive.target) as ShipEntity;
       assert(target);
-      engine.direction = Body.getTurnDirection(body, target.components.body);
+      engine.direction = Body.getTurnDirection(body, target.components.body.position);
+    } else if (keyState[GameInputs.RotateOpposite.key]) {
+      engine.direction = Body.getTurnDirectionForOpposite(body);
     } else {
       engine.direction = "None";
     }

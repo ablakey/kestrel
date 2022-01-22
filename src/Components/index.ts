@@ -1,3 +1,4 @@
+import Victor from "victor";
 import { BehaviourState } from "../Behaviours";
 import { DamageEffect } from "../Effects";
 import { SoundName } from "../Factories/SoundFactory";
@@ -23,7 +24,7 @@ export type Offensive = {
 
 export type Navigation = {
   kind: "Navigation";
-  target: number | null; // Component ID
+  goal: number | Victor | null; // Component ID
 };
 
 export type Bullet = {
@@ -40,7 +41,7 @@ export type Bullet = {
 export type Kinematics = {
   kind: "Kinematics";
   maxSpeed: number;
-  acceleration: number;
+  accelSpeed: number;
   turnRate: number;
 };
 

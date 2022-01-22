@@ -6,7 +6,7 @@ export type Ship = Item & {
   sprite: SpriteName;
   radius: number;
   maxSpeed: number;
-  acceleration: number;
+  accelSpeed: number;
   turnRate: number; // rad/sec.
   offsetX: number;
   offsetY: number;
@@ -23,7 +23,7 @@ export const Ships: Record<ShipName, Ship> = {
     label: "Blue Ship",
     radius: 60,
     maxSpeed: 500,
-    acceleration: 200,
+    accelSpeed: 4,
     turnRate: 4,
     offsetX: 0.5,
     offsetY: 0.6,
@@ -39,7 +39,7 @@ export const Ships: Record<ShipName, Ship> = {
     label: "Red Ship",
     radius: 60,
     maxSpeed: 500,
-    acceleration: 200,
+    accelSpeed: 4,
     turnRate: 4,
     offsetX: 0.5,
     offsetY: 0.6,

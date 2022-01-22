@@ -81,7 +81,7 @@ export class ShipFactory extends BaseFactory {
       },
       navigation: {
         kind: "Navigation",
-        target: null,
+        goal: null,
       },
       health: {
         kind: "Health",
@@ -93,7 +93,7 @@ export class ShipFactory extends BaseFactory {
       kinematics: {
         kind: "Kinematics",
         maxSpeed: shipType.maxSpeed,
-        acceleration: shipType.acceleration,
+        accelSpeed: shipType.accelSpeed,
         turnRate: shipType.turnRate,
       },
       sprite: {

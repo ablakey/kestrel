@@ -40,7 +40,7 @@ Looks like a lot of Unity people don't use tags. Maybe I just get rid of them. H
     - needs to know things about its turning capabilities.
       - Do I make a component for anything that can turn?
 
-If I have a component that describes Kinematics (max speed, turn radius, acceleration, etc.) I could:
+If I have a component that describes Kinematics (max speed, turn radius, accelSpeed, etc.) I could:
  - use it for ships and bullets.
  - could one day have intelligent bullets that don't just turn, but can use the AI capabilities.
 

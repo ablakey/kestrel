@@ -1,18 +1,15 @@
+import { cloneDeep } from "lodash";
 import { ShipEntity } from "../Factories/ShipFactory";
 import { Game } from "../game";
-import { findTargetBehaviour } from "./findTargetBehaviour";
+import { findTargetBehaviour, FindTargetState } from "./findTargetBehaviour";
 import { noneBehaviour } from "./noneBehaviour";
 import {
   smallShipAggressiveBehaviour,
-  smallShipAggressiveInitialState,
   SmallShipAggressiveState,
 } from "./smallShipAggressiveBehaviour";
+import { stopBehaviour, StopState } from "./stopBehaviour";
 
-export type BehaviourState = SmallShipAggressiveState | FindTargetState | NoneState;
-
-export type FindTargetState = {
-  name: "FindTarget";
-};
+export type BehaviourState = SmallShipAggressiveState | FindTargetState | NoneState | StopState;
 
 export type NoneState = { name: "None" };
 
@@ -25,14 +22,20 @@ export const Behaviours: Record<
   None: noneBehaviour,
   SmallShipAggressive: smallShipAggressiveBehaviour,
   FindTarget: findTargetBehaviour,
+  Stop: stopBehaviour,
 };
 
 const initialBehaviourStates: Record<BehaviourName, BehaviourState> = {
-  SmallShipAggressive: smallShipAggressiveInitialState,
+  SmallShipAggressive: {
+    name: "SmallShipAggressive",
+    timer: null,
+    stage: "None",
+  },
   FindTarget: { name: "FindTarget" },
   None: { name: "None" },
+  Stop: { name: "Stop" },
 };
 
 export function getInitialBehaviourState(name: BehaviourName): BehaviourState {
-  return { ...initialBehaviourStates[name] };
+  return cloneDeep(initialBehaviourStates[name]);
 }

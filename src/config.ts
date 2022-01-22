@@ -2,6 +2,8 @@ import { AllRelations, DeepReadonly, GameState } from "./types";
 
 export const MAP_ZOOM_LEVEL = 20;
 
+export const MIN_SPEED = 5; // Any speed below this is considered stopped.
+
 export const MenuInputs = {
   Close: { key: "Escape" },
 };
@@ -11,7 +13,8 @@ export const GameInputs = {
   Thrust: { key: "ArrowUp" },
   RotateLeft: { key: "ArrowLeft" },
   RotateRight: { key: "ArrowRight" },
-  RotateTowards: { key: "ArrowDown" }, // Like autopilot, always point towards target.
+  RotateTowards: { key: "S" }, // Like autopilot, always point towards target.
+  RotateOpposite: { key: "ArrowDown" },
 
   // Attack.
   FirePrimary: { key: "Space" },

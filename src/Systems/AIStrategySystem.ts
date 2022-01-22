@@ -1,10 +1,11 @@
 import { BehaviourName, Behaviours, getInitialBehaviourState } from "../Behaviours";
 import { Politics } from "../Components";
+import { MIN_SPEED } from "../config";
 import { ShipEntity } from "../Factories/ShipFactory";
 import { Entity, Game, System } from "../game";
 
 function getNextBehaviour(game: Game, entity: ShipEntity): BehaviourName {
-  const { offensive } = entity.components;
+  const { offensive, body, ai } = entity.components;
 
   /**
    * A ship will look for a combat target if the ship is combat effective and there are targets.
@@ -21,6 +22,17 @@ function getNextBehaviour(game: Game, entity: ShipEntity): BehaviourName {
    */
   if (offensive.target) {
     return "SmallShipAggressive";
+  }
+
+  /**
+   * Ship is stopped.
+   */
+  if (ai.behaviour.name === "Stop" && body.velocity.magnitude() < MIN_SPEED) {
+    return "None";
+  }
+
+  if (body.velocity.magnitude() > MIN_SPEED) {
+    return "Stop";
   }
 
   return "None";
@@ -50,60 +62,5 @@ export const AIStrategySystem = (game: Game): System => {
     Behaviours[newName](game, entity, delta);
   }
 
-  // const { ai, offensive, body, navigation } = entity.components;
-  //   // // If ship already has a target, don't do any strategy.  TODO: this should be more complex.
-  //   // if (entity.components.offensive.target) {
-  //   //   return;
-  //   // }
-
-  //   const hostileTeams = Politics.getHostileTeams(entity);
-
-  //   const ships = game.entities.query(["Politics", "Body"]);
-
-  //   const target = game.entities.get(offensive.target);
-  //   /**
-  //    * Pick a hostile target?
-  //    * If there's something to fight, do that first.
-  //    */
-  //   if (!target) {
-  //     for (const team of hostileTeams) {
-  //       const worstEnemies = ships.filter((s) => s.components.politics.team === team);
-  //       if (worstEnemies.length) {
-  //         const target = pickRandom(worstEnemies).id;
-  //         console.log(`Ship ${entity.id} become hostile towards Ship ${target}`);
-  //         offensive.target = target;
-  //         navigation.target = target;
-  //       }
-  //     }
-  //   }
-
-  //   /**
-  //    * Point towards?
-  //    */
-  //   if (target) {
-  //     ai.combatBehaviour = CombatBehaviour.Aggressive;
-  //     ai.movementBehaviour = MovementBehaviour.PointAt;
-  //   }
-
-  //   /**
-  //    * Fly at?
-  //    */
-  //   if (target && Body.isFacing(body, target.components.body!)) {
-  //     ai.movementBehaviour = MovementBehaviour.FlyThrough;
-  //   }
-
-  //   /**
-  //    * No AI strategy determined. Reset AI.
-  //    */
-  //   if (offensive.target === null && ai.combatBehaviour !== CombatBehaviour.None) {
-  //     console.log(`Entity ${entity.id} stop combat AI.`);
-  //     ai.combatBehaviour = CombatBehaviour.None;
-  //   }
-
-  //   if (navigation.target === null && ai.movementBehaviour !== MovementBehaviour.None) {
-  //     console.log(`Entity ${entity.id} stop movement AI.`);
-  //     ai.movementBehaviour = MovementBehaviour.None;
-  //   }
-  // }
   return { update, kindsOrArchetype: "ShipEntity" };
 };

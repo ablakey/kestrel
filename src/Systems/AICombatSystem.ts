@@ -11,18 +11,6 @@ export const AICombatSystem = (game: Game): System => {
   function update(entity: Entity<"Offensive" | "Body" | "Inventory" | "Ai">) {
     const { offensive, ai, body, inventory } = entity.components;
 
-    // /**
-    //  * Stop firing if there is no target.
-    //  */
-    // if (offensive.target === null) {
-    //   // If an entity has no target, stop firing.
-    //   if (offensive.firePrimary) {
-    //     console.log(`Ship ${entity.id} stop firing.`);
-    //     offensive.firePrimary = false;
-    //   }
-    //   return;
-    // }
-
     /**
      * Do no combat AI if the CombatBehaviour is None.
      */
@@ -38,10 +26,14 @@ export const AICombatSystem = (game: Game): System => {
      * Calculate if primary weapons should be firing.
      */
     const target = game.entities.get(offensive.target);
-    assert(target);
+
+    if (target === null) {
+      return;
+    }
+
     assert(target.components.body);
 
-    const facing = Body.isFacing(body, target.components.body);
+    const facing = Body.isFacing(body, target.components.body.position);
     const distance = body.position.distance(target.components.body.position);
     const maxRanges = inventory.weapons.map((w) => Weapons[w.name].maxRange);
     const inRange = distance < maxRanges[0]; // TODO: filter by weapons that are available.

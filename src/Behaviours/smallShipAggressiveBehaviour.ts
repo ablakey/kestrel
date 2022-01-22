@@ -9,12 +9,6 @@ export type SmallShipAggressiveState = {
   stage: "None" | "Aiming" | "Waiting" | "Pursuing";
 };
 
-export const smallShipAggressiveInitialState: SmallShipAggressiveState = {
-  name: "SmallShipAggressive",
-  timer: null,
-  stage: "None",
-};
-
 const WAIT_TIME = 1_000;
 
 export function smallShipAggressiveBehaviour(game: Game, entity: ShipEntity, delta: number) {
@@ -23,7 +17,7 @@ export function smallShipAggressiveBehaviour(game: Game, entity: ShipEntity, del
   const previousStage = behaviour.stage;
   const target = game.entities.get(offensive.target) as ShipEntity;
   assert(target, "Is aggressive to a target but target does not exist.");
-  const isFacingTarget = Body.isFacing(body, target.components.body);
+  const isFacingTarget = Body.isFacing(body, target.components.body.position);
 
   /**
    * Decrement timer.

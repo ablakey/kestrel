@@ -1,3 +1,4 @@
+import Victor from "victor";
 import { Body } from "../Components";
 import { Entity, Game, System } from "../game";
 import { assert } from "../utils";
@@ -14,15 +15,37 @@ export const AIMovementSystem = (game: Game): System => {
       return;
     }
 
-    const target = game.entities.get(navigation.target);
-    assert(target, `Ship: ${entity.id} is targeting ${navigation.target} but is not found.`);
-    assert(target.components.body);
+    /**
+     * Turn around and stop.
+     * If the direction is None, then we are pointing in the desired direction.
+     */
+    if (ai.movementAction === "Stop" && body.velocity.magnitude() > 0) {
+      engine.direction = Body.getTurnDirectionForOpposite(body);
+      engine.thrust = engine.direction === "None" ? "Forward" : "None";
+    }
+
+    /**
+     * All movements after this require a goal.
+     */
+    if (navigation.goal === null) {
+      return;
+    }
+
+    /**
+     * Get the nav goal.
+     */
+    const goal =
+      navigation.goal instanceof Victor
+        ? navigation.goal
+        : game.entities.get(navigation.goal)?.components.body?.position;
+
+    assert(goal);
 
     /**
      * Point at a target.
      */
     if (ai.movementAction === "FlyThrough" || ai.movementAction === "PointAt") {
-      const turnDirection = Body.getTurnDirection(body, target.components.body);
+      const turnDirection = Body.getTurnDirection(body, goal);
       engine.direction = turnDirection;
     }
 
@@ -30,21 +53,10 @@ export const AIMovementSystem = (game: Game): System => {
      * Fly towards a target.
      */
     if (ai.movementAction === "FlyThrough") {
-      if (Body.isFacing(body, target.components.body)) {
+      if (Body.isFacing(body, goal)) {
         engine.thrust = "Forward";
       } else {
         engine.thrust = "None";
-      }
-    }
-
-    /**
-     * Turn around and stop.
-     */
-    if (ai.movementAction === "Stop") {
-      if (body.velocity.angle() - body.yaw.angle() > 0.5) {
-        console.log("not facing away.");
-      } else {
-        console.log("Yay!");
       }
     }
   }

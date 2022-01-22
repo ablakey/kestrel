@@ -8,12 +8,20 @@ export const CleanupSystem = (game: Game): System => {
      * Clear targets if the target doesn't exist anymore.
      */
     if (offensive && offensive.target && game.entities.isDestroyed(offensive.target)) {
+      console.log("SET null", entity.id);
       offensive.target = null;
     }
 
-    if (navigation && navigation.target && game.entities.isDestroyed(navigation.target)) {
+    /**
+     * Clear nav goal if goal is an entity that doesn't exist anymore.
+     */
+    if (
+      navigation &&
+      Number.isInteger(navigation.goal) &&
+      game.entities.isDestroyed(navigation.goal as number)
+    ) {
       console.log(`set nav target for ${entity.id} to null.`);
-      navigation.target = null;
+      navigation.goal = null;
     }
 
     if (bullet && bullet.target && game.entities.isDestroyed(bullet.target)) {
