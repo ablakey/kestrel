@@ -7,6 +7,10 @@ export const AIMovementSystem = (game: Game): System => {
     const { ai, body, engine, navigation } = entity.components;
 
     if (ai.movementAction === "None") {
+      if (!Entity.isPlayer(entity)) {
+        engine.direction = "None";
+        engine.thrust = "None";
+      }
       return;
     }
 
