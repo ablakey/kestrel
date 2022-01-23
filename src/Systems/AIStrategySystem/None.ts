@@ -5,7 +5,7 @@ import { BaseBehaviour } from "./BaseBehaviour";
 export class NoneBehaviour extends BaseBehaviour {
   public static initialState = { name: "None" } as const;
 
-  public static update(game: Game, entity: ShipEntity, update: number) {
+  public static enter(game: Game, entity: ShipEntity) {
     entity.components.ai.movementAction = "None";
     entity.components.ai.combatAction = "None";
   }

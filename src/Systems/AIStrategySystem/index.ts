@@ -5,6 +5,7 @@ import { ShipEntity } from "../../Factories/ShipFactory";
 import { Entity, Game, System } from "../../game";
 import { ValueOf } from "../../types";
 import { FindTargetBehaviour } from "./FindTarget";
+import { JumpToSystemBehaviour } from "./JumpToSystem";
 import { NoneBehaviour } from "./None";
 import { SmallShipAggressiveBehaviour } from "./SmallShipAggressive";
 import { StopBehaviour } from "./Stop";
@@ -14,6 +15,7 @@ const behaviours = {
   Stop: StopBehaviour,
   FindTarget: FindTargetBehaviour,
   SmallShipAggressive: SmallShipAggressiveBehaviour,
+  JumpToSystem: JumpToSystemBehaviour,
 };
 
 export type BehaviourState = ValueOf<typeof behaviours>["initialState"];
@@ -37,24 +39,20 @@ function getNextBehaviour(game: Game, entity: ShipEntity): BehaviourName {
    * ships have many combat styles to pick from either randomly or for some reason.
    */
   if (offensive.target) {
-    // return "SmallShipAggressive";
-    return "FindTarget";
+    return "SmallShipAggressive";
   }
 
   /**
    * Ship is stopped.
    */
   if (ai.behaviour.name === "Stop" && body.velocity.magnitude() < MIN_SPEED) {
-    // return "None";
     return "None";
   }
 
   if (body.velocity.magnitude() > MIN_SPEED) {
-    // return "Stop";
     return "Stop";
   }
 
-  // return "None";
   return "None";
 }
 

@@ -5,7 +5,7 @@ import { BaseBehaviour } from "./BaseBehaviour";
 export class StopBehaviour extends BaseBehaviour {
   public static readonly initialState = { name: "Stop" } as const;
 
-  public static update(game: Game, entity: ShipEntity, delta: number): void {
+  public static enter(game: Game, entity: ShipEntity): void {
     entity.components.ai.movementAction = "Stop";
     entity.components.ai.combatAction = "None";
   }

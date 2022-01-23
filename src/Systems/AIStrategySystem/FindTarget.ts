@@ -12,7 +12,7 @@ export class FindTargetBehaviour extends BaseBehaviour {
     name: "FindTarget",
   } as const;
 
-  public static update(game: Game, entity: ShipEntity, delta: number) {
+  public static update(game: Game, entity: ShipEntity) {
     const target = Politics.getMostHostileTarget(entity, game.entities.getShips());
 
     if (target !== null) {
