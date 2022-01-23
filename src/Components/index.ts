@@ -1,9 +1,9 @@
 import Victor from "victor";
-import { BehaviourState } from "../Behaviours";
 import { DamageEffect } from "../Effects";
 import { SoundName } from "../Factories/SoundFactory";
 import { SpriteName } from "../Factories/SpriteFactory";
 import { WeaponName } from "../Inventory/Weapons";
+import { BehaviourState } from "../Systems/AIStrategySystem";
 import { Body } from "./Body";
 import { Engine } from "./Engine";
 import { Inventory } from "./Inventory";

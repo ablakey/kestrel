@@ -1,8 +1,24 @@
-import { BehaviourName, Behaviours, getInitialBehaviourState } from "../Behaviours";
-import { Politics } from "../Components";
-import { MIN_SPEED } from "../config";
-import { ShipEntity } from "../Factories/ShipFactory";
-import { Entity, Game, System } from "../game";
+import { cloneDeep } from "lodash";
+import { Politics } from "../../Components";
+import { MIN_SPEED } from "../../config";
+import { ShipEntity } from "../../Factories/ShipFactory";
+import { Entity, Game, System } from "../../game";
+import { ValueOf } from "../../types";
+import { FindTargetBehaviour } from "./FindTarget";
+import { NoneBehaviour } from "./None";
+import { SmallShipAggressiveBehaviour } from "./SmallShipAggressive";
+import { StopBehaviour } from "./Stop";
+
+const behaviours = {
+  None: NoneBehaviour,
+  Stop: StopBehaviour,
+  FindTarget: FindTargetBehaviour,
+  SmallShipAggressive: SmallShipAggressiveBehaviour,
+};
+
+export type BehaviourState = ValueOf<typeof behaviours>["initialState"];
+
+export type BehaviourName = keyof typeof behaviours;
 
 function getNextBehaviour(game: Game, entity: ShipEntity): BehaviourName {
   const { offensive, body, ai } = entity.components;
@@ -21,20 +37,24 @@ function getNextBehaviour(game: Game, entity: ShipEntity): BehaviourName {
    * ships have many combat styles to pick from either randomly or for some reason.
    */
   if (offensive.target) {
-    return "SmallShipAggressive";
+    // return "SmallShipAggressive";
+    return "FindTarget";
   }
 
   /**
    * Ship is stopped.
    */
   if (ai.behaviour.name === "Stop" && body.velocity.magnitude() < MIN_SPEED) {
+    // return "None";
     return "None";
   }
 
   if (body.velocity.magnitude() > MIN_SPEED) {
+    // return "Stop";
     return "Stop";
   }
 
+  // return "None";
   return "None";
 }
 
@@ -54,12 +74,19 @@ export const AIStrategySystem = (game: Game): System => {
     // If changed, update it.
     if (currentName !== newName) {
       console.log(`Ship ${entity.id} behaviour changed from ${currentName} to ${newName}.`);
+      const previousBehaviour = behaviours[currentName];
+      const nextBehaviour = behaviours[newName];
 
-      ai.behaviour = getInitialBehaviourState(newName);
+      // Exit previous behaviour.
+      previousBehaviour.exit(game, entity);
+
+      // Initialize new behaviour state.
+      ai.behaviour = cloneDeep(nextBehaviour.initialState);
+      nextBehaviour.enter(game, entity);
     }
 
     // Invoke behaviour.
-    Behaviours[newName](game, entity, delta);
+    behaviours[newName].update(game, entity, delta);
   }
 
   return { update, kindsOrArchetype: "ShipEntity" };
