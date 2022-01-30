@@ -1,20 +1,22 @@
 import Victor from "victor";
 import { Body } from "../Components";
+import { BulletEntity } from "../Factories/BulletFactory";
 import { ShipEntity } from "../Factories/ShipFactory";
-import { Entity, Game, System } from "../game";
+import { Game, System } from "../game";
 
 export const BulletSystem = (game: Game): System => {
-  function update(entity: Entity<"Bullet" | "Body">, delta: number) {
+  function update(entity: BulletEntity, delta: number) {
     const { body, bullet } = entity.components;
     const deltaSeconds = delta / 1000;
 
     /**
      * Detect collisions.
-     * If the bullet has a target, it can only hit that target.
+     * If the bullet has a target, it can only hit that target if it's not dumbfire.
      */
-    const collisionCandidates = bullet.target
-      ? [game.entities.get<ShipEntity>(bullet.target)]
-      : game.entities.query(["Body", "Health"]);
+    const collisionCandidates =
+      bullet.target && !bullet.dumbfire
+        ? [game.entities.get<ShipEntity>(bullet.target)]
+        : game.entities.query(["Body", "Health"]);
 
     collisionCandidates.forEach((e) => {
       if (e === null) {
@@ -34,7 +36,21 @@ export const BulletSystem = (game: Game): System => {
     });
 
     /**
-     * Adjust bullet's velocity
+     * If splash damage, find candidates and apply.
+     */
+    if (bullet.blastRadius) {
+      // Get all hurtable targets within blastRadius
+      const nearby = game.entities.queryByPosition(
+        ["Body", "Health"],
+        body.position,
+        bullet.blastRadius
+      );
+
+      console.log(nearby.length);
+    }
+
+    /**
+     * Adjust bullet's trajectory.
      */
     if (bullet.turnRate && bullet.target) {
       const target = game.entities.get<ShipEntity>(bullet.target);
@@ -50,5 +66,5 @@ export const BulletSystem = (game: Game): System => {
     }
   }
 
-  return { update, kindsOrArchetype: ["Bullet", "Body"] };
+  return { update, kindsOrArchetype: "BulletEntity" };
 };

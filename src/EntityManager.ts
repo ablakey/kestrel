@@ -1,3 +1,4 @@
+import Victor from "victor";
 import { Component } from "./Components";
 import { ShipEntity } from "./Factories/ShipFactory";
 import { Archetype, Components, Entity, Game, Kind } from "./game";
@@ -122,6 +123,25 @@ export class Entities {
     this.queryCache[hash] = hits;
 
     return hits;
+  }
+
+  /**
+   * Return entities with kinds that are within distance of position.
+   */
+  public queryByPosition<K extends Kind>(
+    kinds: K[],
+    position: Victor,
+    distance: number
+  ): Entity<K>[] {
+    if (!kinds.includes("Body" as any)) {
+      throw new Error("Must include `Body` component kind.");
+    }
+
+    const entities = this.query(kinds) as Entity[];
+
+    return entities.filter(
+      (e) => e.components.body!.position.distance(position) <= distance
+    ) as Entity<K>[];
   }
 
   /**

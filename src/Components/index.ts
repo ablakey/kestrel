@@ -33,6 +33,8 @@ export type Bullet = {
   target: number | null; // ID of entity bullet is trying to hit (will collide with nothing else)
   turnRate: number | null; // Some weapons will turn towards the target.
   hitSound: SoundName | null;
+  dumbfire: boolean;
+  blastRadius: number;
   // force: number;
   // damage type
   //

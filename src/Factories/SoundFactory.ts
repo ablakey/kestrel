@@ -7,6 +7,7 @@ import missile from "../assets/sounds/missile.mp3";
 import proton from "../assets/sounds/proton.mp3";
 import shipbreaksup from "../assets/sounds/shipbreaksup.mp3";
 import shipexplodes from "../assets/sounds/shipexplodes.mp3";
+import heavyRocket from "../assets/sounds/rocket.mp3";
 import { Game } from "../game";
 import { BaseFactory } from "./BaseFactory";
 
@@ -20,6 +21,7 @@ const soundUrls = {
   ShipBreaksUp: shipbreaksup,
   ShipExplodes: shipexplodes,
   Missile: missile,
+  HeavyRocket: heavyRocket,
   MediumExplosion: medexplosion,
 };
 

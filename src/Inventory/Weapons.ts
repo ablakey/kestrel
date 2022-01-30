@@ -14,11 +14,13 @@ export type Weapon = Item & {
   accuracy: number; // 0-1 where 0 fires in any direction while 1 is always the correct direction.
   sound: SoundName;
   hitSound: SoundName | null;
-  turnRate: number | null;
+  turnRate: number;
   ammo: AmmoName | null; // The item, optionally. to consume when firing this weapon.
+  dumbfire: boolean; // Weapon can hit something without a target.
+  blastRadius: number; // Find other targets for damage. Usuaully 0.
 };
 
-export type WeaponName = "LaserCannon" | "ProtonCannon" | "MissileRack";
+export type WeaponName = "LaserCannon" | "ProtonCannon" | "MissileRack" | "HeavyLauncher";
 
 export const Weapons: Record<WeaponName, Weapon> = {
   LaserCannon: {
@@ -34,7 +36,9 @@ export const Weapons: Record<WeaponName, Weapon> = {
     sound: "Laser",
     hitSound: null,
     ammo: null,
-    turnRate: null,
+    turnRate: 0,
+    dumbfire: false,
+    blastRadius: 0,
   },
   ProtonCannon: {
     label: "Proton Cannon",
@@ -49,7 +53,9 @@ export const Weapons: Record<WeaponName, Weapon> = {
     sound: "Proton",
     hitSound: null,
     ammo: null,
-    turnRate: null,
+    turnRate: 0,
+    dumbfire: false,
+    blastRadius: 0,
   },
   MissileRack: {
     label: "Missile Rack",
@@ -65,5 +71,24 @@ export const Weapons: Record<WeaponName, Weapon> = {
     speed: 700,
     turnRate: 2,
     ammo: "Missile",
+    dumbfire: true,
+    blastRadius: 0,
+  },
+  HeavyLauncher: {
+    label: "Heavy Rocket Launcher",
+    accuracy: 1.0,
+    damage: 150,
+    fireRate: 0.25,
+    lifespan: 3_000,
+    type: "Secondary",
+    maxRange: 3_000,
+    sound: "HeavyRocket",
+    sprite: "Missile", // TODO
+    hitSound: "MediumExplosion",
+    speed: 350,
+    turnRate: 0,
+    ammo: "Rocket",
+    dumbfire: true,
+    blastRadius: 50,
   },
 };

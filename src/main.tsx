@@ -31,21 +31,30 @@ async function main() {
   /**
    * Enemy ship
    */
-  game.shipFactory.create({
-    shipName: "Red",
-    team: "Rebellion",
-    position: new Victor(Math.random() * 1500 - 250, Math.random() * 1500 - 1250),
-    yaw: Math.random() * Math.PI,
+  ([] as [number, number][]).forEach(([x, y]) => {
+    game.shipFactory.create({
+      shipName: "Red",
+      team: "Rebellion",
+      position: new Victor(x, y),
+      yaw: Math.random() * Math.PI,
+    });
   });
 
   /**
    * Neutral ship
    */
-  game.shipFactory.create({
-    shipName: "Blue",
-    team: "Independent",
-    position: new Victor(Math.random() * 1500 - 250, Math.random() * 1500 - 1250),
-    yaw: Math.random() * Math.PI,
+  [
+    [300, -300],
+    [350, -300],
+    [300, -250],
+    [350, -250],
+  ].forEach(([x, y]) => {
+    game.shipFactory.create({
+      shipName: "Blue",
+      team: "Independent",
+      position: new Victor(x, y),
+      yaw: Math.random() * Math.PI,
+    });
   });
 
   game.start();
