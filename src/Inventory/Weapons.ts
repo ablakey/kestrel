@@ -37,7 +37,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     hitSound: null,
     ammo: null,
     turnRate: 0,
-    dumbfire: false,
+    dumbfire: true,
     blastRadius: 0,
   },
   ProtonCannon: {
@@ -54,7 +54,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     hitSound: null,
     ammo: null,
     turnRate: 0,
-    dumbfire: false,
+    dumbfire: true,
     blastRadius: 0,
   },
   MissileRack: {
@@ -71,7 +71,7 @@ export const Weapons: Record<WeaponName, Weapon> = {
     speed: 700,
     turnRate: 2,
     ammo: "Missile",
-    dumbfire: true,
+    dumbfire: false,
     blastRadius: 0,
   },
   HeavyLauncher: {
@@ -89,6 +89,6 @@ export const Weapons: Record<WeaponName, Weapon> = {
     turnRate: 0,
     ammo: "Rocket",
     dumbfire: true,
-    blastRadius: 50,
+    blastRadius: 200,
   },
 };

@@ -1,5 +1,6 @@
 import Victor from "victor";
 import { Body } from "../Components";
+import { MIN_HIT_DISTANCE } from "../config";
 import { BulletEntity } from "../Factories/BulletFactory";
 import { ShipEntity } from "../Factories/ShipFactory";
 import { Game, System } from "../game";
@@ -8,37 +9,44 @@ export const BulletSystem = (game: Game): System => {
   function update(entity: BulletEntity, delta: number) {
     const { body, bullet } = entity.components;
     const deltaSeconds = delta / 1000;
+    let targetHit: number | null = null;
 
     /**
      * Detect collisions.
-     * If the bullet has a target, it can only hit that target if it's not dumbfire.
+     * If the target is dumbfire, get any entities it could hit.  Otherwise get only the target.
+     * If there is no target and it's not dumbfire, there will be no collision candidates.
      */
-    const collisionCandidates =
-      bullet.target && !bullet.dumbfire
-        ? [game.entities.get<ShipEntity>(bullet.target)]
-        : game.entities.query(["Body", "Health"]);
+    const collisionCandidates = bullet.dumbfire
+      ? game.entities.query(["Body", "Health"])
+      : [game.entities.get<ShipEntity>(bullet.target)];
 
-    collisionCandidates.forEach((e) => {
-      if (e === null) {
+    for (const candidate of collisionCandidates) {
+      if (candidate === null) {
         return;
       }
 
-      const distance = body.position.distance(e.components.body.position);
-      if (distance < 50) {
+      const distance = body.position.distance(candidate.components.body.position);
+
+      if (distance < MIN_HIT_DISTANCE) {
+        targetHit = entity.id;
         entity.destroyed = true;
-        e.components.health.effects.push({ damage: bullet.damage });
+        candidate.components.health.effects.push({ damage: bullet.damage });
+
         if (bullet.hitSound) {
           game.soundFactory.playSound(bullet.hitSound, {
-            position: e.components.body.position,
+            position: candidate.components.body.position,
           });
         }
+
+        break;
       }
-    });
+    }
 
     /**
      * If splash damage, find candidates and apply.
+     * Do not double count the main target that was hit.
      */
-    if (bullet.blastRadius) {
+    if (targetHit && bullet.blastRadius) {
       // Get all hurtable targets within blastRadius
       const nearby = game.entities.queryByPosition(
         ["Body", "Health"],

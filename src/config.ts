@@ -4,6 +4,8 @@ export const MAP_ZOOM_LEVEL = 20;
 
 export const MIN_SPEED = 5; // Any speed below this is considered stopped.
 
+export const MIN_HIT_DISTANCE = 50; // Minimum distance where a collision is detected.
+
 export const MenuInputs = {
   Close: { key: "Escape" },
 };
