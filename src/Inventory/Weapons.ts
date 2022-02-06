@@ -89,6 +89,6 @@ export const Weapons: Record<WeaponName, Weapon> = {
     turnRate: 0,
     ammo: "Rocket",
     dumbfire: true,
-    blastRadius: 200,
+    blastRadius: 100,
   },
 };

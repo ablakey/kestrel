@@ -1,11 +1,10 @@
-import { RAD_TO_DEG } from "pixi.js";
 import Victor from "victor";
 import { Body } from "../Components";
 import { InertiaFactors, MIN_HIT_DISTANCE } from "../config";
 import { BulletEntity } from "../Factories/BulletFactory";
 import { ShipEntity } from "../Factories/ShipFactory";
 import { Entity, Game, System } from "../game";
-import { getAngle, toDegrees } from "../utils";
+import { getAngle } from "../utils";
 
 export const BulletSystem = (game: Game): System => {
   /**
@@ -24,7 +23,7 @@ export const BulletSystem = (game: Game): System => {
      */
     if (origin && force) {
       const angle = getAngle(origin, entity.components.body.position);
-      const vector = new Victor(1, 0).rotate(angle).multiplyScalar(force);
+      const vector = new Victor(1, 0).rotate(angle).multiplyScalar(Math.max(force, 0));
       entity.components.body.velocity.add(vector);
     }
   }
@@ -82,8 +81,15 @@ export const BulletSystem = (game: Game): System => {
       nearby
         .filter((e) => e.id !== targetHit)
         .forEach((e) => {
+          const distance = body.position.distance(e.components.body.position);
           const interiaFactor = InertiaFactors[e.components.kinematics.size];
-          applyHit(e, bullet.damage, body.position, bullet.blastRadius * interiaFactor);
+          const damageFactor = (bullet.blastRadius - distance) / bullet.blastRadius;
+          applyHit(
+            e,
+            bullet.damage * damageFactor,
+            body.position,
+            (bullet.blastRadius - distance) * interiaFactor
+          );
         });
     }
 
