@@ -95,6 +95,7 @@ export class ShipFactory extends BaseFactory {
         maxSpeed: shipType.maxSpeed,
         accelSpeed: shipType.accelSpeed,
         turnRate: shipType.turnRate,
+        size: shipType.size,
       },
       sprite: {
         kind: "Sprite",

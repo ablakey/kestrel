@@ -1,11 +1,34 @@
+import { RAD_TO_DEG } from "pixi.js";
 import Victor from "victor";
 import { Body } from "../Components";
-import { MIN_HIT_DISTANCE } from "../config";
+import { InertiaFactors, MIN_HIT_DISTANCE } from "../config";
 import { BulletEntity } from "../Factories/BulletFactory";
 import { ShipEntity } from "../Factories/ShipFactory";
-import { Game, System } from "../game";
+import { Entity, Game, System } from "../game";
+import { getAngle, toDegrees } from "../utils";
 
 export const BulletSystem = (game: Game): System => {
+  /**
+   * Apply damage to a given ship. If a force is applied, adjust the ship's velocity by that amount.
+   */
+  function applyHit(
+    entity: Entity<"Body" | "Health">,
+    damage: number,
+    origin?: Victor,
+    force?: number
+  ) {
+    entity.components.health.effects.push({ damage });
+
+    /**
+     * If an explosion origin and a force, Apply an impulse.
+     */
+    if (origin && force) {
+      const angle = getAngle(origin, entity.components.body.position);
+      const vector = new Victor(1, 0).rotate(angle).multiplyScalar(force);
+      entity.components.body.velocity.add(vector);
+    }
+  }
+
   function update(entity: BulletEntity, delta: number) {
     const { body, bullet } = entity.components;
     const deltaSeconds = delta / 1000;
@@ -17,8 +40,8 @@ export const BulletSystem = (game: Game): System => {
      * If there is no target and it's not dumbfire, there will be no collision candidates.
      */
     const collisionCandidates = bullet.dumbfire
-      ? game.entities.query(["Body", "Health"])
-      : [game.entities.get<ShipEntity>(bullet.target)];
+      ? game.entities.query(["Body", "Health", "Kinematics"])
+      : [game.entities.get<Entity<"Body" | "Health" | "Kinematics">>(bullet.target)];
 
     for (const candidate of collisionCandidates) {
       if (candidate === null) {
@@ -30,7 +53,9 @@ export const BulletSystem = (game: Game): System => {
       if (distance < MIN_HIT_DISTANCE) {
         targetHit = entity.id;
         entity.destroyed = true;
-        candidate.components.health.effects.push({ damage: bullet.damage });
+
+        const interiaFactor = InertiaFactors[candidate.components.kinematics.size];
+        applyHit(candidate, bullet.damage, body.position, (bullet.blastRadius * interiaFactor) / 2);
 
         if (bullet.hitSound) {
           game.soundFactory.playSound(bullet.hitSound, {
@@ -49,12 +74,17 @@ export const BulletSystem = (game: Game): System => {
     if (targetHit && bullet.blastRadius) {
       // Get all hurtable targets within blastRadius
       const nearby = game.entities.queryByPosition(
-        ["Body", "Health"],
+        ["Body", "Health", "Kinematics"],
         body.position,
         bullet.blastRadius
       );
 
-      console.log(nearby.length);
+      nearby
+        .filter((e) => e.id !== targetHit)
+        .forEach((e) => {
+          const interiaFactor = InertiaFactors[e.components.kinematics.size];
+          applyHit(e, bullet.damage, body.position, bullet.blastRadius * interiaFactor);
+        });
     }
 
     /**

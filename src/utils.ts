@@ -52,3 +52,11 @@ export function getRandomPosition(position: Victor, maxDistance: number) {
       new Victor(randomBetween(-maxDistance, maxDistance), randomBetween(-maxDistance, maxDistance))
     );
 }
+
+export function toDegrees(radians: number): number {
+  return (radians * 180) / Math.PI;
+}
+
+export function getAngle(a: Victor, b: Victor) {
+  return Math.atan2(b.y - a.y, b.x - a.x);
+}

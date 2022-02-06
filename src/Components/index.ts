@@ -2,6 +2,7 @@ import Victor from "victor";
 import { DamageEffect } from "../Effects";
 import { SoundName } from "../Factories/SoundFactory";
 import { SpriteName } from "../Factories/SpriteFactory";
+import { ShipSize } from "../Inventory/Ships";
 import { WeaponName } from "../Inventory/Weapons";
 import { BehaviourState } from "../Systems/AIStrategySystem";
 import { Body } from "./Body";
@@ -45,6 +46,7 @@ export type Kinematics = {
   maxSpeed: number;
   accelSpeed: number;
   turnRate: number;
+  size: ShipSize;
 };
 
 export type Health = {

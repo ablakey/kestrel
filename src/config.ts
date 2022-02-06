@@ -1,3 +1,4 @@
+import { ShipSize } from "./Inventory/Ships";
 import { AllRelations, DeepReadonly, GameState } from "./types";
 
 export const MAP_ZOOM_LEVEL = 20;
@@ -8,6 +9,17 @@ export const MIN_HIT_DISTANCE = 50; // Minimum distance where a collision is det
 
 export const MenuInputs = {
   Close: { key: "Escape" },
+};
+
+/**
+ * The amount that a ship's size affects the impulses of explosives.
+ * Ie. a larger ship will be displaced less by an explosion.
+ */
+export const InertiaFactors: Record<ShipSize, number> = {
+  Massive: 0.25,
+  Large: 0.5,
+  Normal: 1.0,
+  Small: 2.0,
 };
 
 export const GameInputs = {

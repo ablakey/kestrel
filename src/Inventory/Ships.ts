@@ -12,9 +12,12 @@ export type Ship = Item & {
   offsetY: number;
   weapons: WeaponInstance[];
   ammos: AmmoInstance[];
+  size: ShipSize;
 };
 
 export type ShipName = "Blue" | "Red";
+
+export type ShipSize = "Small" | "Normal" | "Large" | "Massive";
 
 export const Ships: Record<ShipName, Ship> = {
   Blue: {
@@ -27,6 +30,7 @@ export const Ships: Record<ShipName, Ship> = {
     turnRate: 4,
     offsetX: 0.5,
     offsetY: 0.6,
+    size: "Small",
     ammos: [
       { name: "Missile", count: 30 },
       { name: "Rocket", count: 10 },
@@ -49,6 +53,7 @@ export const Ships: Record<ShipName, Ship> = {
     offsetY: 0.6,
     weapons: [{ name: "LaserCannon", count: 1, lastUsed: 0 }],
     ammos: [],
+    size: "Small",
   },
 };
 4;

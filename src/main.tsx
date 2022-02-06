@@ -13,7 +13,7 @@ declare global {
 async function main() {
   const game = await Game.init();
   game.shipFactory.create({
-    position: new Victor(500, -500),
+    position: new Victor(0, 0),
     yaw: 0,
     shipName: "Blue",
     team: "Player",
@@ -26,7 +26,7 @@ async function main() {
   const playerShip = game.entities.getPlayer();
   playerShip.components.sprite.zIndex = ZIndexes.Player;
 
-  game.planetFactory.create(new Victor(0, 0), "Levo");
+  // game.planetFactory.create(new Victor(0, 0), "Levo");
 
   /**
    * Enemy ship
@@ -40,15 +40,24 @@ async function main() {
     });
   });
 
+  const plusFormation = [
+    [0, 200],
+    [200, 0],
+    [0, -200],
+    [-200, -0],
+  ];
+
+  const clusterFormation = [
+    [200, 200],
+    [250, 250],
+    [200, 250],
+    [250, 200],
+  ];
+
   /**
    * Neutral ship
    */
-  [
-    [300, -300],
-    [350, -300],
-    [300, -250],
-    [350, -250],
-  ].forEach(([x, y]) => {
+  clusterFormation.forEach(([x, y]) => {
     game.shipFactory.create({
       shipName: "Blue",
       team: "Independent",
