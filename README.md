@@ -1,4 +1,4 @@
-# Snakefood
+# Kestrel
 
 
  ## FAQ
