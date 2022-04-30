@@ -1,6 +1,10 @@
 import { useEffect } from "react";
 import Victor from "victor";
 
+export type ValueOf<T> = T[keyof T];
+
+export type DeepReadonly<T> = { readonly [K in keyof T]: DeepReadonly<T[K]> };
+
 export function assert<T>(val: T, message?: string): asserts val is NonNullable<T> {
   if (val === undefined || val === null) {
     throw new Error(message ?? `Expected 'val' to be defined, but received ${val}`);
