@@ -1,10 +1,12 @@
 let nextId = 1;
 
+export type EntityId = number;
+
 export class Entity {
   destroyed: boolean;
   spawned: number;
   lifespan?: number;
-  id: number;
+  id: EntityId;
 
   constructor(spawned: number) {
     this.destroyed = false;

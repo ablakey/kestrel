@@ -1,11 +1,12 @@
 import Victor from "victor";
+import { IRenderable } from "../interfaces";
 import { Entity } from "./Entity";
 
 type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
 
 type ShipType = "Blue" | "Red";
 
-export class Ship extends Entity {
+export class Ship extends Entity implements IRenderable {
   position: Victor;
   velocity: Victor;
   yaw: Victor;

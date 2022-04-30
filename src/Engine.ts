@@ -1,3 +1,5 @@
+import { SpriteFactory } from "./factories/SpriteFactory";
+import { RenderSystem } from "./systems/RenderSystem";
 import { Ship } from "./types/Ship";
 
 export class Engine {
@@ -6,10 +8,20 @@ export class Engine {
   elapsed: number;
   ships: Set<Ship>;
 
+  // Factories.
+  spriteFactory: SpriteFactory;
+
+  // Systems.
+  renderSystem: RenderSystem;
+
   constructor() {
     this.isPaused = false;
     this.lastTick = 0;
     this.elapsed = 0;
+
+    this.spriteFactory = new SpriteFactory(this);
+
+    this.renderSystem = new RenderSystem(this);
   }
 
   start() {
