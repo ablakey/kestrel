@@ -3,9 +3,8 @@ import stars01 from "../assets/sprites/spr_stars01.png";
 import stars02 from "../assets/sprites/spr_stars02.png";
 import { ZIndexes } from "../config";
 import { Engine } from "../Engine";
-import { IRenderable } from "../interfaces";
+import { IPlayer, IRenderable } from "../interfaces";
 import { EntityId } from "../types/Entity";
-import { assert } from "../utils";
 
 /**
  * Create a reticle, which is four L shapes at the corners, resembling a square.
@@ -120,19 +119,17 @@ export class RenderSystem {
     app.stage.addChild(this.container);
   }
 
-  private getOrCreateSprite(entity: Entity<"Sprite">): PIXI.Sprite | PIXI.AnimatedSprite {
-    const { sprite } = entity.components;
-
+  private getOrCreateSprite(entity: IRenderable): PIXI.Sprite | PIXI.AnimatedSprite {
     // Already exists.
     if (this.renderedItems[entity.id]) {
       return this.renderedItems[entity.id];
     }
 
-    const newSprite = this.engine.spriteFactory.createSprite(sprite.name);
-    newSprite.zIndex = sprite.zIndex;
+    const newSprite = this.engine.spriteFactory.createSprite(entity.sprite);
+    newSprite.zIndex = entity.zIndex;
 
     // Prime the entity to be destroyed once the animation completes.
-    if (this.engine.spriteFactory.isAnimated(sprite.name)) {
+    if (this.engine.spriteFactory.isAnimated(entity.sprite)) {
       (newSprite as PIXI.AnimatedSprite).onComplete = () => {
         entity.destroyed = true;
       };
@@ -143,7 +140,7 @@ export class RenderSystem {
     return newSprite;
   }
 
-  public playerUpdate(delta: number, playerEntity: IRenderable | IPlayer | { target: EntityId }) {
+  public playerUpdate(delta: number, playerEntity: IRenderable & IPlayer & { target: EntityId }) {
     /**
      * Camera follow player.
      */
@@ -166,13 +163,11 @@ export class RenderSystem {
     /**
      * Update reticle position if there is a target, otherwise create one, otherwise delete it.
      */
-    const target = this.engine.entities.get(playerEntity.target);
+    const target = this.engine.entities.ships.get(playerEntity.target);
     if (target === null && this.renderedReticle) {
       this.renderedReticle?.graphic.destroy();
       this.renderedReticle = undefined;
     } else if (target) {
-      assert(target?.components.body);
-
       let graphic;
 
       if (this.renderedReticle && this.renderedReticle?.targetId === playerEntity.target) {
@@ -185,8 +180,8 @@ export class RenderSystem {
         this.renderedReticle = { targetId: target.id, graphic };
       }
 
-      this.renderedReticle.graphic.x = target.components.body.position.x;
-      this.renderedReticle.graphic.y = -target.components.body.position.y;
+      this.renderedReticle.graphic.x = target.position.x;
+      this.renderedReticle.graphic.y = -target.position.y;
     }
   }
 

@@ -1,12 +1,12 @@
+import { EntityManager } from "./EntityManager";
 import { SpriteFactory } from "./factories/SpriteFactory";
 import { RenderSystem } from "./systems/RenderSystem";
-import { Ship } from "./types/Ship";
 
 export class Engine {
   isPaused: boolean;
   lastTick: number;
   elapsed: number;
-  ships: Set<Ship>;
+  entities: EntityManager;
 
   // Factories.
   spriteFactory: SpriteFactory;
@@ -19,8 +19,8 @@ export class Engine {
     this.lastTick = 0;
     this.elapsed = 0;
 
+    this.entities = new EntityManager();
     this.spriteFactory = new SpriteFactory(this);
-
     this.renderSystem = new RenderSystem(this);
   }
 
@@ -43,15 +43,11 @@ export class Engine {
     this.elapsed += delta;
     this.lastTick = timestamp;
 
-    this.ships.forEach((e) => {
-      this.renderSystem.tick(delta, e);
+    this.entities.ships.forEach((e) => {
+      this.renderSystem.update(delta, e);
     });
 
-    this.ships.forEach((e) => {
-      if (e.destroyed) {
-        this.ships.delete(e);
-      }
-    });
+    this.entities.clearDestroyed();
 
     requestAnimationFrame(this.tick.bind(this));
   }

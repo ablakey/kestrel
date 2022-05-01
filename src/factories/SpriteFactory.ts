@@ -54,12 +54,7 @@ export class SpriteFactory {
 
   constructor(engine: Engine) {
     this.engine = engine;
-  }
-
-  public static async init(engine: Engine) {
-    const self = new SpriteFactory(engine);
-    self.spritesheets = await self.prepareSpritesheets();
-    return self;
+    this.spritesheets = this.prepareSpritesheets();
   }
 
   public isAnimated(name: SpriteName) {
@@ -98,18 +93,32 @@ export class SpriteFactory {
     return pixiSprite;
   }
 
-  private async prepareSpritesheets(): Promise<PixiSpritesheets> {
-    return new Promise((res) => {
-      const pixiSpritesheets: Partial<PixiSpritesheets> = {};
-      for (const [name, data] of Object.entries(spritesheets)) {
-        const pixiTexture = PIXI.BaseTexture.from(data.image);
-        const pixiSpritesheet = new PIXI.Spritesheet(pixiTexture, data.data);
-        pixiSpritesheet.parse(() => {
-          pixiSpritesheets[name as SpritesheetName] = pixiSpritesheet;
-        });
-      }
+  // TODO: does this have to be async? Can we just fudge it a little?
+  private prepareSpritesheets(): PixiSpritesheets {
+    const pixiSpritesheets: Partial<PixiSpritesheets> = {};
+    for (const [name, data] of Object.entries(spritesheets)) {
+      const pixiTexture = PIXI.BaseTexture.from(data.image);
+      const pixiSpritesheet = new PIXI.Spritesheet(pixiTexture, data.data);
+      pixiSpritesheet.parse(() => {
+        pixiSpritesheets[name as SpritesheetName] = pixiSpritesheet;
+      });
+    }
 
-      res(pixiSpritesheets as PixiSpritesheets);
-    });
+    return pixiSpritesheets as PixiSpritesheets;
   }
+
+  // private async prepareSpritesheets(): Promise<PixiSpritesheets> {
+  //   return new Promise((res) => {
+  //     const pixiSpritesheets: Partial<PixiSpritesheets> = {};
+  //     for (const [name, data] of Object.entries(spritesheets)) {
+  //       const pixiTexture = PIXI.BaseTexture.from(data.image);
+  //       const pixiSpritesheet = new PIXI.Spritesheet(pixiTexture, data.data);
+  //       pixiSpritesheet.parse(() => {
+  //         pixiSpritesheets[name as SpritesheetName] = pixiSpritesheet;
+  //       });
+  //     }
+
+  //     res(pixiSpritesheets as PixiSpritesheets);
+  //   });
+  // }
 }

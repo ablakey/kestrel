@@ -6,7 +6,7 @@
     "jsx": "react-jsx",
     "resolveJsonModule": true,
     "moduleResolution": "node",
-    "strictPropertyInitialization": false,
+    "strictPropertyInitialization": true,
     "skipLibCheck": true,
     "target": "ES2021",
     "module": "ESNext"
