@@ -1,7 +1,7 @@
 import Victor from "victor";
 import { SpriteName } from "../factories/SpriteFactory";
 import { IRenderable } from "../interfaces";
-import { Entity } from "./Entity";
+import { Entity, EntityId } from "./Entity";
 
 type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
 
@@ -14,6 +14,7 @@ export class Ship extends Entity implements IRenderable {
   angularVelocity: number; // radians per second
   zIndex: number;
   sprite: SpriteName;
+  target: EntityId | null;
 
   constructor(args: {
     spawned: number;
@@ -23,10 +24,16 @@ export class Ship extends Entity implements IRenderable {
     yaw: Victor;
   }) {
     super(args.spawned);
-    (this.yaw = args.yaw), (this.position = args.position);
+    this.yaw = args.yaw;
+    this.position = args.position;
     this.angularVelocity = 0;
     this.velocity = new Victor(0, 0);
     this.sprite = "BlueShip";
     this.zIndex = 1;
+    this.target = null;
   }
+}
+
+export class PlayerShip extends Ship {
+  foo = "bar"; // TODO
 }

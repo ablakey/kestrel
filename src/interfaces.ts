@@ -8,5 +8,3 @@ export interface IRenderable extends Entity {
   sprite: SpriteName;
   zIndex: number;
 }
-
-export type IPlayer = Entity;

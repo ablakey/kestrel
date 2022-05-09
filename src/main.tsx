@@ -1,6 +1,6 @@
 import Victor from "victor";
 import { Engine } from "./Engine";
-import { Ship } from "./types/Ship";
+import { PlayerShip, Ship } from "./types/Ship";
 
 async function main() {
   const engine = new Engine();
@@ -11,9 +11,19 @@ async function main() {
   // }
   // render();
 
+  engine.entities.setPlayerShip(
+    new PlayerShip({
+      position: new Victor(0, 0),
+      shipType: "Blue",
+      spawned: 0,
+      team: "Confederacy",
+      yaw: new Victor(0, 0),
+    })
+  );
+
   engine.entities.addShip(
     new Ship({
-      position: new Victor(0, 0),
+      position: new Victor(-100, 100),
       shipType: "Blue",
       spawned: 0,
       team: "Confederacy",

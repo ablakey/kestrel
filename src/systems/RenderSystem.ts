@@ -3,8 +3,8 @@ import stars01 from "../assets/sprites/spr_stars01.png";
 import stars02 from "../assets/sprites/spr_stars02.png";
 import { ZIndexes } from "../config";
 import { Engine } from "../Engine";
-import { IPlayer, IRenderable } from "../interfaces";
-import { EntityId } from "../types/Entity";
+import { IRenderable } from "../interfaces";
+import { PlayerShip } from "../types/Ship";
 
 /**
  * Create a reticle, which is four L shapes at the corners, resembling a square.
@@ -140,37 +140,36 @@ export class RenderSystem {
     return newSprite;
   }
 
-  public playerUpdate(delta: number, playerEntity: IRenderable & IPlayer & { target: EntityId }) {
+  public playerUpdate(delta: number, playerShip: PlayerShip) {
     /**
      * Camera follow player.
      */
-    this.container.x = -playerEntity.position.x;
-    this.container.y = playerEntity.position.y;
+    this.container.x = -playerShip.position.x;
+    this.container.y = playerShip.position.y;
 
     /**
      * Parallax relative to player.
      */
     this.tilingSprite.tilePosition.x = -(
-      playerEntity.position.x *
+      playerShip.position.x *
       PARALLAX_MAGNIUDE *
       PARALLAX_OFFSET
     );
-    this.tilingSprite.tilePosition.y =
-      playerEntity.position.y * PARALLAX_MAGNIUDE * PARALLAX_OFFSET;
-    this.tilingSprite2.tilePosition.x = -(playerEntity.position.x * PARALLAX_MAGNIUDE);
-    this.tilingSprite2.tilePosition.y = playerEntity.position.y * PARALLAX_MAGNIUDE;
+    this.tilingSprite.tilePosition.y = playerShip.position.y * PARALLAX_MAGNIUDE * PARALLAX_OFFSET;
+    this.tilingSprite2.tilePosition.x = -(playerShip.position.x * PARALLAX_MAGNIUDE);
+    this.tilingSprite2.tilePosition.y = playerShip.position.y * PARALLAX_MAGNIUDE;
 
     /**
      * Update reticle position if there is a target, otherwise create one, otherwise delete it.
      */
-    const target = this.engine.entities.ships.get(playerEntity.target);
+    const target = this.engine.entities.getShip(playerShip.target);
     if (target === null && this.renderedReticle) {
       this.renderedReticle?.graphic.destroy();
       this.renderedReticle = undefined;
     } else if (target) {
       let graphic;
 
-      if (this.renderedReticle && this.renderedReticle?.targetId === playerEntity.target) {
+      if (this.renderedReticle && this.renderedReticle?.targetId === playerShip.target) {
         graphic = this.renderedReticle.graphic;
       } else {
         this.renderedReticle?.graphic.destroy();

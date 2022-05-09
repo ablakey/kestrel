@@ -43,6 +43,8 @@ export class Engine {
     this.elapsed += delta;
     this.lastTick = timestamp;
 
+    this.renderSystem.playerUpdate(delta, this.entities.playerShip);
+
     this.entities.ships.forEach((e) => {
       this.renderSystem.update(delta, e);
     });
