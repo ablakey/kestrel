@@ -15,6 +15,8 @@ export class Ship extends Entity implements IRenderable {
   zIndex: number;
   sprite: SpriteName;
   target: EntityId | null;
+  turn: "None" | "Left" | "Right";
+  thrust: "None" | "Forward";
 
   constructor(args: {
     spawned: number;
@@ -31,6 +33,8 @@ export class Ship extends Entity implements IRenderable {
     this.sprite = "BlueShip";
     this.zIndex = 1;
     this.target = null;
+    this.turn = "None";
+    this.thrust = "None";
   }
 }
 
