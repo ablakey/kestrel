@@ -4,7 +4,6 @@ import stars02 from "../assets/sprites/spr_stars02.png";
 import { ZIndexes } from "../config";
 import { Engine } from "../Engine";
 import { IRenderable } from "../interfaces";
-import { PlayerShip } from "../types/Ship";
 
 /**
  * Create a reticle, which is four L shapes at the corners, resembling a square.
@@ -140,7 +139,8 @@ export class RenderSystem {
     return newSprite;
   }
 
-  public playerUpdate(delta: number, playerShip: PlayerShip) {
+  public playerUpdate() {
+    const playerShip = this.engine.entities.playerShip;
     /**
      * Camera follow player.
      */
@@ -184,7 +184,7 @@ export class RenderSystem {
     }
   }
 
-  public update(delta: number, entity: IRenderable) {
+  public update(entity: IRenderable) {
     const sprite = this.getOrCreateSprite(entity);
 
     if (entity.destroyed) {

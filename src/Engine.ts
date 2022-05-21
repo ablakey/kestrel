@@ -1,5 +1,6 @@
 import { EntityManager } from "./EntityManager";
 import { SpriteFactory } from "./factories/SpriteFactory";
+import { InputSystem } from "./systems/InputSystem";
 import { RenderSystem } from "./systems/RenderSystem";
 
 export class Engine {
@@ -13,6 +14,7 @@ export class Engine {
 
   // Systems.
   renderSystem: RenderSystem;
+  inputSystem: InputSystem;
 
   constructor() {
     this.isPaused = false;
@@ -22,6 +24,7 @@ export class Engine {
     this.entities = new EntityManager();
     this.spriteFactory = new SpriteFactory(this);
     this.renderSystem = new RenderSystem(this);
+    this.inputSystem = new InputSystem(this);
   }
 
   start() {
@@ -43,10 +46,11 @@ export class Engine {
     this.elapsed += delta;
     this.lastTick = timestamp;
 
-    this.renderSystem.playerUpdate(delta, this.entities.playerShip);
+    this.renderSystem.playerUpdate();
+    this.inputSystem.playerUpdate();
 
     this.entities.ships.forEach((e) => {
-      this.renderSystem.update(delta, e);
+      this.renderSystem.update(e);
     });
 
     this.entities.clearDestroyed();

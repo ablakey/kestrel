@@ -1,5 +1,6 @@
 import { GameInputs } from "../config";
 import { Engine } from "../Engine";
+import { assert } from "../utils";
 
 export class InputSystem {
   private engine: Engine;
@@ -12,7 +13,7 @@ export class InputSystem {
     this.inputQueue = new Set();
   }
 
-  update(delta: number) {
+  playerUpdate() {
     if (this.engine.isPaused) {
       this.inputQueue.clear();
       return;
@@ -25,54 +26,54 @@ export class InputSystem {
       playerShip.turn = "Left";
     } else if (this.keyState[GameInputs.RotateRight.key]) {
       playerShip.turn = "Right";
-    } else if (this.keyState[GameInputs.RotateTowards.key] && offensive.target) {
-      const target = game.entities.get(offensive.target) as ShipEntity;
+    } else if (this.keyState[GameInputs.RotateTowards.key] && playerShip.target) {
+      const target = this.engine.entities.getShip(playerShip.target);
       assert(target);
-      engine.direction = Body.getTurnDirection(body, target.components.body.position);
-    } else if (keyState[GameInputs.RotateOpposite.key]) {
-      engine.direction = Body.getTurnDirectionForOpposite(body);
+      playerShip.turn = playerShip.getTurn(target.position);
+    } else if (this.keyState[GameInputs.RotateOpposite.key]) {
+      playerShip.turn = playerShip.getOppositeTurn();
     } else {
-      engine.direction = "None";
+      playerShip.turn = "None";
     }
 
     // Thruster
-    engine.thrust = keyState[GameInputs.Thrust.key] ? "Forward" : "None";
+    playerShip.thrust = this.keyState[GameInputs.Thrust.key] ? "Forward" : "None";
 
     // Weapons
-    offensive.firePrimary = keyState[GameInputs.FirePrimary.key] ?? false;
-    offensive.fireSecondary = keyState[GameInputs.FireSecondary.key] ?? false;
+    playerShip.firePrimary = this.keyState[GameInputs.FirePrimary.key] ?? false;
+    playerShip.fireSecondary = this.keyState[GameInputs.FireSecondary.key] ?? false;
 
     /**
      * Handle event keys.
      * Keys as events are triggered once, rather than persisting a state, which get polled.
      */
-    inputQueue.forEach((k) => {
-      inputQueue.delete(k);
+    this.inputQueue.forEach((k) => {
+      this.inputQueue.delete(k);
 
       switch (k) {
         case GameInputs.NextTarget.key:
           const index = k === GameInputs.NextTarget.key ? 1 : -1;
-          offensive.target = game.entities.getNextPlayerTarget(offensive.target, index);
-          game.soundFactory.playSound("Beep1");
+          playerShip.target = this.engine.entities.getNextTarget(playerShip.target, index);
+          // this.engine.sounds.playSound("Beep1");
           break;
-        case GameInputs.SelectSecondary.key:
-          offensive.selectedSecondary = Inventory.getNextSecondaryWeapon(
-            entity,
-            offensive.selectedSecondary
-          );
-          break;
-        case GameInputs.ShowDebug.key:
-          game.setState((draft) => {
-            draft.isPaused = true;
-            draft.showDebug = true;
-          });
-          break;
-        case GameInputs.showAbout.key:
-          game.setState((draft) => {
-            draft.isPaused = true;
-            draft.showAbout = true;
-          });
-          break;
+        // case GameInputs.SelectSecondary.key:
+        //   offensive.selectedSecondary = Inventory.getNextSecondaryWeapon(
+        //     entity,
+        //     offensive.selectedSecondary
+        //   );
+        //   break;
+        // case GameInputs.ShowDebug.key:
+        //   this.engine.setState((draft) => {
+        //     draft.isPaused = true;
+        //     draft.showDebug = true;
+        //   });
+        //   break;
+        // case GameInputs.showAbout.key:
+        //   this.engine.setState((draft) => {
+        //     draft.isPaused = true;
+        //     draft.showAbout = true;
+        //   });
+        //   break;
       }
     });
   }

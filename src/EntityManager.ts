@@ -51,4 +51,26 @@ export class EntityManager {
       }
     });
   }
+
+  /**
+   * From all possible targets, get the next one by indexing one beyond previousTarget.
+   * This depends on game.query returning stable results.
+   */
+  public getNextTarget(currentTarget: number | null, offsetIndex?: number): number | null {
+    const targets = Array.from(this.ships.values());
+
+    if (!targets.length) {
+      return null;
+    }
+
+    const currentTargetIndex = targets.findIndex((e) => e.id === currentTarget);
+
+    if (currentTargetIndex === -1) {
+      return targets[0].id;
+    } else {
+      const newTarget = targets.at((currentTargetIndex + (offsetIndex ?? 0)) % targets.length);
+      assert(newTarget);
+      return newTarget.id;
+    }
+  }
 }
