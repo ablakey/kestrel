@@ -4,6 +4,7 @@ import stars02 from "../assets/sprites/spr_stars02.png";
 import { ZIndexes } from "../config";
 import { Engine } from "../Engine";
 import { IRenderable } from "../interfaces";
+import { System } from "./System";
 
 /**
  * Create a reticle, which is four L shapes at the corners, resembling a square.
@@ -47,16 +48,15 @@ function createReticle(size: number) {
 const PARALLAX_OFFSET = 0.9;
 const PARALLAX_MAGNIUDE = 0.5;
 
-export class RenderSystem {
+export class RenderSystem extends System {
   private renderedReticle: { targetId: number; graphic: PIXI.Graphics } | undefined;
   private renderedItems: Record<string, PIXI.Sprite>;
-  private engine: Engine;
   private container: PIXI.Container;
   private tilingSprite: PIXI.TilingSprite;
   private tilingSprite2: PIXI.TilingSprite;
 
   constructor(engine: Engine) {
-    this.engine = engine;
+    super(engine);
     this.renderedItems = {};
     this.renderedReticle = undefined;
 

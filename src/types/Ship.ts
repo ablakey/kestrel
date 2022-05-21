@@ -33,7 +33,7 @@ export class Ship extends Entity implements IRenderable {
     this.yaw = args.yaw;
     this.position = args.position;
     this.angularVelocity = 0;
-    this.velocity = new Victor(0, 0);
+    this.velocity = new Victor(11, 0);
     this.sprite = "BlueShip";
     this.zIndex = 1;
     this.target = null;

@@ -1,14 +1,14 @@
 import { GameInputs } from "../config";
 import { Engine } from "../Engine";
 import { assert } from "../utils";
+import { System } from "./System";
 
-export class InputSystem {
-  private engine: Engine;
+export class InputSystem extends System {
   private inputQueue: Set<string>;
   private keyState: Record<string, boolean | undefined>;
 
   constructor(engine: Engine) {
-    this.engine = engine;
+    super(engine);
     this.keyState = {};
     this.inputQueue = new Set();
   }
