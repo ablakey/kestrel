@@ -8,3 +8,10 @@ export interface IRenderable extends Entity {
   sprite: SpriteName;
   zIndex: number;
 }
+
+export interface IMoveable extends Entity {
+  position: Victor;
+  yaw: Victor;
+  velocity: Victor;
+  angularVelocity: number;
+}
