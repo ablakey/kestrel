@@ -15,8 +15,6 @@ export type Ship = Item & {
   size: ShipSize;
 };
 
-export type ShipName = "Blue" | "Red";
-
 export type ShipSize = "Small" | "Normal" | "Large" | "Massive";
 
 export const Ships: Record<ShipName, Ship> = {
@@ -56,4 +54,3 @@ export const Ships: Record<ShipName, Ship> = {
     size: "Small",
   },
 };
-4;

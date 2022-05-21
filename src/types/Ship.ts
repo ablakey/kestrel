@@ -1,15 +1,18 @@
 import Victor from "victor";
+import { DamageEffect } from "../Effects";
 import { SpriteName } from "../factories/SpriteFactory";
 import { IRenderable } from "../interfaces";
+import { shipDefinitions, ShipType } from "../definitions/Ships";
 import { Entity, EntityId } from "./Entity";
 
 type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
 
-type ShipType = "Blue" | "Red";
-
 type Turn = "None" | "Left" | "Right";
 
+type Condition = "Alive" | "Disabled" | "Destroying";
+
 export class Ship extends Entity implements IRenderable {
+  shipType: ShipType;
   position: Victor;
   velocity: Victor;
   yaw: Victor;
@@ -21,6 +24,9 @@ export class Ship extends Entity implements IRenderable {
   thrust: "None" | "Forward";
   firePrimary: boolean;
   fireSecondary: boolean;
+  hp: number;
+  effects: DamageEffect[];
+  condition: Condition;
 
   constructor(args: {
     spawned: number;
@@ -30,6 +36,8 @@ export class Ship extends Entity implements IRenderable {
     yaw: Victor;
   }) {
     super(args.spawned);
+
+    this.shipType = args.shipType;
     this.yaw = args.yaw;
     this.position = args.position;
     this.angularVelocity = 0;
@@ -41,6 +49,37 @@ export class Ship extends Entity implements IRenderable {
     this.thrust = "None";
     this.firePrimary = false;
     this.fireSecondary = false;
+    this.hp = this.maxHp;
+    this.effects = [];
+    this.condition = "Alive";
+  }
+
+  get definition() {
+    return shipDefinitions[this.shipType];
+  }
+
+  get maxHp() {
+    return this.definition.maxHp;
+  }
+
+  get turnRate() {
+    return 1.0;
+  }
+
+  get maxSpeed() {
+    return 1.0;
+  }
+
+  get accelSpeed() {
+    return 1.0;
+  }
+
+  thrustEnabled(): boolean {
+    return this.condition !== "Destroying";
+  }
+
+  turnEnabled(): boolean {
+    return this.condition !== "Destroying";
   }
 
   /**
@@ -50,7 +89,7 @@ export class Ship extends Entity implements IRenderable {
    *
    * From: https://math.stackexchange.com/questions/110080/shortest-way-to-achieve-target-angle
    */
-  public getDeltaAngle(target: Victor) {
+  getDeltaAngle(target: Victor) {
     const targetAngle = this.position.clone().subtract(target).norm().angle() - Math.PI;
     return ((targetAngle - this.yaw.angle() + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
   }
@@ -70,13 +109,16 @@ export class Ship extends Entity implements IRenderable {
   /**
    * Which way to turn to get the body facing the opposite direction of its velocity.
    */
-  public getOppositeTurn(): Turn {
+  getOppositeTurn(): Turn {
     const targetAngle = this.velocity.angle() + Math.PI;
     const targetPosition = new Victor(1, 0).multiplyScalar(1_000_000_000).rotate(targetAngle);
     return this.getTurn(targetPosition);
   }
 }
 
+// Mostly just a token to identify a playership over a ship.
+// But there will definitely be player-specific properties to manage?
+// Unless those live in the game state.
 export class PlayerShip extends Ship {
   foo = "bar"; // TODO
 }
