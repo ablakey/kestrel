@@ -38,10 +38,10 @@ export class Ship extends Entity implements IRenderable {
     super(args.spawned);
 
     this.shipType = args.shipType;
-    this.yaw = args.yaw;
-    this.position = args.position;
+    this.yaw = args.yaw.clone();
+    this.position = args.position.clone();
     this.angularVelocity = 0;
-    this.velocity = new Victor(11, 0);
+    this.velocity = new Victor(0, 0);
     this.sprite = "BlueShip";
     this.zIndex = 1;
     this.target = null;
@@ -58,27 +58,30 @@ export class Ship extends Entity implements IRenderable {
     return shipDefinitions[this.shipType];
   }
 
+  /**
+   * We don't just talk to definition directly because these will be modified by buffs, inventory, etc.
+   */
   get maxHp() {
     return this.definition.maxHp;
   }
 
   get turnRate() {
-    return 1.0;
+    return this.definition.turnRate;
   }
 
   get maxSpeed() {
-    return 1.0;
+    return this.definition.maxSpeed;
   }
 
   get accelSpeed() {
-    return 1.0;
+    return this.definition.accelSpeed;
   }
 
-  thrustEnabled(): boolean {
+  get thrustEnabled(): boolean {
     return this.condition !== "Destroying";
   }
 
-  turnEnabled(): boolean {
+  get turnEnabled(): boolean {
     return this.condition !== "Destroying";
   }
 

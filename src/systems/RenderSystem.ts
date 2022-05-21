@@ -7,6 +7,11 @@ import { IRenderable } from "../interfaces";
 import { System } from "./System";
 
 /**
+ * Force nearest neighbour as default for all graphics interpolation.
+ */
+PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
+
+/**
  * Create a reticle, which is four L shapes at the corners, resembling a square.
  * Remember that in the context of drawing, positive y increases downwards.
  */
@@ -59,11 +64,6 @@ export class RenderSystem extends System {
     super(engine);
     this.renderedItems = {};
     this.renderedReticle = undefined;
-
-    /**
-     * Force nearest neighbour as default for all graphics interpolation.
-     */
-    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
 
     const viewport = document.querySelector<HTMLElement>("#viewport")!;
     const app = new PIXI.Application({ backgroundColor: 0x000, resizeTo: viewport });

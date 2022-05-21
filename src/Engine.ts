@@ -1,5 +1,6 @@
 import { EntityManager } from "./EntityManager";
 import { SpriteFactory } from "./factories/SpriteFactory";
+import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
 import { PhysicsSystem } from "./systems/PhysicsSystem";
 import { RenderSystem } from "./systems/RenderSystem";
@@ -17,6 +18,7 @@ export class Engine {
   renderSystem: RenderSystem;
   inputSystem: InputSystem;
   physicsSystem: PhysicsSystem;
+  engineSystem: EngineSystem;
 
   constructor() {
     this.isPaused = false;
@@ -28,6 +30,7 @@ export class Engine {
     this.renderSystem = new RenderSystem(this);
     this.inputSystem = new InputSystem(this);
     this.physicsSystem = new PhysicsSystem(this);
+    this.engineSystem = new EngineSystem(this);
   }
 
   start() {
@@ -52,9 +55,10 @@ export class Engine {
     this.renderSystem.playerUpdate();
     this.inputSystem.playerUpdate();
 
-    this.entities.ships.forEach((entity) => {
-      this.physicsSystem.update(delta, entity);
-      this.renderSystem.update(entity);
+    this.entities.ships.forEach((ship) => {
+      this.engineSystem.update(ship);
+      this.physicsSystem.update(ship, delta);
+      this.renderSystem.update(ship);
     });
 
     this.entities.clearDestroyed();

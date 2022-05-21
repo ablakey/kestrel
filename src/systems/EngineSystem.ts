@@ -6,7 +6,7 @@ import { System } from "./System";
 export class EngineSystem extends System {
   update(ship: Ship) {
     // Update direction
-    if (!ship.turnEnabled()) {
+    if (!ship.turnEnabled) {
       ship.angularVelocity = 0;
     } else if (ship.turn === "Left") {
       ship.angularVelocity = ship.turnRate; // TODO: lerp?
@@ -16,7 +16,7 @@ export class EngineSystem extends System {
       ship.angularVelocity = 0;
     }
 
-    if (ship.thrust === "Forward" && ship.thrustEnabled()) {
+    if (ship.thrust === "Forward" && ship.thrustEnabled) {
       const accelBy = ship.velocity.magnitude() < MIN_SPEED ? MIN_SPEED + 1 : ship.accelSpeed;
       const p = new Victor(accelBy, 0).rotate(ship.yaw.angle());
       ship.velocity.add(p);

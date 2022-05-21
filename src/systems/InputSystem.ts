@@ -1,7 +1,14 @@
 import { GameInputs } from "../config";
 import { Engine } from "../Engine";
-import { assert } from "../utils";
+import { assert, stringifyFullKey } from "../utils";
 import { System } from "./System";
+
+const keysInUse = new Set(Object.values(GameInputs).map((k) => k.key));
+
+const inputsByKey = Object.entries(GameInputs).reduce((acc, [input, config]) => {
+  acc[config.key] = { ...config, input };
+  return acc;
+}, {} as Record<string, { input: string; asEvent?: boolean; key: string }>);
 
 export class InputSystem extends System {
   private inputQueue: Set<string>;
@@ -11,6 +18,38 @@ export class InputSystem extends System {
     super(engine);
     this.keyState = {};
     this.inputQueue = new Set();
+
+    document.addEventListener("keyup", (e) => {
+      const code = stringifyFullKey(e);
+
+      // Only capture keys that we're using.
+      if (!keysInUse.has(code as any)) {
+        return;
+      }
+
+      if (!inputsByKey[code]?.asEvent) {
+        this.keyState[code] = false;
+      }
+
+      e.preventDefault();
+    });
+
+    document.addEventListener("keydown", (e) => {
+      const code = stringifyFullKey(e);
+
+      // Only capture keys that we're using.
+      if (!keysInUse.has(code as any)) {
+        return;
+      }
+
+      if (!inputsByKey[code].asEvent) {
+        this.keyState[code] = true;
+      } else {
+        this.inputQueue.add(code);
+      }
+
+      e.preventDefault();
+    });
   }
 
   playerUpdate() {
