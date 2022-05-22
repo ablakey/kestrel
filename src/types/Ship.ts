@@ -11,6 +11,8 @@ type Turn = "None" | "Left" | "Right";
 
 type Condition = "Alive" | "Disabled" | "Destroying";
 
+export type Size = "Small" | "Normal" | "Large" | "Massive";
+
 export class Ship extends Entity implements IRenderable {
   shipType: ShipType;
   position: Victor;
@@ -27,6 +29,7 @@ export class Ship extends Entity implements IRenderable {
   hp: number;
   effects: DamageEffect[];
   condition: Condition;
+  inventory: ItemInstance[];
 
   constructor(args: {
     spawned: number;

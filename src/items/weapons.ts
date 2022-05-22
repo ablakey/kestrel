@@ -1,9 +1,6 @@
-import { Item } from ".";
-import { SoundName } from "../Factories/SoundFactory";
-import { SpriteName } from "../Factories/SpriteFactory";
-import { AmmoName } from "./Ammos";
+import { ItemDefinition, WeaponType } from ".";
 
-export type Weapon = Item & {
+export type WeaponDefinition = ItemDefinition & {
   speed: number;
   fireRate: number; // How many bullets per second are fired from this weapon.
   sprite: SpriteName;
@@ -20,9 +17,7 @@ export type Weapon = Item & {
   blastRadius: number; // Find other targets for damage. Usuaully 0.
 };
 
-export type WeaponName = "LaserCannon" | "ProtonCannon" | "MissileRack" | "HeavyLauncher";
-
-export const Weapons: Record<WeaponName, Weapon> = {
+export const WeaponDefinitions: Record<WeaponType, WeaponDefinition> = {
   LaserCannon: {
     speed: 1_100,
     fireRate: 2,

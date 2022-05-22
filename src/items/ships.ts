@@ -1,6 +1,6 @@
-import { SpriteName } from "../factories/SpriteFactory";
+import { ItemDefinition, ShipType } from ".";
 
-export type ShipDefinition = {
+export type ShipDefinition = ItemDefinition & {
   label: string;
   maxHp: number;
   sprite: SpriteName;
@@ -10,14 +10,9 @@ export type ShipDefinition = {
   turnRate: number; // rad/sec.
   offsetX: number;
   offsetY: number;
-  // weapons: WeaponInstance[];
-  // ammos: AmmoInstance[];
+  startingItems: { item: ItemType; count: number }[];
   size: ShipSize;
 };
-
-export type ShipType = "Blue" | "Red";
-
-export type ShipSize = "Small" | "Normal" | "Large" | "Massive";
 
 export const shipDefinitions: Record<ShipType, ShipDefinition> = {
   Blue: {
@@ -45,4 +40,3 @@ export const shipDefinitions: Record<ShipType, ShipDefinition> = {
     size: "Small",
   },
 };
-4;
