@@ -1,4 +1,5 @@
 import { EntityManager } from "./EntityManager";
+import { SoundFactory } from "./factories/SoundFactory";
 import { SpriteFactory } from "./factories/SpriteFactory";
 import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
@@ -10,9 +11,13 @@ export class Engine {
   lastTick: number;
   elapsed: number;
   entities: EntityManager;
+  volume: number;
+
+  // TODO: Game state should be in a .state object.  But overall things not related to the game (like volume) aren't.
 
   // Factories.
   spriteFactory: SpriteFactory;
+  soundFactory: SoundFactory;
 
   // Systems.
   renderSystem: RenderSystem;
@@ -24,13 +29,21 @@ export class Engine {
     this.isPaused = false;
     this.lastTick = 0;
     this.elapsed = 0;
+    this.volume = 0.5; // TODO from config.
 
     this.entities = new EntityManager();
+
     this.spriteFactory = new SpriteFactory(this);
+    this.soundFactory = new SoundFactory(this);
+
     this.renderSystem = new RenderSystem(this);
     this.inputSystem = new InputSystem(this);
     this.physicsSystem = new PhysicsSystem(this);
     this.engineSystem = new EngineSystem(this);
+  }
+
+  async initialize() {
+    await this.soundFactory.prefetchSounds();
   }
 
   start() {

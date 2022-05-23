@@ -1,4 +1,7 @@
-import { ItemDefinition, ShipType } from ".";
+import { ItemDefinition, ItemType } from ".";
+import { SpriteName } from "../factories/SpriteFactory";
+import { Size } from "../types/Ship";
+import { asTypedObject } from "../utils";
 
 export type ShipDefinition = ItemDefinition & {
   label: string;
@@ -11,10 +14,10 @@ export type ShipDefinition = ItemDefinition & {
   offsetX: number;
   offsetY: number;
   startingItems: { item: ItemType; count: number }[];
-  size: ShipSize;
+  size: Size;
 };
 
-export const shipDefinitions: Record<ShipType, ShipDefinition> = {
+export const shipDefinitions = asTypedObject<ShipDefinition>()({
   Blue: {
     maxHp: 100,
     sprite: "BlueShip",
@@ -26,6 +29,7 @@ export const shipDefinitions: Record<ShipType, ShipDefinition> = {
     offsetX: 0.5,
     offsetY: 0.6,
     size: "Small",
+    startingItems: [],
   },
   Red: {
     maxHp: 100,
@@ -38,5 +42,6 @@ export const shipDefinitions: Record<ShipType, ShipDefinition> = {
     offsetX: 0.5,
     offsetY: 0.6,
     size: "Small",
+    startingItems: [],
   },
-};
+});

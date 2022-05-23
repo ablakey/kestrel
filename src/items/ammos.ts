@@ -1,8 +1,9 @@
-import { AmmoType, ItemDefinition } from ".";
+import { ItemDefinition } from ".";
+import { asTypedObject } from "../utils";
 
 type AmmoDefinition = ItemDefinition; // TODO: So far they have no additional properties.
 
-export const Ammos: Record<AmmoType, AmmoDefinition> = {
+export const ammoDefinitions = asTypedObject<AmmoDefinition>()({
   Missile: {
     label: "Missile",
   },
@@ -12,4 +13,4 @@ export const Ammos: Record<AmmoType, AmmoDefinition> = {
   Rocket: {
     label: "Heavy Rocket",
   },
-};
+});

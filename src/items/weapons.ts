@@ -1,4 +1,7 @@
-import { ItemDefinition, WeaponType } from ".";
+import { AmmoType, ItemDefinition } from ".";
+import { SoundName } from "../factories/SoundFactory";
+import { SpriteName } from "../factories/SpriteFactory";
+import { asTypedObject } from "../utils";
 
 export type WeaponDefinition = ItemDefinition & {
   speed: number;
@@ -12,12 +15,12 @@ export type WeaponDefinition = ItemDefinition & {
   sound: SoundName;
   hitSound: SoundName | null;
   turnRate: number;
-  ammo: AmmoName | null; // The item, optionally. to consume when firing this weapon.
+  ammo: AmmoType | null; // The item, optionally. to consume when firing this weapon.
   dumbfire: boolean; // Weapon can hit something without a target.
   blastRadius: number; // Find other targets for damage. Usuaully 0.
 };
 
-export const WeaponDefinitions: Record<WeaponType, WeaponDefinition> = {
+export const weaponDefinitions = asTypedObject<WeaponDefinition>()({
   LaserCannon: {
     speed: 1_100,
     fireRate: 2,
@@ -86,4 +89,4 @@ export const WeaponDefinitions: Record<WeaponType, WeaponDefinition> = {
     dumbfire: true,
     blastRadius: 100,
   },
-};
+});

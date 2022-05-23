@@ -11,24 +11,34 @@ import missile from "../assets/svg/missile.svg";
 import explosionSheet from "../assets/spritesheets/explosion.png";
 import explosionSheetData from "../assets/spritesheets/explosion.json";
 import { Engine } from "../Engine";
+import { asTypedObject } from "../utils";
 
-const staticSpriteData = {
+type SpriteData = { image: string; scale: number };
+type SpritesheetData = { image: string; data: any };
+
+const staticSpriteData = asTypedObject<SpriteData>()({
   Laser: { image: pixelLaserGreen, scale: 1 },
   Proton: { image: pixelLaserBlue, scale: 1 },
   Missile: { image: missile, scale: 0.4 },
   BlueShip: { image: pixelShipBlue, scale: 1 },
   RedShip: { image: pixelShipRed, scale: 1 },
   GreenPlanet1: { image: planet00, scale: 3 },
-};
+});
 
-const spritesheets = {
+const spritesheets = asTypedObject<SpritesheetData>()({
   explosion: {
     image: explosionSheet,
     data: explosionSheetData,
   },
+});
+
+type AnimatedSpriteData = {
+  scale: number;
+  animationSpeed: number;
+  sheet: keyof typeof spritesheets;
 };
 
-const animatedSpriteData = {
+const animatedSpriteData = asTypedObject<AnimatedSpriteData>()({
   Explosion: {
     sheet: "explosion",
     animationSpeed: 0.2,
@@ -39,7 +49,7 @@ const animatedSpriteData = {
     animationSpeed: 0.2,
     scale: 1.5,
   },
-} as const;
+});
 
 type SpritesheetName = keyof typeof spritesheets;
 type StaticSpriteName = keyof typeof staticSpriteData;
@@ -106,19 +116,4 @@ export class SpriteFactory {
 
     return pixiSpritesheets as PixiSpritesheets;
   }
-
-  // private async prepareSpritesheets(): Promise<PixiSpritesheets> {
-  //   return new Promise((res) => {
-  //     const pixiSpritesheets: Partial<PixiSpritesheets> = {};
-  //     for (const [name, data] of Object.entries(spritesheets)) {
-  //       const pixiTexture = PIXI.BaseTexture.from(data.image);
-  //       const pixiSpritesheet = new PIXI.Spritesheet(pixiTexture, data.data);
-  //       pixiSpritesheet.parse(() => {
-  //         pixiSpritesheets[name as SpritesheetName] = pixiSpritesheet;
-  //       });
-  //     }
-
-  //     res(pixiSpritesheets as PixiSpritesheets);
-  //   });
-  // }
 }

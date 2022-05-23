@@ -4,6 +4,7 @@ import { PlayerShip } from "./types/Ship";
 
 async function main() {
   const engine = new Engine();
+  await engine.initialize();
   engine.start();
   // function render() {
   //   ReactDOM.render(<Layout game={game} />, document.getElementById("ui"));

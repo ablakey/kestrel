@@ -5,6 +5,15 @@ export type ValueOf<T> = T[keyof T];
 
 export type DeepReadonly<T> = { readonly [K in keyof T]: DeepReadonly<T[K]> };
 
+/**
+ * Allows the key of an obhject to be inferred but the value must be type U.
+ */
+export function asTypedObject<T>() {
+  return function <Obj>(obj: { [K in keyof Obj]: T }) {
+    return obj;
+  };
+}
+
 export function assert<T>(val: T, message?: string): asserts val is NonNullable<T> {
   if (val === undefined || val === null) {
     throw new Error(message ?? `Expected 'val' to be defined, but received ${val}`);
