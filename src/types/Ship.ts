@@ -2,7 +2,8 @@ import Victor from "victor";
 import { DamageEffect } from "../Effects";
 import { SpriteName } from "../factories/SpriteFactory";
 import { IRenderable } from "../interfaces";
-import { shipDefinitions, ShipType } from "../definitions/Ships";
+import { ShipType } from "../items";
+import { shipDefinitions } from "../items/ships";
 import { Entity, EntityId } from "./Entity";
 
 type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
@@ -29,7 +30,7 @@ export class Ship extends Entity implements IRenderable {
   hp: number;
   effects: DamageEffect[];
   condition: Condition;
-  inventory: ItemInstance[];
+  // inventory: ItemInstance[];
 
   constructor(args: {
     spawned: number;

@@ -9,6 +9,7 @@ export class EngineSystem extends System {
     if (!ship.turnEnabled) {
       ship.angularVelocity = 0;
     } else if (ship.turn === "Left") {
+      console.log(ship.turnRate);
       ship.angularVelocity = ship.turnRate; // TODO: lerp?
     } else if (ship.turn === "Right") {
       ship.angularVelocity = -ship.turnRate;
