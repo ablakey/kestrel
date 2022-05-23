@@ -12,6 +12,7 @@ import explosionSheet from "../assets/spritesheets/explosion.png";
 import explosionSheetData from "../assets/spritesheets/explosion.json";
 import { Engine } from "../Engine";
 import { asTypedObject } from "../utils";
+import { BaseFactory } from "./BaseFactory";
 
 type SpriteData = { image: string; scale: number };
 type SpritesheetData = { image: string; data: any };
@@ -58,12 +59,16 @@ export type SpriteName = StaticSpriteName | AnimatedSpriteName;
 
 type PixiSpritesheets = Record<keyof typeof spritesheets, PIXI.Spritesheet>;
 
-export class SpriteFactory {
+/**
+ * Note: Probably don't want to do anything about this, but I think the SpriteFactory is exclusively consumed by
+ * the RenderSystem. Which makes sense. It could make sense to combine them or relocate/rename this as just a
+ * sprite catalog.
+ */
+export class SpriteFactory extends BaseFactory {
   private spritesheets: PixiSpritesheets;
-  private engine: Engine;
 
   constructor(engine: Engine) {
-    this.engine = engine;
+    super(engine);
     this.spritesheets = this.prepareSpritesheets();
   }
 

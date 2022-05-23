@@ -5,10 +5,10 @@ import laser from "../assets/sounds/laser.mp3";
 import medexplosion from "../assets/sounds/medexplosion.mp3";
 import missile from "../assets/sounds/missile.mp3";
 import proton from "../assets/sounds/proton.mp3";
+import heavyRocket from "../assets/sounds/rocket.mp3";
 import shipbreaksup from "../assets/sounds/shipbreaksup.mp3";
 import shipexplodes from "../assets/sounds/shipexplodes.mp3";
-import heavyRocket from "../assets/sounds/rocket.mp3";
-import { Engine } from "../Engine";
+import { BaseFactory } from "./BaseFactory";
 
 const POSITION_SCALE = 0.1; // Adjust to affect how distance plays a role in sound.
 const GLOBAL_VOLUME_ADJUST = 0.1; // Volume at 1.0 is way too loud.
@@ -26,13 +26,7 @@ const soundUrls = {
 
 export type SoundName = keyof typeof soundUrls;
 
-export class SoundFactory {
-  private engine: Engine;
-
-  constructor(engine: Engine) {
-    this.engine = engine;
-  }
-
+export class SoundFactory extends BaseFactory {
   async prefetchSounds() {
     // Prefetch sounds. Howl will load the URL the moment this is instantiated. Then it is cached inside Howl's
     // internals. We prefetch to avoid a case where the first use of a sound is not possible as it's been acquired.

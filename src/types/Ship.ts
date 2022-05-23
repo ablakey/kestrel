@@ -6,12 +6,9 @@ import { ShipType } from "../items";
 import { shipDefinitions } from "../items/ships";
 import { Entity, EntityId } from "./Entity";
 
-type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
-
-type Turn = "None" | "Left" | "Right";
-
-type Condition = "Alive" | "Disabled" | "Destroying";
-
+export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
+export type Turn = "None" | "Left" | "Right";
+export type Condition = "Alive" | "Disabled" | "Destroying";
 export type Size = "Small" | "Normal" | "Large" | "Massive";
 
 export class Ship extends Entity implements IRenderable {
