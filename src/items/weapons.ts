@@ -1,4 +1,4 @@
-import { AmmoType, ItemDefinition } from ".";
+import { AmmoName, ItemDefinition } from ".";
 import { SoundName } from "../factories/SoundFactory";
 import { SpriteName } from "../factories/SpriteFactory";
 import { asTypedObject } from "../utils";
@@ -15,7 +15,7 @@ export type WeaponDefinition = ItemDefinition & {
   sound: SoundName;
   hitSound: SoundName | null;
   turnRate: number;
-  ammo: AmmoType | null; // The item, optionally. to consume when firing this weapon.
+  ammo: AmmoName | null; // The item, optionally. to consume when firing this weapon.
   dumbfire: boolean; // Weapon can hit something without a target.
   blastRadius: number; // Find other targets for damage. Usuaully 0.
 };
@@ -90,3 +90,7 @@ export const weaponDefinitions = asTypedObject<WeaponDefinition>()({
     blastRadius: 100,
   },
 });
+
+export const primaryWeaponNames = Object.entries(weaponDefinitions)
+  .filter(([, d]) => d.type === "Primary")
+  .map(([n]) => n);

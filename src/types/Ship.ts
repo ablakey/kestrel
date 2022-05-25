@@ -1,9 +1,11 @@
+import { cloneDeep } from "lodash";
 import Victor from "victor";
 import { DamageEffect } from "../Effects";
 import { SpriteName } from "../factories/SpriteFactory";
 import { IRenderable } from "../interfaces";
-import { ShipType } from "../items";
+import { Item, ItemName, ShipName, WeaponName } from "../items";
 import { shipDefinitions } from "../items/ships";
+import { primaryWeaponDefinitions, primaryWeaponNames } from "../items/weapons";
 import { Entity, EntityId } from "./Entity";
 
 export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
@@ -12,7 +14,7 @@ export type Condition = "Alive" | "Disabled" | "Destroying";
 export type Size = "Small" | "Normal" | "Large" | "Massive";
 
 export class Ship extends Entity implements IRenderable {
-  shipType: ShipType;
+  shipName: ShipName;
   position: Victor;
   velocity: Victor;
   yaw: Victor;
@@ -27,18 +29,24 @@ export class Ship extends Entity implements IRenderable {
   hp: number;
   effects: DamageEffect[];
   condition: Condition;
-  // inventory: ItemInstance[];
+  items: Item[];
+
+  /**
+   * Each kind of item can have a stateful cooldown, representing seconds remaining until next use.
+   * If a ship has multiple of the same item (eg. 3 Proton Cannons) that just means the cooldown is 1/3 as much.
+   */
+  private cooldowns: Map<ItemName, number>;
 
   constructor(args: {
     spawned: number;
-    shipType: ShipType;
+    shipName: ShipName;
     team: Team;
     position: Victor;
     yaw: Victor;
   }) {
     super(args.spawned);
 
-    this.shipType = args.shipType;
+    this.shipName = args.shipName;
     this.yaw = args.yaw.clone();
     this.position = args.position.clone();
     this.angularVelocity = 0;
@@ -53,14 +61,17 @@ export class Ship extends Entity implements IRenderable {
     this.hp = this.maxHp;
     this.effects = [];
     this.condition = "Alive";
+    this.cooldowns = new Map();
+
+    this.items = cloneDeep(this.definition.startingItems);
   }
 
   get definition() {
-    return shipDefinitions[this.shipType];
+    return shipDefinitions[this.shipName];
   }
 
   /**
-   * We don't just talk to definition directly because these will be modified by buffs, inventory, etc.
+   * We don't just get from definition directly because these will be modified by buffs, inventory, etc.
    */
   get maxHp() {
     return this.definition.maxHp;
@@ -84,6 +95,18 @@ export class Ship extends Entity implements IRenderable {
 
   get turnEnabled(): boolean {
     return this.condition !== "Destroying";
+  }
+
+  /**
+   * Return an array of primary weapons, on this ship, along with their current cooldown.
+   */
+  get primaryWeapons(): { name: WeaponName; count: number; cooldown: number }[] {
+    const weapons = this.items.filter((i) => primaryWeaponNames.includes(i.name));
+    return weapons.map((w) => ({
+      name: w.name as WeaponName,
+      count: w.count,
+      cooldown: this.cooldowns.get(w.name) ?? 0.0,
+    }));
   }
 
   /**

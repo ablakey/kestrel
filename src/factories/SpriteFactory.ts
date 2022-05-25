@@ -108,7 +108,6 @@ export class SpriteFactory extends BaseFactory {
     return pixiSprite;
   }
 
-  // TODO: does this have to be async? Can we just fudge it a little?
   private prepareSpritesheets(): PixiSpritesheets {
     const pixiSpritesheets: Partial<PixiSpritesheets> = {};
     for (const [name, data] of Object.entries(spritesheets)) {

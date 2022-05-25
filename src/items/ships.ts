@@ -1,4 +1,4 @@
-import { ItemDefinition, ItemType } from ".";
+import { Item, ItemDefinition } from ".";
 import { SpriteName } from "../factories/SpriteFactory";
 import { Size } from "../types/Ship";
 import { asTypedObject } from "../utils";
@@ -13,7 +13,7 @@ export type ShipDefinition = ItemDefinition & {
   turnRate: number; // rad/sec.
   offsetX: number;
   offsetY: number;
-  startingItems: { item: ItemType; count: number }[];
+  startingItems: Item[];
   size: Size;
 };
 
@@ -29,7 +29,7 @@ export const shipDefinitions = asTypedObject<ShipDefinition>()({
     offsetX: 0.5,
     offsetY: 0.6,
     size: "Small",
-    startingItems: [],
+    startingItems: [{ name: "ProtonCannon", count: 2 }],
   },
   Red: {
     maxHp: 100,
