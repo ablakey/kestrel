@@ -1,5 +1,6 @@
 import { cloneDeep } from "lodash";
 import Victor from "victor";
+import { ZIndexes } from "../config";
 import { DamageEffect } from "../Effects";
 import { SpriteName } from "../factories/SpriteFactory";
 import { IMoveable, IRenderable } from "../interfaces";
@@ -14,12 +15,12 @@ export type Condition = "Alive" | "Disabled" | "Destroying";
 export type Size = "Small" | "Normal" | "Large" | "Massive";
 
 export class Ship extends Entity implements IRenderable, IMoveable {
+  zIndex = ZIndexes.Ship;
   shipName: ShipName;
   position: Victor;
   velocity: Victor;
   yaw: Victor;
   angularVelocity: number; // radians per second
-  zIndex: number;
   sprite: SpriteName;
   target: EntityId | null;
   turn: Turn;
@@ -37,14 +38,8 @@ export class Ship extends Entity implements IRenderable, IMoveable {
    */
   cooldowns: Map<ItemName, number>;
 
-  constructor(args: {
-    spawned: number;
-    shipName: ShipName;
-    team: Team;
-    position: Victor;
-    yaw: Victor;
-  }) {
-    super(args.spawned);
+  constructor(args: { shipName: ShipName; team: Team; position: Victor; yaw: Victor }) {
+    super();
 
     this.shipName = args.shipName;
     this.yaw = args.yaw.clone();
@@ -52,7 +47,6 @@ export class Ship extends Entity implements IRenderable, IMoveable {
     this.angularVelocity = 0;
     this.velocity = new Victor(0, 0);
     this.sprite = "BlueShip";
-    this.zIndex = 1;
     this.target = null;
     this.turn = "None";
     this.thrust = "None";

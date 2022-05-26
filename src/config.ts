@@ -1,4 +1,4 @@
-import { ShipSize } from "./definitions/Ships";
+import { Size } from "./types/Ship";
 
 export const MAP_ZOOM_LEVEL = 20;
 
@@ -14,7 +14,7 @@ export const MenuInputs = {
  * The amount that a ship's size affects the impulses of explosives.
  * Ie. a larger ship will be displaced less by an explosion.
  */
-export const InertiaFactors: Record<ShipSize, number> = {
+export const InertiaFactors: Record<Size, number> = {
   Massive: 0.25,
   Large: 0.5,
   Normal: 1.0,

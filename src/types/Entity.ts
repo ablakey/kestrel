@@ -1,16 +1,14 @@
-let nextId = 1;
+let nextId = 1; // Begin at one so that id is always truthy.
 
 export type EntityId = number;
 
 export class Entity {
   destroyed: boolean;
-  spawned: number;
   lifespan?: number;
   id: EntityId;
 
-  constructor(spawned: number) {
+  constructor() {
     this.destroyed = false;
-    this.spawned = spawned;
     this.id = nextId++;
   }
 }

@@ -15,8 +15,7 @@ async function main() {
   engine.entities.setPlayerShip(
     new PlayerShip({
       position: new Victor(0, 0),
-      shipType: "Blue",
-      spawned: 0,
+      shipName: "Blue",
       team: "Confederacy",
       yaw: new Victor(1, 0),
     })
