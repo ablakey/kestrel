@@ -5,7 +5,7 @@ import { asTypedObject } from "../utils";
 
 export type WeaponDefinition = ItemDefinition & {
   speed: number;
-  fireRate: number; // How many bullets per second are fired from this weapon.
+  cooldown: number; // How many seconds between shots.
   sprite: SpriteName;
   damage: number;
   maxRange: number; // range in units this weapon is effective at.  For AI.
@@ -93,4 +93,8 @@ export const weaponDefinitions = asTypedObject<WeaponDefinition>()({
 
 export const primaryWeaponNames = Object.entries(weaponDefinitions)
   .filter(([, d]) => d.type === "Primary")
+  .map(([n]) => n);
+
+export const secondaryWeaponNames = Object.entries(weaponDefinitions)
+  .filter(([, d]) => d.type === "Secondary")
   .map(([n]) => n);

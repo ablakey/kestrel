@@ -5,12 +5,14 @@ import { assert } from "./utils";
 export class EntityManager {
   private _entities: Map<EntityId, Entity>;
   private _ships: Map<EntityId, Ship>;
+  private _bullets: Map<EntityId, Bullet>;
   private _playerShip: PlayerShip | null;
 
   constructor() {
     this._playerShip = null;
     this._entities = new Map();
     this._ships = new Map();
+    this._bullets = new Map();
   }
 
   get entities() {
@@ -41,6 +43,11 @@ export class EntityManager {
   setPlayerShip(ship: PlayerShip) {
     this._playerShip = ship;
     this.addShip(ship);
+  }
+
+  addBullet(bullet: Bullet) {
+    this._entities.set(bullet.id, bullet);
+    this._bullets.set(bullet.id, bullet);
   }
 
   clearDestroyed() {

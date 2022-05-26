@@ -2,10 +2,10 @@ import { cloneDeep } from "lodash";
 import Victor from "victor";
 import { DamageEffect } from "../Effects";
 import { SpriteName } from "../factories/SpriteFactory";
-import { IRenderable } from "../interfaces";
+import { IMoveable, IRenderable } from "../interfaces";
 import { Item, ItemName, ShipName, WeaponName } from "../items";
 import { shipDefinitions } from "../items/ships";
-import { primaryWeaponDefinitions, primaryWeaponNames } from "../items/weapons";
+import { primaryWeaponNames } from "../items/weapons";
 import { Entity, EntityId } from "./Entity";
 
 export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
@@ -13,7 +13,7 @@ export type Turn = "None" | "Left" | "Right";
 export type Condition = "Alive" | "Disabled" | "Destroying";
 export type Size = "Small" | "Normal" | "Large" | "Massive";
 
-export class Ship extends Entity implements IRenderable {
+export class Ship extends Entity implements IRenderable, IMoveable {
   shipName: ShipName;
   position: Victor;
   velocity: Victor;
@@ -32,10 +32,10 @@ export class Ship extends Entity implements IRenderable {
   items: Item[];
 
   /**
-   * Each kind of item can have a stateful cooldown, representing seconds remaining until next use.
+   * Each kind of item can have a stateful cooldown, representing ms remaining until next use.
    * If a ship has multiple of the same item (eg. 3 Proton Cannons) that just means the cooldown is 1/3 as much.
    */
-  private cooldowns: Map<ItemName, number>;
+  cooldowns: Map<ItemName, number>;
 
   constructor(args: {
     spawned: number;
