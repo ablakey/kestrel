@@ -8,6 +8,7 @@ import { System } from "./System";
 
 export class CombatSystem extends System {
   private fireWeapon(ship: Ship, weaponName: WeaponName) {
+    console.log(weaponName);
     const weaponType = weaponDefinitions[weaponName];
 
     const position = ship.position

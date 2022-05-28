@@ -2,6 +2,7 @@ import { EntityManager } from "./EntityManager";
 import { SoundFactory } from "./factories/SoundFactory";
 import { SpriteFactory } from "./factories/SpriteFactory";
 import { CleanupSystem } from "./systems/CleanupSystem";
+import { CombatSystem } from "./systems/CombatSystem";
 import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
 import { PhysicsSystem } from "./systems/PhysicsSystem";
@@ -26,6 +27,7 @@ export class Engine {
   physicsSystem: PhysicsSystem;
   engineSystem: EngineSystem;
   cleanupSystem: CleanupSystem;
+  combatSystem: CombatSystem;
 
   constructor() {
     this.isPaused = false;
@@ -43,6 +45,7 @@ export class Engine {
     this.physicsSystem = new PhysicsSystem(this);
     this.engineSystem = new EngineSystem(this);
     this.cleanupSystem = new CleanupSystem(this);
+    this.combatSystem = new CombatSystem(this);
   }
 
   async initialize() {
@@ -75,20 +78,28 @@ export class Engine {
       this.engineSystem.update(ship);
     });
 
-    // TODO: more than just ships.  Asteroids, etc.
     this.entities.ships.forEach((ship) => {
       this.physicsSystem.update(ship, delta);
     });
 
-    // TODO: more than just ships.
+    this.entities.ships.forEach((ship) => {
+      this.combatSystem.update(ship);
+    });
+
     this.entities.ships.forEach((ship) => {
       this.renderSystem.update(ship);
     });
 
-    // TODO: more than just ships.
-    this.entities.ships.forEach((ship) => {
-      this.cleanupSystem.update(ship, delta);
-    });
+    // TODO
+    // TODO
+    // TODO: updateAll Should be implemented on each system, and own the understanding of what entities to update.
+    // This keeps that understanding closer to the system itself and helps abstract it from the Engine, that shouldn't
+    // have to care.
+    // TODO
+    this.cleanupSystem.updateAll(this.entities.ships.forEach, delta);
+    // this.entities.ships.forEach((ship) => {
+    //   this.cleanupSystem.update(ship, delta);
+    // });
 
     this.entities.clearDestroyed();
 

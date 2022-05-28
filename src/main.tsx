@@ -2,10 +2,17 @@ import Victor from "victor";
 import { Engine } from "./Engine";
 import { PlayerShip } from "./types/Ship";
 
+declare global {
+  interface Window {
+    engine: any;
+  }
+}
+
 async function main() {
   const engine = new Engine();
   await engine.initialize();
   engine.start();
+  window.engine = engine;
   // function render() {
   //   ReactDOM.render(<Layout game={game} />, document.getElementById("ui"));
   //   requestAnimationFrame(render);

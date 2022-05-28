@@ -27,6 +27,8 @@ export class Bullet extends Entity implements IRenderable, IMoveable {
     this.weaponName = args.weaponName; // Must be assigned first to provide access to definition in constructor.
 
     this.angularVelocity = 0;
+    this.weaponName = args.weaponName;
+    this.target = args.target;
     this.position = args.position.clone();
     this.target = args.target;
     this.velocity = args.yaw.clone().multiplyScalar(this.definition.speed);
