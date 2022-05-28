@@ -15,22 +15,22 @@ export type Condition = "Alive" | "Disabled" | "Destroying";
 export type Size = "Small" | "Normal" | "Large" | "Massive";
 
 export class Ship extends Entity implements IRenderable, IMoveable {
-  zIndex = ZIndexes.Ship;
-  shipName: ShipName;
-  position: Victor;
-  velocity: Victor;
-  yaw: Victor;
   angularVelocity: number; // radians per second
-  sprite: SpriteName;
-  target: EntityId | null;
-  turn: Turn;
-  thrust: "None" | "Forward";
+  condition: Condition;
+  effects: DamageEffect[];
   firePrimary: boolean;
   fireSecondary: boolean;
   hp: number;
-  effects: DamageEffect[];
-  condition: Condition;
   items: Item[];
+  position: Victor;
+  shipName: ShipName;
+  sprite: SpriteName;
+  target: EntityId | null;
+  thrust: "None" | "Forward";
+  turn: Turn;
+  velocity: Victor;
+  yaw: Victor;
+  zIndex = ZIndexes.Ship;
 
   /**
    * Each kind of item can have a stateful cooldown, representing ms remaining until next use.
@@ -40,24 +40,23 @@ export class Ship extends Entity implements IRenderable, IMoveable {
 
   constructor(args: { shipName: ShipName; team: Team; position: Victor; yaw: Victor }) {
     super();
+    this.shipName = args.shipName; // Must be assigned first for rest of constructor to access.
 
-    this.shipName = args.shipName;
-    this.yaw = args.yaw.clone();
-    this.position = args.position.clone();
     this.angularVelocity = 0;
-    this.velocity = new Victor(0, 0);
-    this.sprite = "BlueShip";
-    this.target = null;
-    this.turn = "None";
-    this.thrust = "None";
-    this.firePrimary = false;
-    this.fireSecondary = false;
-    this.hp = this.maxHp;
-    this.effects = [];
     this.condition = "Alive";
     this.cooldowns = new Map();
-
+    this.effects = [];
+    this.firePrimary = false;
+    this.fireSecondary = false;
+    this.hp = this.definition.maxHp;
     this.items = cloneDeep(this.definition.startingItems);
+    this.position = args.position.clone();
+    this.sprite = "BlueShip";
+    this.target = null;
+    this.thrust = "None";
+    this.turn = "None";
+    this.velocity = new Victor(0, 0);
+    this.yaw = args.yaw.clone();
   }
 
   get definition() {
@@ -68,6 +67,7 @@ export class Ship extends Entity implements IRenderable, IMoveable {
    * We don't just get from definition directly because these will be modified by buffs, inventory, etc.
    */
   get maxHp() {
+    console.log(this.definition, this.shipName);
     return this.definition.maxHp;
   }
 

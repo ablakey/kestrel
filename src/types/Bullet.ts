@@ -17,15 +17,20 @@ export class Bullet extends Entity implements IRenderable, IMoveable {
   target: EntityId | null;
   zIndex = ZIndexes.Bullet;
 
-  constructor(args: { position: Victor; yaw: Victor; weaponName: WeaponName; target?: EntityId }) {
+  constructor(args: {
+    position: Victor;
+    yaw: Victor;
+    weaponName: WeaponName;
+    target: EntityId | null;
+  }) {
     super();
+    this.weaponName = args.weaponName; // Must be assigned first to provide access to definition in constructor.
 
-    this.weaponName = args.weaponName;
-    this.target = args.target ?? null;
-    this.position = args.position.clone();
-    this.yaw = args.yaw.clone();
-    this.velocity = args.yaw.clone().multiplyScalar(this.definition.speed);
     this.angularVelocity = 0;
+    this.position = args.position.clone();
+    this.target = args.target;
+    this.velocity = args.yaw.clone().multiplyScalar(this.definition.speed);
+    this.yaw = args.yaw.clone();
   }
 
   get definition() {

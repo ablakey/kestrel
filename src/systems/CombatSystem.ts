@@ -17,7 +17,7 @@ export class CombatSystem extends System {
     const weaponError = 1 - weaponType.accuracy;
     const yaw = ship.yaw.clone().rotateBy(randomBetween(-weaponError, weaponError));
 
-    this.engine.entities.addBullet(new Bullet({ position, yaw, target: ship.target }));
+    this.engine.entities.addBullet(new Bullet({ position, yaw, target: ship.target, weaponName }));
     this.engine.soundFactory.playSound(weaponType.sound, { position: ship.position });
   }
 
@@ -27,6 +27,7 @@ export class CombatSystem extends System {
      * the cooldown.
      */
     if (ship.firePrimary) {
+      console.log("fire primary");
       ship.primaryWeapons.forEach((w) => {
         const weaponType = weaponDefinitions[w.name];
         if (!w.cooldown) {
