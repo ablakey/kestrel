@@ -139,7 +139,7 @@ export class RenderSystem extends System {
     return newSprite;
   }
 
-  public playerUpdate() {
+  public updatePlayer() {
     const playerShip = this.engine.entities.playerShip;
     /**
      * Camera follow player.

@@ -3,8 +3,6 @@ import Victor from "victor";
 
 export type ValueOf<T> = T[keyof T];
 
-export type DeepReadonly<T> = { readonly [K in keyof T]: DeepReadonly<T[K]> };
-
 /**
  * Allows the key of an obhject to be inferred but the value must be type U.
  */

@@ -52,7 +52,7 @@ export class InputSystem extends System {
     });
   }
 
-  playerUpdate() {
+  updatePlayer() {
     if (this.engine.isPaused) {
       this.inputQueue.clear();
       return;

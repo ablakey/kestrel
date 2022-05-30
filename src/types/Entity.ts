@@ -4,8 +4,8 @@ export type EntityId = number;
 
 export class Entity {
   destroyed: boolean;
-  lifespan?: number;
   id: EntityId;
+  timeToDestroyed?: number; // ms until entity should be flagged as destroyed.
 
   constructor() {
     this.destroyed = false;

@@ -15,7 +15,8 @@ export class Engine {
   entities: EntityManager;
   volume: number;
 
-  // TODO: Game state should be in a .state object.  But overall things not related to the game (like volume) aren't.
+  // TODO: Game state should be in a .state object.
+  //But overall things not related to the game (like volume) aren't.
 
   // Factories.
   spriteFactory: SpriteFactory;
@@ -71,48 +72,27 @@ export class Engine {
     this.elapsed += delta;
     this.lastTick = timestamp;
 
-    this.renderSystem.playerUpdate();
-    this.inputSystem.playerUpdate();
+    const ships = [...this.entities.ships.values()];
+    const bullets = [...this.entities.bullets.values()];
+    const shipsAndBullets = [...ships, ...bullets];
 
-    this.entities.ships.forEach((ship) => {
-      this.engineSystem.update(ship);
-    });
+    // Cleanup system must be done first so that other systems can clean up
+    // internal state in response. eg. a bullet is now destroyed = true so the
+    // RenderSystem will want to delete the sprite.
+    ships.forEach((e) => this.cleanupSystem.updateShip(e, delta));
+    bullets.forEach((e) => this.cleanupSystem.updateBullet(e, delta));
 
-    this.entities.ships.forEach((ship) => {
-      this.physicsSystem.update(ship, delta);
-    });
+    // Player-only updates.
+    this.renderSystem.updatePlayer();
+    this.inputSystem.updatePlayer();
 
-    this.entities.ships.forEach((ship) => {
-      this.combatSystem.update(ship);
-    });
-
-    this.entities.ships.forEach((ship) => {
-      this.renderSystem.update(ship);
-    });
-
-    // TODO
-    // TODO
-    // TODO: updateAll Should be implemented on each system, and own the understanding of what entities to update.
-    // This keeps that understanding closer to the system itself and helps abstract it from the Engine, that shouldn't
-    // have to care.
-    // TODO
-    this.cleanupSystem.updateAll(this.entities.ships.forEach, delta);
-    // this.entities.ships.forEach((ship) => {
-    //   this.cleanupSystem.update(ship, delta);
-    // });
+    ships.forEach((e) => this.engineSystem.update(e));
+    shipsAndBullets.forEach((e) => this.physicsSystem.update(e, delta));
+    ships.forEach((e) => this.combatSystem.update(e));
+    shipsAndBullets.forEach((e) => this.renderSystem.update(e));
 
     this.entities.clearDestroyed();
 
     requestAnimationFrame(this.tick.bind(this));
   }
 }
-
-/**
- * A loop for all systems.
- * A mutable store for components:
- * - ships
- * - planets
- * - bullets
- * - etc.
- *
- */

@@ -8,7 +8,6 @@ import { System } from "./System";
 
 export class CombatSystem extends System {
   private fireWeapon(ship: Ship, weaponName: WeaponName) {
-    console.log(weaponName);
     const weaponType = weaponDefinitions[weaponName];
 
     const position = ship.position
@@ -28,12 +27,11 @@ export class CombatSystem extends System {
      * the cooldown.
      */
     if (ship.firePrimary) {
-      console.log("fire primary");
       ship.primaryWeapons.forEach((w) => {
         const weaponType = weaponDefinitions[w.name];
-        if (!w.cooldown) {
+        if (!ship.cooldowns.get(w.name)) {
           this.fireWeapon(ship, w.name);
-          w.cooldown = weaponType.cooldown;
+          ship.cooldowns.set(w.name, weaponType.cooldown / w.count);
         }
       });
     }

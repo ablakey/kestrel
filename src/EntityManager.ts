@@ -1,3 +1,4 @@
+import { Bullet } from "./types/Bullet";
 import { Entity, EntityId } from "./types/Entity";
 import { PlayerShip, Ship } from "./types/Ship";
 import { assert } from "./utils";
@@ -21,6 +22,10 @@ export class EntityManager {
 
   get ships() {
     return this._ships;
+  }
+
+  get bullets() {
+    return this._bullets;
   }
 
   getShip(entityId: EntityId | null) {
@@ -55,6 +60,7 @@ export class EntityManager {
       if (e.destroyed) {
         this._entities.delete(e.id);
         this._ships.delete(e.id);
+        this._bullets.delete(e.id);
       }
     });
   }

@@ -8,7 +8,7 @@ import { Item, ItemName, ShipName, WeaponName } from "../items";
 import { shipDefinitions } from "../items/ships";
 import { primaryWeaponNames } from "../items/weapons";
 import { Entity, EntityId } from "./Entity";
-
+import { DeepReadonly } from "ts-essentials";
 export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
 export type Turn = "None" | "Left" | "Right";
 export type Condition = "Alive" | "Disabled" | "Destroying";
@@ -94,12 +94,16 @@ export class Ship extends Entity implements IRenderable, IMoveable {
   /**
    * Return an array of primary weapons, on this ship, along with their current cooldown.
    */
-  get primaryWeapons(): { name: WeaponName; count: number; cooldown: number }[] {
+  get primaryWeapons(): DeepReadonly<
+    {
+      name: WeaponName;
+      count: number;
+    }[]
+  > {
     const weapons = this.items.filter((i) => primaryWeaponNames.includes(i.name));
     return weapons.map((w) => ({
       name: w.name as WeaponName,
       count: w.count,
-      cooldown: this.cooldowns.get(w.name) ?? 0.0,
     }));
   }
 
