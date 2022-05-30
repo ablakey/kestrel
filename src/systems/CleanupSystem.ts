@@ -22,11 +22,11 @@ export class CleanupSystem extends System {
   }
 
   private update(entity: Entity, delta: number) {
-    if (entity.timeToDestroyed) {
-      entity.timeToDestroyed = Math.max(entity.timeToDestroyed - delta, 0);
+    if (entity.timeToLive) {
+      entity.timeToLive = Math.max(entity.timeToLive - delta, 0);
     }
 
-    if (entity.timeToDestroyed === 0) {
+    if (entity.timeToLive === 0) {
       entity.destroyed = true;
     }
   }

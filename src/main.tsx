@@ -1,6 +1,6 @@
 import Victor from "victor";
 import { Engine } from "./Engine";
-import { PlayerShip } from "./types/Ship";
+import { PlayerShip, Ship } from "./types/Ship";
 
 declare global {
   interface Window {
@@ -23,20 +23,19 @@ async function main() {
     new PlayerShip({
       position: new Victor(0, 0),
       shipName: "Blue",
-      team: "Confederacy",
+      team: "Player",
       yaw: new Victor(1, 0),
     })
   );
 
-  // engine.entities.addShip(
-  //   new Ship({
-  //     position: new Victor(-100, 100),
-  //     shipType: "Blue",
-  //     spawned: 0,
-  //     team: "Confederacy",
-  //     yaw: new Victor(0, 0),
-  //   })
-  // );
+  engine.entities.addShip(
+    new Ship({
+      position: new Victor(-100, 100),
+      shipName: "Red",
+      team: "Rebellion",
+      yaw: new Victor(0, 0),
+    })
+  );
 }
 
 main();

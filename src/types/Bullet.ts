@@ -33,7 +33,7 @@ export class Bullet extends Entity implements IRenderable, IMoveable {
     this.target = args.target;
     this.velocity = args.yaw.clone().multiplyScalar(this.definition.speed);
     this.yaw = args.yaw.clone();
-    this.timeToDestroyed = this.definition.lifespan;
+    this.timeToLive = this.definition.lifespan;
   }
 
   get definition() {

@@ -1,3 +1,4 @@
+import Victor from "victor";
 import { Bullet } from "./types/Bullet";
 import { Entity, EntityId } from "./types/Entity";
 import { PlayerShip, Ship } from "./types/Ship";
@@ -32,7 +33,11 @@ export class EntityManager {
     if (entityId === null) {
       return null;
     }
-    return this._ships.get(entityId);
+    return this._ships.get(entityId) ?? null;
+  }
+
+  getNearbyShips(position: Victor, distance: number) {
+    return [...this.ships.values()].filter((s) => s.position.distance(position) <= distance);
   }
 
   get playerShip() {

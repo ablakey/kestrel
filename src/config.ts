@@ -6,6 +6,8 @@ export const MIN_SPEED = 5; // Any speed below this is considered stopped.
 
 export const MIN_HIT_DISTANCE = 50; // Minimum distance where a collision is detected.
 
+export const EXPLOSION_SPREAD = 40; // How much the explosions of a breaking up ship spread out.
+
 export const MenuInputs = {
   Close: { key: "Escape" },
 };

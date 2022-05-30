@@ -15,7 +15,7 @@ export class CombatSystem extends System {
       .add(new Victor(ship.definition.radius, 0).rotate(ship.yaw.angle()));
 
     const weaponError = 1 - weaponType.accuracy;
-    const yaw = ship.yaw.clone().rotateBy(randomBetween(-weaponError, weaponError));
+    const yaw = ship.yaw.clone().rotate(randomBetween(-weaponError, weaponError));
 
     this.engine.entities.addBullet(new Bullet({ position, yaw, target: ship.target, weaponName }));
     this.engine.soundFactory.playSound(weaponType.sound, { position: ship.position });

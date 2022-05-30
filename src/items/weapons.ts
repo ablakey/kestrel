@@ -41,11 +41,11 @@ export const weaponDefinitions = asTypedObject<WeaponDefinition>()({
   ProtonCannon: {
     label: "Proton Cannon",
     speed: 1_200,
-    cooldown: 1_500,
+    cooldown: 1_000,
     sprite: "Proton",
     damage: 30,
     maxRange: 1_000,
-    lifespan: 300,
+    lifespan: 1_000,
     accuracy: 0.95,
     type: "Primary",
     sound: "Proton",

@@ -5,10 +5,11 @@ export type EntityId = number;
 export class Entity {
   destroyed: boolean;
   id: EntityId;
-  timeToDestroyed?: number; // ms until entity should be flagged as destroyed.
+  timeToLive: number | null; // ms until entity should be flagged as destroyed.
 
   constructor() {
     this.destroyed = false;
     this.id = nextId++;
+    this.timeToLive = null;
   }
 }

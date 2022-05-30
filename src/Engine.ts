@@ -3,6 +3,7 @@ import { SoundFactory } from "./factories/SoundFactory";
 import { SpriteFactory } from "./factories/SpriteFactory";
 import { CleanupSystem } from "./systems/CleanupSystem";
 import { CombatSystem } from "./systems/CombatSystem";
+import { EffectsSystem } from "./systems/EffectsSystem";
 import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
 import { PhysicsSystem } from "./systems/PhysicsSystem";
@@ -29,6 +30,7 @@ export class Engine {
   engineSystem: EngineSystem;
   cleanupSystem: CleanupSystem;
   combatSystem: CombatSystem;
+  effectsSystem: EffectsSystem;
 
   constructor() {
     this.isPaused = false;
@@ -47,6 +49,7 @@ export class Engine {
     this.engineSystem = new EngineSystem(this);
     this.cleanupSystem = new CleanupSystem(this);
     this.combatSystem = new CombatSystem(this);
+    this.effectsSystem = new EffectsSystem(this);
   }
 
   async initialize() {
@@ -86,11 +89,12 @@ export class Engine {
     this.renderSystem.updatePlayer();
     this.inputSystem.updatePlayer();
 
+    // System updates for many entities. Order matters.
     ships.forEach((e) => this.engineSystem.update(e));
     shipsAndBullets.forEach((e) => this.physicsSystem.update(e, delta));
     ships.forEach((e) => this.combatSystem.update(e));
     shipsAndBullets.forEach((e) => this.renderSystem.update(e));
-
+    ships.forEach((e) => this.effectsSystem.update(e, delta));
     this.entities.clearDestroyed();
 
     requestAnimationFrame(this.tick.bind(this));
