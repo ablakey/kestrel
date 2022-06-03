@@ -1,4 +1,5 @@
 import { assert } from "ts-essentials";
+import Victor from "victor";
 import { InertiaFactors, MIN_HIT_DISTANCE } from "../config";
 import { Bullet } from "../types/Bullet";
 import { System } from "./System";
@@ -66,8 +67,8 @@ export class BulletSystem extends System {
           applyHit(
             e,
             damage * damageFactor,
-            body.position,
-            (bullet.blastRadius - distance) * interiaFactor
+            bullet.position,
+            (blastRadius - distance) * interiaFactor
           );
         });
     }
@@ -77,7 +78,7 @@ export class BulletSystem extends System {
      */
     if (turnRate && bullet.target) {
       if (target) {
-        const turnDirection = Body.getTurnDirection(body, target.components.body.position);
+        const turnDirection = bullet.getTurn( target.position);
         if (turnDirection !== "None") {
           bullet.yaw.rotate(turnRate * deltaSeconds * (turnDirection === "Left" ? 1 : -1));
           bullet.velocity = new Victor(1, 0)

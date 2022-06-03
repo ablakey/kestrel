@@ -3,33 +3,29 @@ import Victor from "victor";
 import { ZIndexes } from "../config";
 import { DamageEffect } from "../Effects";
 import { SpriteName } from "../factories/SpriteFactory";
-import { IMoveable, IRenderable } from "../interfaces";
+import { IRenderable } from "../interfaces";
 import { Item, ItemName, ShipName, WeaponName } from "../items";
 import { shipDefinitions } from "../items/ships";
 import { primaryWeaponNames } from "../items/weapons";
-import { Entity, EntityId } from "./Entity";
+import { Entity, EntityId, Turn } from "./Entity";
 import { DeepReadonly } from "ts-essentials";
+
 export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
-export type Turn = "None" | "Left" | "Right";
 export type Condition = "Alive" | "Disabled" | "Destroying";
 export type Size = "Small" | "Normal" | "Large" | "Massive";
 
-export class Ship extends Entity implements IRenderable, IMoveable {
-  angularVelocity: number; // radians per second
+export class Ship extends Entity implements IRenderable {
   condition: Condition;
   effects: DamageEffect[];
   firePrimary: boolean;
   fireSecondary: boolean;
   hp: number;
   items: Item[];
-  position: Victor;
   shipName: ShipName;
   sprite: SpriteName;
   target: EntityId | null;
   thrust: "None" | "Forward";
   turn: Turn;
-  velocity: Victor;
-  yaw: Victor;
   zIndex = ZIndexes.Ship;
 
   /**
@@ -105,39 +101,6 @@ export class Ship extends Entity implements IRenderable, IMoveable {
       name: w.name as WeaponName,
       count: w.count,
     }));
-  }
-
-  /**
-   * Get the angle in radians between a source and a target.
-   * This is how far the source has to rotate to point at the target.  The sign (positive or negative)
-   * describes which way to turn to shrink the delta.
-   *
-   * From: https://math.stackexchange.com/questions/110080/shortest-way-to-achieve-target-angle
-   */
-  getDeltaAngle(target: Victor) {
-    const targetAngle = this.position.clone().subtract(target).norm().angle() - Math.PI;
-    return ((targetAngle - this.yaw.angle() + Math.PI * 3) % (Math.PI * 2)) - Math.PI;
-  }
-
-  /**
-   * Given a source, target, and tolerance (to prevent constant jittering), return which direction (or
-   * None) to turn towards.
-   */
-  getTurn(target: Victor, tolerance?: number): Turn {
-    const angle = this.getDeltaAngle(target);
-    if (Math.abs(angle) < (tolerance ?? 0.05)) {
-      return "None";
-    }
-
-    return angle > 0 ? "Left" : "Right";
-  }
-  /**
-   * Which way to turn to get the body facing the opposite direction of its velocity.
-   */
-  getOppositeTurn(): Turn {
-    const targetAngle = this.velocity.angle() + Math.PI;
-    const targetPosition = new Victor(1, 0).multiplyScalar(1_000_000_000).rotate(targetAngle);
-    return this.getTurn(targetPosition);
   }
 }
 
