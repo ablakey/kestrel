@@ -1,6 +1,7 @@
 import { EntityManager } from "./EntityManager";
 import { SoundFactory } from "./factories/SoundFactory";
 import { SpriteFactory } from "./factories/SpriteFactory";
+import { BulletSystem } from "./systems/BulletSystem";
 import { CleanupSystem } from "./systems/CleanupSystem";
 import { CombatSystem } from "./systems/CombatSystem";
 import { EffectsSystem } from "./systems/EffectsSystem";
@@ -31,6 +32,7 @@ export class Engine {
   cleanupSystem: CleanupSystem;
   combatSystem: CombatSystem;
   effectsSystem: EffectsSystem;
+  bulletSystem: BulletSystem;
 
   constructor() {
     this.isPaused = false;
@@ -50,6 +52,7 @@ export class Engine {
     this.cleanupSystem = new CleanupSystem(this);
     this.combatSystem = new CombatSystem(this);
     this.effectsSystem = new EffectsSystem(this);
+    this.bulletSystem = new BulletSystem(this);
   }
 
   async initialize() {
@@ -93,6 +96,7 @@ export class Engine {
     ships.forEach((e) => this.engineSystem.update(e));
     shipsAndBullets.forEach((e) => this.physicsSystem.update(e, delta));
     ships.forEach((e) => this.combatSystem.update(e));
+    bullets.forEach((e) => this.bulletSystem.update(e, delta));
     shipsAndBullets.forEach((e) => this.renderSystem.update(e));
     ships.forEach((e) => this.effectsSystem.update(e, delta));
     this.entities.clearDestroyed();
