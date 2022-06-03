@@ -1,15 +1,13 @@
-import { assert } from "ts-essentials";
 import Victor from "victor";
 import { InertiaFactors, MIN_HIT_DISTANCE } from "../config";
 import { Bullet } from "../types/Bullet";
+import { Ship } from "../types/Ship";
+import { getAngle } from "../utils";
 import { System } from "./System";
 
 export class BulletSystem extends System {
-
-
   update(bullet: Bullet, delta: number) {
-
-    const {blastRadius, damage, hitSound, dumbfire, turnRate} = bullet.definition;
+    const { blastRadius, damage, hitSound, dumbfire, turnRate } = bullet.definition;
 
     const deltaSeconds = delta / 1000;
     const target = this.engine.entities.getShip(bullet.target);
@@ -21,8 +19,10 @@ export class BulletSystem extends System {
      * If there is no target and it's not dumbfire, there will be no collision candidates.
      */
     const collisionCandidates = dumbfire
-      ? this.engine.entities.ships.values() : target ? [target] : []
-
+      ? this.engine.entities.ships.values()
+      : target
+      ? [target]
+      : [];
 
     for (const candidate of collisionCandidates) {
       if (candidate === null) {
@@ -36,7 +36,7 @@ export class BulletSystem extends System {
         bullet.destroyed = true;
 
         const interiaFactor = InertiaFactors[candidate.definition.size];
-        applyHit(candidate, damage, bullet.position, (blastRadius * interiaFactor) / 2);
+        this.applyHit(candidate, damage, bullet.position, (blastRadius * interiaFactor) / 2);
 
         if (hitSound) {
           this.engine.soundFactory.playSound(hitSound, {
@@ -53,19 +53,16 @@ export class BulletSystem extends System {
      * Do not double count the main target that was hit.
      */
     if (targetHit && blastRadius) {
-      const nearbyShips = this.engine.entities.getNearbyShips(
-        bullet.position,
-        blastRadius
-      );
+      const nearbyShips = this.engine.entities.getNearbyShips(bullet.position, blastRadius);
 
       nearbyShips
-        .filter((e) => e.id !== targetHit)
-        .forEach((e) => {
-          const distance = bullet.position.distance(e.position);
-          const interiaFactor = InertiaFactors[e.definition.size];
+        .filter((ship) => ship.id !== targetHit)
+        .forEach((ship) => {
+          const distance = bullet.position.distance(ship.position);
+          const interiaFactor = InertiaFactors[ship.definition.size];
           const damageFactor = (blastRadius - distance) / blastRadius;
-          applyHit(
-            e,
+          this.applyHit(
+            ship,
             damage * damageFactor,
             bullet.position,
             (blastRadius - distance) * interiaFactor
@@ -78,7 +75,7 @@ export class BulletSystem extends System {
      */
     if (turnRate && bullet.target) {
       if (target) {
-        const turnDirection = bullet.getTurn( target.position);
+        const turnDirection = bullet.getTurn(target.position);
         if (turnDirection !== "None") {
           bullet.yaw.rotate(turnRate * deltaSeconds * (turnDirection === "Left" ? 1 : -1));
           bullet.velocity = new Victor(1, 0)
@@ -88,5 +85,20 @@ export class BulletSystem extends System {
       }
     }
   }
+
+  /**
+   * Apply damage to a given ship. If a force is applied, adjust the ship's velocity by that amount.
+   */
+  private applyHit(ship: Ship, damage: number, origin?: Victor, force?: number) {
+    ship.effects.push({ damage });
+
+    /**
+     * If an explosion origin and a force, Apply an impulse.
+     */
+    if (origin && force) {
+      const angle = getAngle(origin, ship.position);
+      const vector = new Victor(1, 0).rotate(angle).multiplyScalar(Math.max(force, 0));
+      ship.velocity.add(vector);
+    }
   }
 }
