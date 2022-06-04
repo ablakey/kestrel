@@ -5,7 +5,11 @@ import { getRandomPosition } from "../utils";
 import { System } from "./System";
 
 export class EffectsSystem extends System {
-  update(ship: Ship, delta: number) {
+  update() {
+    this.engine.entities.ships.forEach(this.updateOne);
+  }
+
+  private updateOne(ship: Ship) {
     /**
      * Apply damage.
      */

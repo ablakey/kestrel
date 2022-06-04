@@ -1,3 +1,4 @@
+import autoBind from "auto-bind";
 import { Engine } from "../Engine";
 
 export class System {
@@ -5,5 +6,6 @@ export class System {
 
   constructor(engine: Engine) {
     this.engine = engine;
+    autoBind(this); // TODO
   }
 }

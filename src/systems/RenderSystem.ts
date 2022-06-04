@@ -184,7 +184,13 @@ export class RenderSystem extends System {
     }
   }
 
-  public update(entity: IRenderable) {
+  update() {
+    this.engine.entities.ships.forEach(this.updateOne);
+    this.engine.entities.bullets.forEach(this.updateOne);
+    this.engine.entities.doodads.forEach(this.updateOne);
+  }
+
+  private updateOne(entity: IRenderable) {
     const sprite = this.getOrCreateSprite(entity);
 
     if (entity.destroyed) {

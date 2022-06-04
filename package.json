@@ -52,6 +52,7 @@
     "typescript": "^4.4.4"
   },
   "dependencies": {
+    "auto-bind": "^5.0.1",
     "howler": "^2.2.3",
     "lodash": "^4.17.21",
     "pixi.js": "^6.1.3",

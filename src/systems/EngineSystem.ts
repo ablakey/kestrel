@@ -4,7 +4,11 @@ import { Ship } from "../entities/Ship";
 import { System } from "./System";
 
 export class EngineSystem extends System {
-  update(ship: Ship) {
+  update() {
+    this.engine.entities.ships.forEach(this.updateOne);
+  }
+
+  private updateOne(ship: Ship) {
     // Update direction
     if (!ship.turnEnabled) {
       ship.angularVelocity = 0;

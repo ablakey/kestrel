@@ -72,12 +72,18 @@ export class EntityManager {
     this._bullets.set(bullet.id, bullet);
   }
 
+  /**
+   * Clear any entities from state that have destroyed = true set.
+   * Note that we try to delete entities from multiple maps out of laziness. This won't cause an error as entity ids are
+   * always unique.
+   */
   clearDestroyed() {
     this._entities.forEach((e) => {
       if (e.destroyed) {
         this._entities.delete(e.id);
         this._ships.delete(e.id);
         this._bullets.delete(e.id);
+        this._doodads.delete(e.id);
       }
     });
   }

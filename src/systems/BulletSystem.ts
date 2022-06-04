@@ -6,10 +6,14 @@ import { getAngle } from "../utils";
 import { System } from "./System";
 
 export class BulletSystem extends System {
-  update(bullet: Bullet, delta: number) {
+  update() {
+    this.engine.entities.bullets.forEach(this.updateOne);
+  }
+
+  private updateOne(bullet: Bullet) {
     const { blastRadius, damage, hitSound, dumbfire, turnRate } = bullet.definition;
 
-    const deltaSeconds = delta / 1000;
+    const deltaSeconds = this.engine.delta / 1000;
     const target = this.engine.entities.getShip(bullet.target);
     let targetHit: number | null = null;
 

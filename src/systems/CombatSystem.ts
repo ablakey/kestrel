@@ -7,6 +7,10 @@ import { randomBetween } from "../utils";
 import { System } from "./System";
 
 export class CombatSystem extends System {
+  update() {
+    this.engine.entities.ships.forEach(this.updateOne);
+  }
+
   private fireWeapon(ship: Ship, weaponName: WeaponName) {
     const weaponType = weaponDefinitions[weaponName];
 
@@ -21,7 +25,7 @@ export class CombatSystem extends System {
     this.engine.soundFactory.playSound(weaponType.sound, { position: ship.position });
   }
 
-  update(ship: Ship) {
+  private updateOne(ship: Ship) {
     /**
      * Fire all primary weapons not on cooldown. If ship has multiple primary weapons, reduce
      * the cooldown.

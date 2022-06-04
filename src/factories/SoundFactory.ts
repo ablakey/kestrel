@@ -42,7 +42,7 @@ export class SoundFactory extends BaseFactory {
     );
   }
 
-  public playSound(soundName: SoundName, opts?: { position: Victor }) {
+  playSound(soundName: SoundName, opts?: { position: Victor }) {
     const sound = new Howl({
       src: [soundUrls[soundName]],
       volume: this.engine.volume * GLOBAL_VOLUME_ADJUST,

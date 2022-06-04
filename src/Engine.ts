@@ -14,6 +14,7 @@ export class Engine {
   isPaused: boolean;
   lastTick: number;
   elapsed: number;
+  delta: number;
   entities: EntityManager;
   volume: number;
 
@@ -38,6 +39,7 @@ export class Engine {
     this.isPaused = false;
     this.lastTick = 0;
     this.elapsed = 0;
+    this.delta = 0;
     this.volume = 0.5; // TODO from config.
 
     this.entities = new EntityManager();
@@ -74,34 +76,27 @@ export class Engine {
      * We must handle time with an intermediate value, otherwise pausing the game would
      * break things in fun ways as the timestamp kept ticking.
      */
-    const delta = timestamp - this.lastTick;
-    this.elapsed += delta;
+    this.delta = timestamp - this.lastTick;
+    this.elapsed += this.delta;
     this.lastTick = timestamp;
-
-    const entities = [...this.entities.entities.values()];
-    const ships = [...this.entities.ships.values()];
-    const bullets = [...this.entities.bullets.values()];
-    const doodads = [...this.entities.doodads.values()];
-
-    const shipsBullets = [...ships, ...bullets];
 
     // Cleanup system must be done first so that other systems can clean up
     // internal state in response. eg. a bullet is now destroyed = true so the
     // RenderSystem will want to delete the sprite.
-    ships.forEach((e) => this.cleanupSystem.updateShip(e, delta));
-    [...bullets, ...doodads].forEach((e) => this.cleanupSystem.update(e, delta));
+    this.cleanupSystem.update();
 
     // Player-only updates.
     this.renderSystem.updatePlayer();
     this.inputSystem.updatePlayer();
 
     // System updates for many entities. Order matters.
-    ships.forEach((e) => this.engineSystem.update(e));
-    shipsBullets.forEach((e) => this.physicsSystem.update(e, delta));
-    ships.forEach((e) => this.combatSystem.update(e));
-    bullets.forEach((e) => this.bulletSystem.update(e, delta));
-    entities.forEach((e) => this.renderSystem.update(e));
-    ships.forEach((e) => this.effectsSystem.update(e, delta));
+    this.engineSystem.update();
+    this.physicsSystem.update();
+    this.combatSystem.update();
+    this.bulletSystem.update();
+    this.renderSystem.update();
+    this.effectsSystem.update();
+
     this.entities.clearDestroyed();
 
     requestAnimationFrame(this.tick.bind(this));
