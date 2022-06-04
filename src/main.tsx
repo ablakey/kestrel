@@ -1,6 +1,6 @@
 import Victor from "victor";
 import { Engine } from "./Engine";
-import { PlayerShip, Ship } from "./types/Ship";
+import { PlayerShip, Ship } from "./entities/Ship";
 
 declare global {
   interface Window {

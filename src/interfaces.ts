@@ -1,6 +1,6 @@
 import Victor from "victor";
 import { SpriteName } from "./factories/SpriteFactory";
-import { Entity } from "./types/Entity";
+import { Entity } from "./entities/Entity";
 
 export interface IRenderable extends Entity {
   position: Victor;

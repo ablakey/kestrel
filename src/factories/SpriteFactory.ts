@@ -82,6 +82,7 @@ export class SpriteFactory extends BaseFactory {
     }
 
     if (name in animatedSpriteData) {
+      console.log(name);
       return this.createAnimatedSprite(name as AnimatedSpriteName);
     }
 

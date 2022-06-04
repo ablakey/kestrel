@@ -1,7 +1,7 @@
 import Victor from "victor";
 import { InertiaFactors, MIN_HIT_DISTANCE } from "../config";
-import { Bullet } from "../types/Bullet";
-import { Ship } from "../types/Ship";
+import { Bullet } from "../entities/Bullet";
+import { Ship } from "../entities/Ship";
 import { getAngle } from "../utils";
 import { System } from "./System";
 

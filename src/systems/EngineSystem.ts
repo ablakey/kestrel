@@ -1,6 +1,6 @@
 import Victor from "victor";
 import { MIN_SPEED } from "../config";
-import { Ship } from "../types/Ship";
+import { Ship } from "../entities/Ship";
 import { System } from "./System";
 
 export class EngineSystem extends System {

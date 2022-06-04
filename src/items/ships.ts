@@ -1,6 +1,6 @@
 import { Item, ItemDefinition } from ".";
 import { SpriteName } from "../factories/SpriteFactory";
-import { Size } from "../types/Ship";
+import { Size } from "../entities/Ship";
 import { asTypedObject } from "../utils";
 
 export type ShipDefinition = ItemDefinition & {

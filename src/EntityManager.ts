@@ -1,13 +1,14 @@
 import Victor from "victor";
-import { Bullet } from "./types/Bullet";
-import { Entity, EntityId } from "./types/Entity";
-import { PlayerShip, Ship } from "./types/Ship";
+import { Bullet } from "./entities/Bullet";
+import { Entity, EntityId } from "./entities/Entity";
+import { PlayerShip, Ship } from "./entities/Ship";
 import { assert } from "./utils";
 
 export class EntityManager {
   private _entities: Map<EntityId, Entity>;
   private _ships: Map<EntityId, Ship>;
   private _bullets: Map<EntityId, Bullet>;
+  private _visualEffects: Map<EntityId, VisualEffect>;
   private _playerShip: PlayerShip | null;
 
   constructor() {
@@ -15,6 +16,7 @@ export class EntityManager {
     this._entities = new Map();
     this._ships = new Map();
     this._bullets = new Map();
+    this._visualEffects = new Map();
   }
 
   get entities() {
@@ -27,6 +29,10 @@ export class EntityManager {
 
   get bullets() {
     return this._bullets;
+  }
+
+  get visualEffects() {
+    return this._visualEffects;
   }
 
   getShip(entityId: EntityId | null) {

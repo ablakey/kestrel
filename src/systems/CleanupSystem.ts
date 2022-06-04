@@ -1,6 +1,6 @@
-import { Bullet } from "../types/Bullet";
-import { Entity } from "../types/Entity";
-import { Ship } from "../types/Ship";
+import { Bullet } from "../entities/Bullet";
+import { Entity } from "../entities/Entity";
+import { Ship } from "../entities/Ship";
 import { System } from "./System";
 
 export class CleanupSystem extends System {

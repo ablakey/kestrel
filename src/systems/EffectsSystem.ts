@@ -1,5 +1,5 @@
 import { EXPLOSION_SPREAD } from "../config";
-import { Ship } from "../types/Ship";
+import { Ship } from "../entities/Ship";
 import { getRandomPosition } from "../utils";
 import { System } from "./System";
 
@@ -26,7 +26,7 @@ export class EffectsSystem extends System {
       // Calculate a random position
       const exposionPosition = getRandomPosition(ship.position, EXPLOSION_SPREAD);
 
-      // this.engine.doodadFactory.spawnSprite(exposionPosition, "SmallExplosion");
+      this.engine.doodadFactory.spawnSprite(exposionPosition, "SmallExplosion");
       this.engine.soundFactory.playSound("ShipBreaksUp", { position: ship.position });
     }
 

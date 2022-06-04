@@ -1,8 +1,8 @@
 import Victor from "victor";
 import { WeaponName } from "../items";
 import { weaponDefinitions } from "../items/weapons";
-import { Bullet } from "../types/Bullet";
-import { Ship } from "../types/Ship";
+import { Bullet } from "../entities/Bullet";
+import { Ship } from "../entities/Ship";
 import { randomBetween } from "../utils";
 import { System } from "./System";
 

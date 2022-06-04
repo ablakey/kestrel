@@ -1,4 +1,4 @@
-import { Size } from "./types/Ship";
+import { Size } from "./entities/Ship";
 
 export const MAP_ZOOM_LEVEL = 20;
 
