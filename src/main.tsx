@@ -1,6 +1,8 @@
 import Victor from "victor";
 import { Engine } from "./Engine";
 import { PlayerShip, Ship } from "./entities/Ship";
+import { Layout } from "./UI/Layout";
+import { createRoot } from "react-dom/client";
 
 declare global {
   interface Window {
@@ -13,11 +15,14 @@ async function main() {
   await engine.initialize();
   engine.start();
   window.engine = engine;
-  // function render() {
-  //   ReactDOM.render(<Layout game={game} />, document.getElementById("ui"));
-  //   requestAnimationFrame(render);
-  // }
-  // render();
+
+  const root = createRoot(document.getElementById("ui")!);
+
+  function render() {
+    root.render(<Layout />);
+    requestAnimationFrame(render);
+  }
+  render();
 
   engine.entities.setPlayerShip(
     new PlayerShip({

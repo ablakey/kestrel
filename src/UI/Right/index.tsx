@@ -1,21 +1,7 @@
-import { Inventory } from "../../Components/Inventory";
-import { ShipEntity } from "../../Factories/ShipFactory";
-import { useGame } from "../../utils";
-import { Info } from "./Info";
 import { Minimap } from "./Minimap";
 import { Nav } from "./Nav";
-import { Stats } from "./Stats";
-import { Target } from "./Target";
-import { Weapon } from "./Weapon";
 
 export function Right() {
-  const game = useGame();
-
-  const player = game.entities.getPlayer();
-  const { offensive, health } = player.components;
-
-  const target = game.entities.get(offensive.target) as ShipEntity;
-
   return (
     <div
       style={{
@@ -30,11 +16,7 @@ export function Right() {
       }}
     >
       <Minimap />
-      <Stats hp={health.hp} />
       <Nav />
-      <Weapon ammoInstance={Inventory.getSelectedAmmo(player)} />
-      <Target target={target} />
-      <Info entityCount={game.entities.length} player={player} />
     </div>
   );
 }
