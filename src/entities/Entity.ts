@@ -1,5 +1,6 @@
 import Victor from "victor";
-import { IMoveable } from "../interfaces";
+import { SpriteName } from "../factories/SpriteFactory";
+import { IMoveable, IRenderable } from "../interfaces";
 
 let nextId = 1; // Begin at one so that id is always truthy.
 
@@ -10,7 +11,7 @@ export type Turn = "None" | "Left" | "Right";
  * In this game, an Entity is anything that has a position and can move.
  * Yes, this is not really ECS
  */
-export class Entity implements IMoveable {
+export class Entity implements IMoveable, IRenderable {
   destroyed: boolean;
   id: EntityId;
   timeToLive: number | null; // ms until entity should be flagged as destroyed.
@@ -18,6 +19,7 @@ export class Entity implements IMoveable {
   yaw: Victor;
   velocity: Victor;
   angularVelocity: number;
+  zIndex: number;
 
   constructor() {
     this.destroyed = false;
@@ -29,6 +31,15 @@ export class Entity implements IMoveable {
     this.position = new Victor(1, 0);
     this.velocity = new Victor(1, 0);
     this.angularVelocity = 0;
+    this.zIndex = 1;
+  }
+
+  get definition(): { sprite: SpriteName } {
+    throw new Error("Not implemented by subclass.");
+  }
+
+  get sprite() {
+    return this.definition.sprite;
   }
 
   /**

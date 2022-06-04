@@ -78,15 +78,18 @@ export class Engine {
     this.elapsed += delta;
     this.lastTick = timestamp;
 
+    const entities = [...this.entities.entities.values()];
     const ships = [...this.entities.ships.values()];
     const bullets = [...this.entities.bullets.values()];
-    const shipsAndBullets = [...ships, ...bullets];
+    const doodads = [...this.entities.doodads.values()];
+
+    const shipsBullets = [...ships, ...bullets];
 
     // Cleanup system must be done first so that other systems can clean up
     // internal state in response. eg. a bullet is now destroyed = true so the
     // RenderSystem will want to delete the sprite.
     ships.forEach((e) => this.cleanupSystem.updateShip(e, delta));
-    bullets.forEach((e) => this.cleanupSystem.updateBullet(e, delta));
+    [...bullets, ...doodads].forEach((e) => this.cleanupSystem.update(e, delta));
 
     // Player-only updates.
     this.renderSystem.updatePlayer();
@@ -94,10 +97,10 @@ export class Engine {
 
     // System updates for many entities. Order matters.
     ships.forEach((e) => this.engineSystem.update(e));
-    shipsAndBullets.forEach((e) => this.physicsSystem.update(e, delta));
+    shipsBullets.forEach((e) => this.physicsSystem.update(e, delta));
     ships.forEach((e) => this.combatSystem.update(e));
     bullets.forEach((e) => this.bulletSystem.update(e, delta));
-    shipsAndBullets.forEach((e) => this.renderSystem.update(e));
+    entities.forEach((e) => this.renderSystem.update(e));
     ships.forEach((e) => this.effectsSystem.update(e, delta));
     this.entities.clearDestroyed();
 

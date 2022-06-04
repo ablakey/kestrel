@@ -16,12 +16,7 @@ export class CleanupSystem extends System {
     this.update(ship, delta);
   }
 
-  updateBullet(bullet: Bullet, delta: number) {
-    this.update(bullet, delta);
-    // TODO
-  }
-
-  private update(entity: Entity, delta: number) {
+  update(entity: Entity, delta: number) {
     if (entity.timeToLive) {
       entity.timeToLive = Math.max(entity.timeToLive - delta, 0);
     }

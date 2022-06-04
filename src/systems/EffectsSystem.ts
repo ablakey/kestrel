@@ -1,4 +1,5 @@
 import { EXPLOSION_SPREAD } from "../config";
+import { Doodad } from "../entities/Doodad";
 import { Ship } from "../entities/Ship";
 import { getRandomPosition } from "../utils";
 import { System } from "./System";
@@ -22,16 +23,22 @@ export class EffectsSystem extends System {
       ship.timeToLive = 3000;
     }
 
+    /**
+     * Spawn explosions and sounds occasionally.
+     */
     if (ship.condition === "Destroying" && Math.random() < 0.05) {
-      // Calculate a random position
       const exposionPosition = getRandomPosition(ship.position, EXPLOSION_SPREAD);
+      this.engine.entities.addDoodad(
+        new Doodad({ name: "SmallExplosion", position: exposionPosition })
+      );
 
-      this.engine.doodadFactory.spawnSprite(exposionPosition, "SmallExplosion");
       this.engine.soundFactory.playSound("ShipBreaksUp", { position: ship.position });
     }
 
     if (ship.timeToLive !== null && ship.timeToLive <= 0) {
-      // this.engine.doodadFactory.spawnSprite(ship.position.clone(), "Explosion");
+      this.engine.entities.addDoodad(
+        new Doodad({ name: "LargeExplosion", position: ship.position })
+      );
       this.engine.soundFactory.playSound("ShipExplodes", { position: ship.position });
       ship.destroyed = true;
     }

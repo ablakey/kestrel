@@ -1,14 +1,13 @@
 import { cloneDeep } from "lodash";
+import { DeepReadonly } from "ts-essentials";
 import Victor from "victor";
 import { ZIndexes } from "../config";
+import { Item, ItemName, ShipName, WeaponName } from "../definitions";
+import { shipDefinitions } from "../definitions/ships";
+import { primaryWeaponNames } from "../definitions/weapons";
 import { DamageEffect } from "../Effects";
-import { SpriteName } from "../factories/SpriteFactory";
 import { IRenderable } from "../interfaces";
-import { Item, ItemName, ShipName, WeaponName } from "../items";
-import { shipDefinitions } from "../items/ships";
-import { primaryWeaponNames } from "../items/weapons";
 import { Entity, EntityId, Turn } from "./Entity";
-import { DeepReadonly } from "ts-essentials";
 
 export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
 export type Condition = "Alive" | "Disabled" | "Destroying";
@@ -22,7 +21,6 @@ export class Ship extends Entity implements IRenderable {
   hp: number;
   items: Item[];
   shipName: ShipName;
-  sprite: SpriteName;
   target: EntityId | null;
   thrust: "None" | "Forward";
   turn: Turn;
@@ -47,7 +45,6 @@ export class Ship extends Entity implements IRenderable {
     this.hp = this.definition.maxHp;
     this.items = cloneDeep(this.definition.startingItems);
     this.position = args.position.clone();
-    this.sprite = "BlueShip";
     this.target = null;
     this.thrust = "None";
     this.turn = "None";

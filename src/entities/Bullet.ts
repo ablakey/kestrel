@@ -1,8 +1,8 @@
 import Victor from "victor";
 import { ZIndexes } from "../config";
 import { IMoveable, IRenderable } from "../interfaces";
-import { WeaponName } from "../items";
-import { weaponDefinitions } from "../items/weapons";
+import { WeaponName } from "../definitions";
+import { weaponDefinitions } from "../definitions/weapons";
 import { Entity, EntityId } from "./Entity";
 
 /**
@@ -10,10 +10,6 @@ import { Entity, EntityId } from "./Entity";
  */
 export class Bullet extends Entity implements IRenderable, IMoveable {
   weaponName: WeaponName;
-  angularVelocity: number;
-  position: Victor;
-  yaw: Victor;
-  velocity: Victor;
   target: EntityId | null;
   zIndex = ZIndexes.Bullet;
 
@@ -38,9 +34,5 @@ export class Bullet extends Entity implements IRenderable, IMoveable {
 
   get definition() {
     return weaponDefinitions[this.weaponName];
-  }
-
-  get sprite() {
-    return this.definition.sprite;
   }
 }

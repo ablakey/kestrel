@@ -1,5 +1,6 @@
 import Victor from "victor";
 import { Bullet } from "./entities/Bullet";
+import { Doodad } from "./entities/Doodad";
 import { Entity, EntityId } from "./entities/Entity";
 import { PlayerShip, Ship } from "./entities/Ship";
 import { assert } from "./utils";
@@ -8,7 +9,7 @@ export class EntityManager {
   private _entities: Map<EntityId, Entity>;
   private _ships: Map<EntityId, Ship>;
   private _bullets: Map<EntityId, Bullet>;
-  private _visualEffects: Map<EntityId, VisualEffect>;
+  private _doodads: Map<EntityId, Doodad>;
   private _playerShip: PlayerShip | null;
 
   constructor() {
@@ -16,7 +17,7 @@ export class EntityManager {
     this._entities = new Map();
     this._ships = new Map();
     this._bullets = new Map();
-    this._visualEffects = new Map();
+    this._doodads = new Map();
   }
 
   get entities() {
@@ -31,8 +32,8 @@ export class EntityManager {
     return this._bullets;
   }
 
-  get visualEffects() {
-    return this._visualEffects;
+  get doodads() {
+    return this._doodads;
   }
 
   getShip(entityId: EntityId | null) {
@@ -54,6 +55,11 @@ export class EntityManager {
   addShip(ship: Ship) {
     this._entities.set(ship.id, ship);
     this._ships.set(ship.id, ship);
+  }
+
+  addDoodad(doodad: Doodad) {
+    this._entities.set(doodad.id, doodad);
+    this._doodads.set(doodad.id, doodad);
   }
 
   setPlayerShip(ship: PlayerShip) {

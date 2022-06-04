@@ -18,6 +18,7 @@ type SpriteData = { image: string; scale: number };
 type SpritesheetData = { image: string; data: any };
 
 const staticSpriteData = asTypedObject<SpriteData>()({
+  Default: { image: pixelLaserGreen, scale: 10 },
   Laser: { image: pixelLaserGreen, scale: 1 },
   Proton: { image: pixelLaserBlue, scale: 1 },
   Missile: { image: missile, scale: 0.4 },
@@ -40,7 +41,7 @@ type AnimatedSpriteData = {
 };
 
 const animatedSpriteData = asTypedObject<AnimatedSpriteData>()({
-  Explosion: {
+  LargeExplosion: {
     sheet: "explosion",
     animationSpeed: 0.2,
     scale: 2.5,

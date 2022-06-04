@@ -1,6 +1,6 @@
 import Victor from "victor";
-import { WeaponName } from "../items";
-import { weaponDefinitions } from "../items/weapons";
+import { WeaponName } from "../definitions";
+import { weaponDefinitions } from "../definitions/weapons";
 import { Bullet } from "../entities/Bullet";
 import { Ship } from "../entities/Ship";
 import { randomBetween } from "../utils";

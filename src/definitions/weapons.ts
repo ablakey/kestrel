@@ -1,9 +1,9 @@
-import { AmmoName, ItemDefinition } from ".";
+import { AmmoName, BaseDefinition } from ".";
 import { SoundName } from "../factories/SoundFactory";
 import { SpriteName } from "../factories/SpriteFactory";
 import { asTypedObject } from "../utils";
 
-export type WeaponDefinition = ItemDefinition & {
+export type WeaponDefinition = BaseDefinition & {
   speed: number;
   cooldown: number; // How many seconds between shots.
   sprite: SpriteName;
