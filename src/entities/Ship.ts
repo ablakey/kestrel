@@ -2,9 +2,9 @@ import { cloneDeep } from "lodash";
 import { DeepReadonly } from "ts-essentials";
 import Victor from "victor";
 import { ZIndexes } from "../config";
-import { Item, ItemName, PrimaryWeaponName, ShipName, WeaponName } from "../definitions";
+import { Item, ItemName, PrimaryWeaponName, SecondaryWeaponName, ShipName } from "../definitions";
 import { shipDefinitions } from "../definitions/ships";
-import { primaryWeaponDefinitions, primaryWeaponNames } from "../definitions/weapons";
+import { primaryWeaponDefinitions } from "../definitions/weapons";
 import { DamageEffect } from "../Effects";
 import { IRenderable } from "../interfaces";
 import { Entity, EntityId, Turn } from "./Entity";
@@ -107,5 +107,5 @@ export class Ship extends Entity implements IRenderable {
 // But there will definitely be player-specific properties to manage?
 // Unless those live in the game state.
 export class PlayerShip extends Ship {
-  selectedSecondary: WeaponName | null = null;
+  selectedSecondary: SecondaryWeaponName | null = null;
 }
