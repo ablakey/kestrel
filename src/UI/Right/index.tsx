@@ -1,5 +1,6 @@
 import { Minimap } from "./Minimap";
 import { Nav } from "./Nav";
+import { Weapon } from "./Weapon";
 
 export function Right() {
   return (
@@ -17,6 +18,7 @@ export function Right() {
     >
       <Minimap />
       <Nav />
+      <Weapon />
     </div>
   );
 }

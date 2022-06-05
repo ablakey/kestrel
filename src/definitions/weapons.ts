@@ -1,9 +1,9 @@
-import { AmmoName, BaseDefinition } from ".";
+import { AmmoName, ItemDefinition } from ".";
 import { SoundName } from "../factories/SoundFactory";
 import { SpriteName } from "../factories/SpriteFactory";
 import { asTypedObject } from "../utils";
 
-export type WeaponDefinition = BaseDefinition & {
+export type WeaponDefinition = ItemDefinition & {
   speed: number;
   cooldown: number; // How many seconds between shots.
   sprite: SpriteName;
@@ -20,7 +20,7 @@ export type WeaponDefinition = BaseDefinition & {
   blastRadius: number; // Find other targets for damage. Usuaully 0.
 };
 
-export const weaponDefinitions = asTypedObject<WeaponDefinition>()({
+export const primaryWeaponDefinitions = asTypedObject<WeaponDefinition>()({
   LaserCannon: {
     speed: 1_100,
     cooldown: 2_000,
@@ -55,6 +55,9 @@ export const weaponDefinitions = asTypedObject<WeaponDefinition>()({
     dumbfire: true,
     blastRadius: 0,
   },
+});
+
+export const secondaryWeaponDefinitions = asTypedObject<WeaponDefinition>()({
   MissileRack: {
     label: "Missile Rack",
     accuracy: 1.0,
@@ -91,10 +94,4 @@ export const weaponDefinitions = asTypedObject<WeaponDefinition>()({
   },
 });
 
-export const primaryWeaponNames = Object.entries(weaponDefinitions)
-  .filter(([, d]) => d.type === "Primary")
-  .map(([n]) => n);
-
-export const secondaryWeaponNames = Object.entries(weaponDefinitions)
-  .filter(([, d]) => d.type === "Secondary")
-  .map(([n]) => n);
+export const weaponDefinitions = { ...primaryWeaponDefinitions, ...secondaryWeaponDefinitions };

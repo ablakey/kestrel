@@ -3,11 +3,18 @@ import { Engine } from "./Engine";
 import { PlayerShip, Ship } from "./entities/Ship";
 import { Layout } from "./UI/Layout";
 import { createRoot } from "react-dom/client";
+import React, { useContext } from "react";
 
 declare global {
   interface Window {
     engine: any;
   }
+}
+
+export const EngineContext = React.createContext(undefined as unknown as Engine); // TODO: a better default.
+
+export function useEngine() {
+  return useContext(EngineContext);
 }
 
 async function main() {
@@ -19,7 +26,11 @@ async function main() {
   const root = createRoot(document.getElementById("ui")!);
 
   function render() {
-    root.render(<Layout />);
+    root.render(
+      <EngineContext.Provider value={engine}>
+        <Layout />
+      </EngineContext.Provider>
+    );
     requestAnimationFrame(render);
   }
   render();
