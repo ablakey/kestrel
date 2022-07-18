@@ -1,7 +1,7 @@
-type States<Name extends string> = Record<Name, { new (): AiState<Name> }>;
+type States<Name extends string> = Record<Name, { new (): SimState<Name> }>;
 
-export class AiMachine<Name extends string> {
-  state: AiState<Name>;
+export class StateMachine<Name extends string> {
+  state: SimState<Name>;
   states: States<Name>;
 
   constructor(initialState: Name, states: States<Name>) {
@@ -25,13 +25,7 @@ export class AiMachine<Name extends string> {
   }
 }
 
-// export abstract class AiState<Name extends string> {
-//   entry?() {}
-//   exit?() {}
-//   abstract conditions: { [k in Name]?: () => boolean };
-// }
-
-export interface AiState<Name extends string> {
+export interface SimState<Name extends string> {
   entry?: () => void;
   exit?: () => void;
   conditions: { [k in Name]?: () => boolean };

@@ -7,6 +7,7 @@ import { shipDefinitions } from "../definitions/ships";
 import { primaryWeaponDefinitions } from "../definitions/weapons";
 import { DamageEffect } from "../Effects";
 import { IRenderable } from "../interfaces";
+import { createShipSim, ShipSim } from "../sim/ShipSim";
 import { Entity, EntityId, Turn } from "./Entity";
 
 export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
@@ -25,6 +26,7 @@ export class Ship extends Entity implements IRenderable {
   thrust: "None" | "Forward";
   turn: Turn;
   zIndex = ZIndexes.Ship;
+  sim: ShipSim | null;
 
   /**
    * Each kind of item can have a stateful cooldown, representing ms remaining until next use.
@@ -50,6 +52,7 @@ export class Ship extends Entity implements IRenderable {
     this.turn = "None";
     this.velocity = new Victor(0, 0);
     this.yaw = args.yaw.clone();
+    this.sim = args.team === "Player" ? null : createShipSim();
   }
 
   get definition() {
