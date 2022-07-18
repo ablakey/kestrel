@@ -1,9 +1,9 @@
 import { SimState, StateMachine } from "../StateMachine";
 
-type StateName = "Stopping" | "AimAt";
+export type StateName = "Stopping" | "AimAt";
 
 class StoppingState implements SimState<StateName> {
-  stateName: StateName = "Stopping";
+  name: StateName = "Stopping";
 
   conditions = {
     AimAt: this.toAimAt,
@@ -20,6 +20,7 @@ class StoppingState implements SimState<StateName> {
 }
 
 class AimAtState implements SimState<StateName> {
+  name: StateName = "AimAt";
   conditions = {};
 }
 

@@ -1,3 +1,5 @@
+import { StateName } from "./ShipSim";
+
 type States<Name extends string> = Record<Name, { new (): SimState<Name> }>;
 
 export class StateMachine<Name extends string> {
@@ -19,6 +21,7 @@ export class StateMachine<Name extends string> {
   }
 
   private transitionTo(stateName: Name) {
+    console.debug(`${}: ${this.state.name} -> ${stateName}`);
     this.state.exit?.();
     this.state = new this.states[stateName]();
     this.state.entry?.();
@@ -26,6 +29,7 @@ export class StateMachine<Name extends string> {
 }
 
 export interface SimState<Name extends string> {
+  name: StateName;
   entry?: () => void;
   exit?: () => void;
   conditions: { [k in Name]?: () => boolean };
