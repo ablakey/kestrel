@@ -13,7 +13,7 @@ export class StateMachine {
     this.states = states;
     this.state = new this.states[initialState](ship);
     this.state.entry?.();
-    console.debug(`${this.ship.shipType}_${this.ship.id}: ${this.state.name}`);
+    console.debug(`${this.ship.shipType} (${this.ship.id}): ${this.state.name}`);
   }
 
   tick() {
