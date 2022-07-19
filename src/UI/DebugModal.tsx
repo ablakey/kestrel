@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Victor from "victor";
-import { ShipName, Ships } from "../Inventory/Ships";
+import { ShipType, Ships } from "../Inventory/Ships";
 import { pickRandom, useGame, useKeypress } from "../utils";
 import { Dropdown } from "./Widgets/Dropdown";
 import { Modal } from "./Widgets/Modal";
@@ -8,12 +8,12 @@ import { Slider } from "./Widgets/Slider";
 
 const spawnShipOptions = Object.entries(Ships).map(([name, ship]) => ({
   label: ship.label,
-  value: name as ShipName,
+  value: name as ShipType,
 }));
 
 export function DebugModal() {
   const game = useGame();
-  const [selectedSpawn, setSelectedSpawn] = useState<ShipName>(spawnShipOptions[1].value);
+  const [selectedSpawn, setSelectedSpawn] = useState<ShipType>(spawnShipOptions[1].value);
 
   useKeypress(["Escape"], () => {
     game.setState((draft) => {
@@ -24,7 +24,7 @@ export function DebugModal() {
 
   function spawnShip() {
     game.shipFactory.create({
-      shipName: selectedSpawn,
+      shipType: selectedSpawn,
       team: pickRandom(["Rebellion", "Confederacy"]),
       position: new Victor(Math.random() * 1500 - 750, Math.random() * 1500 - 750),
       yaw: Math.random() * Math.PI,

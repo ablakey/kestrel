@@ -1,33 +1,33 @@
+import { Ship } from "../../entities/Ship";
 import { SimState, StateMachine } from "../StateMachine";
 
-export type StateName = "Stopping" | "AimAt";
+export type StateName = "Stopping" | "PointAt";
 
-class StoppingState implements SimState<StateName> {
+class StoppingState extends SimState {
   name: StateName = "Stopping";
 
   conditions = {
-    AimAt: this.toAimAt,
+    PointAt: this.toPointAt,
   };
 
   entry() {}
 
   exit() {}
 
-  toAimAt() {
-    //
+  toPointAt() {
     return false;
   }
 }
 
-class AimAtState implements SimState<StateName> {
-  name: StateName = "AimAt";
+class AimAtState extends SimState {
+  name: StateName = "PointAt";
   conditions = {};
 }
 
-export function createShipSim() {
-  return new StateMachine<StateName>("Stopping", {
+export function createShipSim(ship: Ship) {
+  return new StateMachine(ship, "Stopping", {
     Stopping: StoppingState,
-    AimAt: AimAtState,
+    PointAt: AimAtState,
   });
 }
 

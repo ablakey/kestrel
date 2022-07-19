@@ -38,7 +38,7 @@ async function main() {
   engine.entities.setPlayerShip(
     new PlayerShip({
       position: new Victor(0, 0),
-      shipName: "Blue",
+      shipType: "Blue",
       team: "Player",
       yaw: new Victor(1, 0),
     })
@@ -47,7 +47,7 @@ async function main() {
   engine.entities.addShip(
     new Ship({
       position: new Victor(-100, 100),
-      shipName: "Red",
+      shipType: "Red",
       team: "Rebellion",
       yaw: new Victor(0, 0),
     })

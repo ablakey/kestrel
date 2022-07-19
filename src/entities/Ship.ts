@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import { DeepReadonly } from "ts-essentials";
 import Victor from "victor";
 import { ZIndexes } from "../config";
-import { Item, ItemName, PrimaryWeaponName, SecondaryWeaponName, ShipName } from "../definitions";
+import { Item, ItemName, PrimaryWeaponName, SecondaryWeaponName, ShipType } from "../definitions";
 import { shipDefinitions } from "../definitions/ships";
 import { primaryWeaponDefinitions } from "../definitions/weapons";
 import { DamageEffect } from "../Effects";
@@ -21,7 +21,7 @@ export class Ship extends Entity implements IRenderable {
   fireSecondary: boolean;
   hp: number;
   items: Item[];
-  shipName: ShipName;
+  shipType: ShipType;
   target: EntityId | null;
   thrust: "None" | "Forward";
   turn: Turn;
@@ -34,9 +34,9 @@ export class Ship extends Entity implements IRenderable {
    */
   cooldowns: Map<ItemName, number>;
 
-  constructor(args: { shipName: ShipName; team: Team; position: Victor; yaw: Victor }) {
+  constructor(args: { shipType: ShipType; team: Team; position: Victor; yaw: Victor }) {
     super();
-    this.shipName = args.shipName; // Must be assigned first for rest of constructor to access.
+    this.shipType = args.shipType; // Must be assigned first for rest of constructor to access.
 
     this.angularVelocity = 0;
     this.condition = "Alive";
@@ -52,18 +52,18 @@ export class Ship extends Entity implements IRenderable {
     this.turn = "None";
     this.velocity = new Victor(0, 0);
     this.yaw = args.yaw.clone();
-    this.sim = args.team === "Player" ? null : createShipSim();
+    this.sim = args.team === "Player" ? null : createShipSim(this);
   }
 
   get definition() {
-    return shipDefinitions[this.shipName];
+    return shipDefinitions[this.shipType];
   }
 
   /**
    * We don't just get from definition directly because these will be modified by buffs, inventory, etc.
    */
   get maxHp() {
-    console.log(this.definition, this.shipName);
+    console.log(this.definition, this.shipType);
     return this.definition.maxHp;
   }
 

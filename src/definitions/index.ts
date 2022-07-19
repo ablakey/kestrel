@@ -23,5 +23,5 @@ export type ItemName = AmmoName | WeaponName | UpgradeName;
 export type Item = { name: ItemName; count: number };
 
 // Other things that aren't inventory items.
-export type ShipName = keyof typeof shipDefinitions;
+export type ShipType = keyof typeof shipDefinitions;
 export type DoodadName = keyof typeof doodadDefinitions;
