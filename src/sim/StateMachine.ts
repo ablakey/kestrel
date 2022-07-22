@@ -1,3 +1,4 @@
+import autoBind from "auto-bind";
 import { Ship } from "../entities/Ship";
 import { StateName } from "./ShipSim";
 
@@ -26,7 +27,7 @@ export class StateMachine {
   }
 
   private transitionTo(stateName: StateName) {
-    console.debug(`${this.ship.id}: ${this.state.name} -> ${stateName}`);
+    console.debug(`${this.ship.shipType} (${this.ship.id}): ${this.state.name} -> ${stateName}`);
     this.state.exit?.();
     this.state = new this.states[stateName](this.ship);
     this.state.entry?.();
@@ -46,5 +47,6 @@ export abstract class SimState {
   constructor(ship: Ship) {
     this.ship = ship;
     this.conditions = {};
+    autoBind(this);
   }
 }

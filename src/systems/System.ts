@@ -6,6 +6,6 @@ export class System {
 
   constructor(engine: Engine) {
     this.engine = engine;
-    autoBind(this); // TODO
+    autoBind(this);
   }
 }

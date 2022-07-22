@@ -1,3 +1,4 @@
+import { MIN_SPEED } from "../../config";
 import { Ship } from "../../entities/Ship";
 import { SimState, StateMachine } from "../StateMachine";
 
@@ -15,7 +16,7 @@ class StoppingState extends SimState {
   exit() {}
 
   toPointAt() {
-    return false;
+    return this.ship.velocity.magnitude() < MIN_SPEED;
   }
 }
 
