@@ -10,6 +10,7 @@ import { InputSystem } from "./systems/InputSystem";
 import { PhysicsSystem } from "./systems/PhysicsSystem";
 import { RenderSystem } from "./systems/RenderSystem";
 import { SimSystem } from "./systems/SimSystem";
+import { StrategySystem } from "./systems/StrategySystem";
 
 export class Engine {
   isPaused: boolean;
@@ -36,6 +37,7 @@ export class Engine {
   effectsSystem: EffectsSystem;
   bulletSystem: BulletSystem;
   simSystem: SimSystem;
+  strategySystem: StrategySystem;
 
   constructor() {
     this.isPaused = false;
@@ -58,6 +60,7 @@ export class Engine {
     this.effectsSystem = new EffectsSystem(this);
     this.bulletSystem = new BulletSystem(this);
     this.simSystem = new SimSystem(this);
+    this.strategySystem = new StrategySystem(this);
   }
 
   async initialize() {
@@ -93,6 +96,7 @@ export class Engine {
     this.inputSystem.updatePlayer();
 
     // System updates for many entities. Order matters.
+    this.strategySystem.update();
     this.simSystem.update();
     this.engineSystem.update();
     this.physicsSystem.update();

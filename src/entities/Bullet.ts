@@ -1,5 +1,5 @@
 import Victor from "victor";
-import { ZIndexes } from "../config";
+import { ZIndex } from "../config";
 import { IMoveable, IRenderable } from "../interfaces";
 import { WeaponName } from "../definitions";
 import { weaponDefinitions } from "../definitions/weapons";
@@ -11,7 +11,7 @@ import { Entity, EntityId } from "./Entity";
 export class Bullet extends Entity implements IRenderable, IMoveable {
   weaponName: WeaponName;
   target: EntityId | null;
-  zIndex = ZIndexes.Bullet;
+  zIndex = ZIndex.Bullet;
 
   constructor(args: {
     position: Victor;

@@ -1,4 +1,4 @@
-import { MenuInputs } from "../config";
+import { MenuInput } from "../config";
 import { useGame, useKeypress } from "../utils";
 import { Modal } from "./Widgets/Modal";
 import splashScreenImage from "../assets/images/splash_screen.png";
@@ -14,7 +14,7 @@ export function AboutModal() {
     });
   }
 
-  useKeypress([MenuInputs.Close.key], close);
+  useKeypress([MenuInput.Close.key], close);
 
   return (
     <Modal style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>

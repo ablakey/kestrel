@@ -39,3 +39,13 @@ Ships want to:
 
 
 STOPPING -> AIM_AT | PURSUE |
+
+
+
+## Strategy
+
+A ship will always have a Strategy.  This is used by the Sim to decide what states to transition into.
+
+A strategy will be set by a higher level system:  GameSimulation.   Ie. when a ship is spawned, it will be given a strategy.  Eg. a pirate is spawned, it is set to Attack.
+
+The target that pirate will attack will be set by the StrategySystem.  It looks at the current Strategy and then does things to populate the right state to conduct that strategy.

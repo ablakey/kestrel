@@ -8,7 +8,7 @@ export const MIN_HIT_DISTANCE = 50; // Minimum distance where a collision is det
 
 export const EXPLOSION_SPREAD = 40; // How much the explosions of a breaking up ship spread out.
 
-export const MenuInputs = {
+export const MenuInput = {
   Close: { key: "Escape" },
 };
 
@@ -16,14 +16,14 @@ export const MenuInputs = {
  * The amount that a ship's size affects the impulses of explosives.
  * Ie. a larger ship will be displaced less by an explosion.
  */
-export const InertiaFactors: Record<Size, number> = {
+export const InertiaFactor: Record<Size, number> = {
   Massive: 0.25,
   Large: 0.5,
   Normal: 1.0,
   Small: 2.0,
 };
 
-export const GameInputs = {
+export const GameInput = {
   // Movement.
   Thrust: { key: "ArrowUp" },
   RotateLeft: { key: "ArrowLeft" },
@@ -45,7 +45,7 @@ export const GameInputs = {
   showAbout: { key: "I", asEvent: true },
 } as const;
 
-export const ZIndexes = {
+export const ZIndex = {
   Planet: 300,
   Ship: 400,
   Bullet: 500,

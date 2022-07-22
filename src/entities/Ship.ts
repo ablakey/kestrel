@@ -1,7 +1,7 @@
 import { cloneDeep } from "lodash";
 import { DeepReadonly } from "ts-essentials";
 import Victor from "victor";
-import { ZIndexes } from "../config";
+import { ZIndex } from "../config";
 import { Item, ItemName, PrimaryWeaponName, SecondaryWeaponName, ShipType } from "../definitions";
 import { shipDefinitions } from "../definitions/ships";
 import { primaryWeaponDefinitions } from "../definitions/weapons";
@@ -13,6 +13,7 @@ import { Entity, EntityId, Turn } from "./Entity";
 export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
 export type Condition = "Alive" | "Disabled" | "Destroying";
 export type Size = "Small" | "Normal" | "Large" | "Massive";
+export type Strategy = "Land" | "None";
 
 export class Ship extends Entity implements IRenderable {
   condition: Condition;
@@ -25,8 +26,9 @@ export class Ship extends Entity implements IRenderable {
   target: EntityId | null;
   thrust: "None" | "Forward";
   turn: Turn;
-  zIndex = ZIndexes.Ship;
+  zIndex = ZIndex.Ship;
   sim: ShipSim | null;
+  strategy: Strategy;
 
   /**
    * Each kind of item can have a stateful cooldown, representing ms remaining until next use.
@@ -53,6 +55,7 @@ export class Ship extends Entity implements IRenderable {
     this.velocity = new Victor(0, 0);
     this.yaw = args.yaw.clone();
     this.sim = args.team === "Player" ? null : createShipSim(this);
+    this.strategy = "Land"; // TODO: An actual way to give each new ship a different strategy.
   }
 
   get definition() {

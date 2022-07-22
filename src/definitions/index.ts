@@ -2,6 +2,7 @@ import { ammoDefinitions } from "./ammos";
 import { doodadDefinitions } from "./doodads";
 import { shipDefinitions } from "./ships";
 import { upgradeDefinitions } from "./upgrades";
+import { planetDefinitions } from "./planets";
 import { primaryWeaponDefinitions, secondaryWeaponDefinitions } from "./weapons";
 
 // Every item is one of these. They just describe static properties about the item.
@@ -25,3 +26,4 @@ export type Item = { name: ItemName; count: number };
 // Other things that aren't inventory items.
 export type ShipType = keyof typeof shipDefinitions;
 export type DoodadName = keyof typeof doodadDefinitions;
+export type PlanetName = keyof typeof planetDefinitions;

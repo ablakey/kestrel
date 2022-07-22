@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 import stars01 from "../assets/sprites/spr_stars01.png";
 import stars02 from "../assets/sprites/spr_stars02.png";
-import { ZIndexes } from "../config";
+import { ZIndex } from "../config";
 import { Engine } from "../Engine";
 import { IRenderable } from "../interfaces";
 import { System } from "./System";
@@ -45,7 +45,7 @@ function createReticle(size: number) {
   graphics.lineTo(min, max);
   graphics.lineTo(min, max - 20);
 
-  graphics.zIndex = ZIndexes.Hud;
+  graphics.zIndex = ZIndex.Hud;
 
   return graphics;
 }

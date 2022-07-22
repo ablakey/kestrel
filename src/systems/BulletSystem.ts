@@ -1,5 +1,5 @@
 import Victor from "victor";
-import { InertiaFactors, MIN_HIT_DISTANCE } from "../config";
+import { InertiaFactor, MIN_HIT_DISTANCE } from "../config";
 import { Bullet } from "../entities/Bullet";
 import { Ship } from "../entities/Ship";
 import { getAngle } from "../utils";
@@ -39,7 +39,7 @@ export class BulletSystem extends System {
         targetHit = bullet.id;
         bullet.destroyed = true;
 
-        const interiaFactor = InertiaFactors[candidate.definition.size];
+        const interiaFactor = InertiaFactor[candidate.definition.size];
         this.applyHit(candidate, damage, bullet.position, (blastRadius * interiaFactor) / 2);
 
         if (hitSound) {
@@ -63,7 +63,7 @@ export class BulletSystem extends System {
         .filter((ship) => ship.id !== targetHit)
         .forEach((ship) => {
           const distance = bullet.position.distance(ship.position);
-          const interiaFactor = InertiaFactors[ship.definition.size];
+          const interiaFactor = InertiaFactor[ship.definition.size];
           const damageFactor = (blastRadius - distance) / blastRadius;
           this.applyHit(
             ship,
