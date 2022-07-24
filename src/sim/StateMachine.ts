@@ -18,6 +18,7 @@ export class StateMachine {
   }
 
   tick() {
+    this.state.tick();
     for (const key of Object.keys(this.state.conditions)) {
       if (this.state.conditions[key as StateName]!()) {
         this.transitionTo(key as StateName);
@@ -43,6 +44,8 @@ export abstract class SimState {
   entry() {}
 
   exit() {}
+
+  abstract tick(): void;
 
   constructor(ship: Ship) {
     this.ship = ship;

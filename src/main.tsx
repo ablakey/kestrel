@@ -22,7 +22,7 @@ async function main() {
   const engine = new Engine();
   await engine.initialize();
   engine.start();
-  window.engine = engine;
+  globalThis.engine = engine;
 
   const root = createRoot(document.getElementById("ui")!);
 

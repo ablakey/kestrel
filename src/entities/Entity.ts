@@ -20,6 +20,7 @@ export class Entity implements IMoveable, IRenderable {
   velocity: Victor;
   angularVelocity: number;
   zIndex: number;
+  turn: Turn;
 
   constructor() {
     this.destroyed = false;
@@ -32,6 +33,7 @@ export class Entity implements IMoveable, IRenderable {
     this.velocity = new Victor(1, 0);
     this.angularVelocity = 0;
     this.zIndex = 1;
+    this.turn = "None";
   }
 
   get definition(): { sprite: SpriteName } {
@@ -58,21 +60,21 @@ export class Entity implements IMoveable, IRenderable {
    * Given a source, target, and tolerance (to prevent constant jittering), return which direction (or
    * None) to turn towards.
    */
-  getTurn(target: Victor, tolerance?: number): Turn {
+  turnTowards(target: Victor, tolerance?: number) {
     const angle = this.getDeltaAngle(target);
     if (Math.abs(angle) < (tolerance ?? 0.05)) {
       return "None";
     }
 
-    return angle > 0 ? "Left" : "Right";
+    this.turn = angle > 0 ? "Left" : "Right";
   }
 
   /**
    * Which way to turn to get the body facing the opposite direction of its velocity.
    */
-  getOppositeTurn(): Turn {
+  turnAway() {
     const targetAngle = this.velocity.angle() + Math.PI;
     const targetPosition = new Victor(1, 0).multiplyScalar(1_000_000_000).rotate(targetAngle);
-    return this.getTurn(targetPosition);
+    this.turnTowards(targetPosition);
   }
 }

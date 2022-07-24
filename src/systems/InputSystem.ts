@@ -68,9 +68,9 @@ export class InputSystem extends System {
     } else if (this.keyState[GameInput.RotateTowards.key] && playerShip.target) {
       const target = this.engine.entities.getShip(playerShip.target);
       assert(target);
-      playerShip.turn = playerShip.getTurn(target.position);
+      playerShip.turnTowards(target.position);
     } else if (this.keyState[GameInput.RotateOpposite.key]) {
-      playerShip.turn = playerShip.getOppositeTurn();
+      playerShip.turnAway();
     } else {
       playerShip.turn = "None";
     }
