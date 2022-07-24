@@ -2,6 +2,7 @@ import Victor from "victor";
 import { Bullet } from "./entities/Bullet";
 import { Doodad } from "./entities/Doodad";
 import { Entity, EntityId } from "./entities/Entity";
+import { Planet } from "./entities/Planet";
 import { PlayerShip, Ship } from "./entities/Ship";
 import { assert } from "./utils";
 
@@ -10,6 +11,7 @@ export class EntityManager {
   private _ships: Map<EntityId, Ship>;
   private _bullets: Map<EntityId, Bullet>;
   private _doodads: Map<EntityId, Doodad>;
+  private _planets: Map<EntityId, Planet>;
   private _playerShip: PlayerShip | null;
 
   constructor() {
@@ -18,6 +20,7 @@ export class EntityManager {
     this._ships = new Map();
     this._bullets = new Map();
     this._doodads = new Map();
+    this._planets = new Map();
   }
 
   get entities() {
@@ -34,6 +37,10 @@ export class EntityManager {
 
   get doodads() {
     return this._doodads;
+  }
+
+  get planets() {
+    return this._planets;
   }
 
   getShip(entityId: EntityId | null) {
@@ -72,6 +79,11 @@ export class EntityManager {
     this._bullets.set(bullet.id, bullet);
   }
 
+  addPlanet(planet: Planet) {
+    this._entities.set(planet.id, planet);
+    this._planets.set(planet.id, planet);
+  }
+
   /**
    * Clear any entities from state that have destroyed = true set.
    * Note that we try to delete entities from multiple maps out of laziness. This won't cause an error as entity ids are
@@ -84,6 +96,7 @@ export class EntityManager {
         this._ships.delete(e.id);
         this._bullets.delete(e.id);
         this._doodads.delete(e.id);
+        this._planets.delete(e.id);
       }
     });
   }

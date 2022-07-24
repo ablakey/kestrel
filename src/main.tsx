@@ -4,6 +4,7 @@ import { PlayerShip, Ship } from "./entities/Ship";
 import { Layout } from "./UI/Layout";
 import { createRoot } from "react-dom/client";
 import React, { useContext } from "react";
+import { Planet } from "./entities/Planet";
 
 declare global {
   interface Window {
@@ -37,7 +38,7 @@ async function main() {
 
   engine.entities.setPlayerShip(
     new PlayerShip({
-      position: new Victor(0, 0),
+      position: new Victor(150, -150),
       shipType: "Blue",
       team: "Player",
       yaw: new Victor(1, 0),
@@ -46,12 +47,14 @@ async function main() {
 
   engine.entities.addShip(
     new Ship({
-      position: new Victor(-100, 100),
+      position: new Victor(-150, 150),
       shipType: "Red",
       team: "Rebellion",
       yaw: new Victor(0, 0),
     })
   );
+
+  engine.entities.addPlanet(new Planet({ name: "levo", position: new Victor(0, 0) }));
 }
 
 main();
