@@ -50,7 +50,7 @@ async function main() {
       position: new Victor(-150, 150),
       shipType: "Red",
       team: "Rebellion",
-      yaw: new Victor(0, 0),
+      yaw: new Victor(1, 0),
     })
   );
 

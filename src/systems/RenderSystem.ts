@@ -162,7 +162,7 @@ export class RenderSystem extends System {
     /**
      * Update reticle position if there is a target, otherwise create one, otherwise delete it.
      */
-    const target = this.engine.entities.getShip(playerShip.target);
+    const target = this.engine.entities.ships.get(playerShip.target);
     if (target === null && this.renderedReticle) {
       this.renderedReticle?.graphic.destroy();
       this.renderedReticle = undefined;

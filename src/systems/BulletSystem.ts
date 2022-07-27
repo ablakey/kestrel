@@ -14,7 +14,7 @@ export class BulletSystem extends System {
     const { blastRadius, damage, hitSound, dumbfire, turnRate } = bullet.definition;
 
     const deltaSeconds = this.engine.delta / 1000;
-    const target = this.engine.entities.getShip(bullet.target);
+    const target = this.engine.entities.ships.get(bullet.target);
     let targetHit: number | null = null;
 
     /**

@@ -9,7 +9,7 @@ import { EngineSystem } from "./systems/EngineSystem";
 import { InputSystem } from "./systems/InputSystem";
 import { PhysicsSystem } from "./systems/PhysicsSystem";
 import { RenderSystem } from "./systems/RenderSystem";
-import { SimSystem } from "./systems/SimSystem";
+import { BehaviourSystem } from "./systems/BehaviourSystem";
 import { StrategySystem } from "./systems/StrategySystem";
 
 export class Engine {
@@ -36,7 +36,7 @@ export class Engine {
   combatSystem: CombatSystem;
   effectsSystem: EffectsSystem;
   bulletSystem: BulletSystem;
-  simSystem: SimSystem;
+  BehaviourSystem: BehaviourSystem;
   strategySystem: StrategySystem;
 
   constructor() {
@@ -59,7 +59,7 @@ export class Engine {
     this.combatSystem = new CombatSystem(this);
     this.effectsSystem = new EffectsSystem(this);
     this.bulletSystem = new BulletSystem(this);
-    this.simSystem = new SimSystem(this);
+    this.BehaviourSystem = new BehaviourSystem(this);
     this.strategySystem = new StrategySystem(this);
   }
 
@@ -97,7 +97,7 @@ export class Engine {
 
     // System updates for many entities. Order matters.
     this.strategySystem.update();
-    this.simSystem.update();
+    this.BehaviourSystem.update();
     this.engineSystem.update();
     this.physicsSystem.update();
     this.combatSystem.update();

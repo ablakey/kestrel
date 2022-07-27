@@ -1,7 +1,8 @@
 import { Ship } from "../entities/Ship";
+import { behaviours } from "../sim";
 import { System } from "./System";
 
-export class SimSystem extends System {
+export class BehaviourSystem extends System {
   update() {
     this.engine.entities.ships.forEach(this.updateOne);
   }
@@ -12,6 +13,10 @@ export class SimSystem extends System {
       return;
     }
 
-    ship.sim?.tick();
+    if (ship.behaviour === null) {
+      return;
+    }
+
+    behaviours[ship.behaviour](this.engine, ship);
   }
 }

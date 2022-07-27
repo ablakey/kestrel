@@ -7,7 +7,7 @@ import { shipDefinitions } from "../definitions/ships";
 import { primaryWeaponDefinitions } from "../definitions/weapons";
 import { DamageEffect } from "../Effects";
 import { IRenderable } from "../interfaces";
-import { createShipSim, ShipSim } from "../sim/ShipSim";
+import { BehaviourName } from "../sim";
 import { Entity, EntityId, Turn } from "./Entity";
 
 export type Team = "Independent" | "Player" | "Rebellion" | "Confederacy";
@@ -27,7 +27,7 @@ export class Ship extends Entity implements IRenderable {
   thrust: "None" | "Forward";
   turn: Turn;
   zIndex = ZIndex.Ship;
-  sim: ShipSim | null;
+  behaviour: BehaviourName | null;
   strategy: Strategy;
 
   /**
@@ -54,8 +54,8 @@ export class Ship extends Entity implements IRenderable {
     this.turn = "None";
     this.velocity = new Victor(0, 0);
     this.yaw = args.yaw.clone();
-    this.sim = args.team === "Player" ? null : createShipSim(this);
-    this.strategy = "Land"; // TODO: An actual way to give each new ship a different strategy.
+    this.behaviour = args.team === "Player" ? null : "Attack"; // TODO:
+    this.strategy = "None"; // TODO: An actual way to give each new ship a different strategy.
   }
 
   get definition() {

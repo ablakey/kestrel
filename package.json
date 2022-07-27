@@ -48,7 +48,6 @@
     "eslint-config-prettier": "^8.3.0",
     "parcel": "^2.0.0",
     "querystring-es3": "^0.2.1",
-    "ts-essentials": "^9.1.2",
     "typescript": "^4.4.4"
   },
   "dependencies": {
@@ -58,6 +57,7 @@
     "pixi.js": "^6.1.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "ts-essentials": "^9.2.0",
     "victor": "^1.1.0"
   }
 }

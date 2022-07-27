@@ -1,6 +1,7 @@
+import { assert } from "ts-essentials";
 import { GameInput } from "../config";
 import { Engine } from "../Engine";
-import { assert, stringifyFullKey } from "../utils";
+import { stringifyFullKey } from "../utils";
 import { System } from "./System";
 
 const keysInUse = new Set(Object.values(GameInput).map((k) => k.key));
@@ -66,7 +67,7 @@ export class InputSystem extends System {
     } else if (this.keyState[GameInput.RotateRight.key]) {
       playerShip.turn = "Right";
     } else if (this.keyState[GameInput.RotateTowards.key] && playerShip.target) {
-      const target = this.engine.entities.getShip(playerShip.target);
+      const target = this.engine.entities.ships.get(playerShip.target);
       assert(target);
       playerShip.turnTowards(target.position);
     } else if (this.keyState[GameInput.RotateOpposite.key]) {

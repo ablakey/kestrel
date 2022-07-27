@@ -1,17 +1,17 @@
+import { assert } from "ts-essentials";
 import Victor from "victor";
 import { Bullet } from "./entities/Bullet";
 import { Doodad } from "./entities/Doodad";
 import { Entity, EntityId } from "./entities/Entity";
 import { Planet } from "./entities/Planet";
 import { PlayerShip, Ship } from "./entities/Ship";
-import { assert } from "./utils";
 
 export class EntityManager {
-  private _entities: Map<EntityId, Entity>;
-  private _ships: Map<EntityId, Ship>;
-  private _bullets: Map<EntityId, Bullet>;
-  private _doodads: Map<EntityId, Doodad>;
-  private _planets: Map<EntityId, Planet>;
+  private _entities: Map<EntityId | null, Entity>;
+  private _ships: Map<EntityId | null, Ship>;
+  private _bullets: Map<EntityId | null, Bullet>;
+  private _doodads: Map<EntityId | null, Doodad>;
+  private _planets: Map<EntityId | null, Planet>;
   private _playerShip: PlayerShip | null;
 
   constructor() {
@@ -41,13 +41,6 @@ export class EntityManager {
 
   get planets() {
     return this._planets;
-  }
-
-  getShip(entityId: EntityId | null) {
-    if (entityId === null) {
-      return null;
-    }
-    return this._ships.get(entityId) ?? null;
   }
 
   getNearbyShips(position: Victor, distance: number) {

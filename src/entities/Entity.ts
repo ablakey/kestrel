@@ -63,7 +63,7 @@ export class Entity implements IMoveable, IRenderable {
   turnTowards(target: Victor, tolerance?: number) {
     const angle = this.getDeltaAngle(target);
     if (Math.abs(angle) < (tolerance ?? 0.05)) {
-      return "None";
+      this.turn = "None";
     }
 
     this.turn = angle > 0 ? "Left" : "Right";

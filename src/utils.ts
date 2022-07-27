@@ -12,12 +12,6 @@ export function asTypedObject<T>() {
   };
 }
 
-export function assert<T>(val: T, message?: string): asserts val is NonNullable<T> {
-  if (val === undefined || val === null) {
-    throw new Error(message ?? `Expected 'val' to be defined, but received ${val}`);
-  }
-}
-
 /**
  * Stringify a full key with modifiers.
  * NOTE: Disabled for now. We don't support modifier keys. This is because when you hold down space,
